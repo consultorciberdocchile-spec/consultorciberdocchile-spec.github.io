@@ -667,9 +667,22 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
   .slides-nav .s-nav-dots{flex:1;display:flex;justify-content:center;}
 }
 @media print{.ilr-cd{display:none !important;}}
+/* ═══ Modo sin precios ═══
+   Lo activa la copia publicada en internet. En el equipo propio no se aplica
+   y la web se ve completa, con precios. */
+body.sin-precios .price-section,
+body.sin-precios #resumenConsolidado{display:none !important;}
+
 </style>
 </head>
 <body>
+<script>
+/* --- Copia publicada en internet -------------------------------------------
+   Esta linea la pone construir_publicacion.ps1 y NO existe en la version de su
+   equipo. Hace que el PDF del programa salga sin tablas de costos.
+   Los precios de la pagina no estan ocultos: fueron eliminados del archivo.   */
+window.ILR_SIN_PRECIOS = true;
+</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
    CUENTA REGRESIVA DE UNA HORA
@@ -727,6 +740,16 @@ window.ILRCuentaRegresiva = (function(){
       act = null;
     }
   };
+})();
+</script>
+
+<script>
+/* El sitio publicado define ILR_SIN_PRECIOS = true antes que nada; aquí solo
+   se traduce a una clase en <body>. Si la variable no existe, no pasa nada. */
+(function(){
+  function aplicar(){ if(window.ILR_SIN_PRECIOS) document.body.classList.add('sin-precios'); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicar);
+  else aplicar();
 })();
 </script>
 
@@ -836,24 +859,7 @@ window.ILRCuentaRegresiva = (function(){
             </ul>
           </div>
           <!-- PRICE TOGGLE -->
-          <div class="price-section">
-            <button class="price-toggle-btn" onclick="togglePrice(1,this)">
-              <div class="price-toggle-left">
-                <svg class="price-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span class="price-toggle-label">Ver precios del servicio</span>
-              </div>
-              <div class="price-toggle-icon" id="pti1">−</div>
-            </button>
-            <div class="price-details" id="pd1">
-              <div class="price-inner">
-                <div class="price-row"><span class="price-row-label">Diagnóstico inicial</span><span class="price-row-val">$400.000 – $600.000</span></div>
-                <div class="price-row"><span class="price-row-label">Taller Ley 21.663</span><span class="price-row-val">$400.000 – $600.000</span></div>
-                <div class="price-row"><span class="price-row-label">Política + Protocolos</span><span class="price-row-val">$600.000 – $1.200.000</span></div>
-                <div class="price-row"><span class="price-row-label">Capacitación equipo TI</span><span class="price-row-val">$400.000 – $600.000</span></div>
-                <div class="price-row"><span class="price-row-label">Paquete Integral Servicio 1</span><span class="price-row-val">$1.800.000 – $2.800.000</span></div>
-              </div>
-            </div>
-          </div>
+          
           <button class="btn-detail" onclick="openModal(1)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -878,22 +884,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Charla 4: Herramientas y Protocolos — taller (4 hrs)</li>
             </ul>
           </div>
-          <div class="price-section">
-            <button class="price-toggle-btn" onclick="togglePrice(2,this)">
-              <div class="price-toggle-left">
-                <svg class="price-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span class="price-toggle-label">Ver precios del servicio</span>
-              </div>
-              <div class="price-toggle-icon" id="pti2">−</div>
-            </button>
-            <div class="price-details" id="pd2">
-              <div class="price-inner">
-                <div class="price-row"><span class="price-row-label">Charla individual (hasta 30 personas)</span><span class="price-row-val">$300.000 – $500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Charla 4 – taller práctico</span><span class="price-row-val">$400.000 – $700.000</span></div>
-                <div class="price-row"><span class="price-row-label">Programa Completo (4 charlas / 13 hrs)</span><span class="price-row-val">$1.300.000 – $2.200.000</span></div>
-              </div>
-            </div>
-          </div>
+          
           <button class="btn-detail" onclick="openModal(2)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -919,22 +910,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Día UNESCO contra Violencia Escolar (5 noviembre)</li>
             </ul>
           </div>
-          <div class="price-section">
-            <button class="price-toggle-btn" onclick="togglePrice(3,this)">
-              <div class="price-toggle-left">
-                <svg class="price-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span class="price-toggle-label">Ver precios del servicio</span>
-              </div>
-              <div class="price-toggle-icon" id="pti3">−</div>
-            </button>
-            <div class="price-details" id="pd3">
-              <div class="price-inner">
-                <div class="price-row"><span class="price-row-label">Ponencia/taller individual</span><span class="price-row-val">$300.000 – $500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Planificación + seguimiento (por evento)</span><span class="price-row-val">Incluidos</span></div>
-                <div class="price-row"><span class="price-row-label">Paquete 5 Conmemoraciones</span><span class="price-row-val">$1.500.000 – $2.500.000</span></div>
-              </div>
-            </div>
-          </div>
+          
           <button class="btn-detail" onclick="openModal(3)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -962,26 +938,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Material didáctico y guías para Escuela para Padres.</li>
             </ul>
           </div>
-          <div class="price-section">
-            <button class="price-toggle-btn" onclick="togglePrice(4,this)">
-              <div class="price-toggle-left">
-                <svg class="price-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span class="price-toggle-label">Ver precios del servicio</span>
-              </div>
-              <div class="price-toggle-icon" id="pti4">+</div>
-            </button>
-            <div class="price-details" id="pd4">
-              <div class="price-inner">
-                <div class="price-row"><span class="price-row-label">Planes de Gestión Integral</span><span class="price-row-val">$1.000.000 – $1.500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Proyecto Educativo (PEI)</span><span class="price-row-val">$1.000.000 – $1.500.000</span></div>
-                <div class="price-row"><span class="price-row-label">RICE y Protocolos (9 protocolos)</span><span class="price-row-val">$1.000.000 – $1.500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Seguridad Escolar (PISE)</span><span class="price-row-val">$1.000.000 – $1.500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Escuela para Padres</span><span class="price-row-val">$1.000.000 – $1.500.000</span></div>
-                <div class="price-row"><span class="price-row-label">Ley N° 21.801 · Celulares en el aula</span><span class="price-row-val">$1.400.000 – $2.200.000</span></div>
-                <div class="price-row"><span class="price-row-label">Paquete Integral Servicio 4</span><span class="price-row-val">$6.400.000 – $9.700.000</span></div>
-              </div>
-            </div>
-          </div>
+          
           <button class="btn-detail" onclick="openModal(4)">Ver Detalle Completo</button>
         </div>
       </div>
@@ -1058,22 +1015,7 @@ window.ILRCuentaRegresiva = (function(){
     <!-- /PRESENTACIONES -->
 
 
-    <!-- SUMMARY TABLE -->
-    <div style="margin-top:40px;">
-      <div class="section-title">Resumen Consolidado</div>
-      <div class="summary-wrap">
-        <table class="modal-table" style="margin-top:0;">
-          <thead><tr><th>Servicio</th><th>Descripción</th><th>Rango CLP</th></tr></thead>
-          <tbody>
-            <tr><td>Servicio 1</td><td>Implementación Ley Marco de Ciberseguridad (Ley 21.663)</td><td class="cost-cell">$1.800.000 – $2.800.000</td></tr>
-            <tr><td>Servicio 2</td><td>Programa de Capacitación en Ciberseguridad (4 charlas)</td><td class="cost-cell">$1.300.000 – $2.200.000</td></tr>
-            <tr><td>Servicio 3</td><td>Acompañamiento en 5 Conmemoraciones del Calendario Escolar</td><td class="cost-cell">$1.500.000 – $2.500.000</td></tr>
-            <tr><td>Servicio 4</td><td>Convivencia Educativa 2026 + Ley N° 21.801 (celulares en el aula)</td><td class="cost-cell">$6.400.000 – $9.700.000</td></tr>
-            <tr><td colspan="2"><strong>PAQUETE INTEGRAL (4 SERVICIOS)</strong></td><td class="cost-cell">$11.000.000 – $17.000.000</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    
   </div><!-- /dash-body -->
 </div>
 
@@ -1356,28 +1298,28 @@ const modules={
     objGen:['Orientar a los establecimientos en la comprensión y aplicación de los principios de la Ley 21.663.','Fortalecer la gobernanza digital mediante políticas y protocolos de ciberseguridad alineados al marco legal.','Proteger los datos personales de estudiantes, apoderados y funcionarios frente a amenazas digitales.','Preparar a la comunidad educativa para responder de manera eficaz ante incidentes de ciberseguridad.'],
     objEsp:['Diagnóstico del nivel de madurez en ciberseguridad del establecimiento.','Diseño e implementación de Política de Seguridad de la Información adaptada al contexto educativo.','Elaboración de protocolos de respuesta ante incidentes (fuga de datos, ransomware, phishing, suplantación).','Capacitación al equipo directivo y personal TI en deberes derivados de la Ley 21.663.','Identificación y clasificación de activos de información críticos.','Plan de mejora continua en ciberseguridad con indicadores de seguimiento.'],
     actions:[['Diagnóstico de madurez en ciberseguridad','Presencial / Online (04 hrs)','Marzo – Abril'],['Taller: Comprendiendo la Ley Marco 21.663','Presencial (02 hrs)','Marzo – Abril'],['Diseño de Política de Seguridad de la Información','Online con entregas parciales','Abril – Mayo'],['Elaboración de protocolos de respuesta ante incidentes','Online con validación presencial','Mayo – Junio'],['Capacitación al equipo directivo y personal TI','Presencial (02 hrs)','Junio'],['Entrega de informe final con plan de mejora','Online / Presencial','Julio']],
-    costs:[['Diagnóstico inicial','Evaluación de madurez','$400.000 – $600.000'],['Taller Ley 21.663','Capacitación presencial (02 hrs, hasta 25 personas)','$400.000 – $600.000'],['Política + Protocolos','Diseño documental personalizado','$600.000 – $1.200.000'],['Capacitación equipo TI','Formación especializada (02 hrs)','$400.000 – $600.000'],['PAQUETE INTEGRAL SERVICIO 1','Todos los componentes','$1.800.000 – $2.800.000']],
+    
     deliverables:['Informe de diagnóstico de madurez en ciberseguridad.','Política de Seguridad de la Información institucional (documento formal).','Protocolos de respuesta ante incidentes de ciberseguridad.','Material de capacitación (presentaciones, guías rápidas).','Informe final con plan de mejora continua.','Certificado de participación para los asistentes.']},
   2:{tag:'Servicio 2 · Capacitación',title:'Cursos de Capacitación en Ciberseguridad Educativa',
     intro:'Programa de 4 charlas/talleres diseñados para el contexto educativo. Aborda desde los fundamentos de la ciberseguridad hasta herramientas prácticas y marco legal aplicable. Cada sesión contempla hasta 30 participantes. Para grupos mayores se cotizará de forma especial.',
     objGen:['Desarrollar competencias en ciberseguridad promoviendo una cultura de prevención y autocuidado digital.','Dotar a los profesionales de la educación de herramientas prácticas para identificar y prevenir amenazas.','Fortalecer el conocimiento del marco legal vigente en ciberseguridad aplicable al sector educativo.'],
     objEsp:['Charla 1: Fundamentos — confidencialidad, integridad, disponibilidad; panorama actual de amenazas.','Charla 2: Riesgos y Prevención — phishing, malware, grooming, ciberacoso; estrategias preventivas.','Charla 3: Marco Legal — Ley 21.663, Ley 21.801, Ley 19.628 y derechos digitales de menores.','Charla 4: Herramientas y Protocolos — filtros, contraseñas, autenticación multifactor.'],
     actions:[['Charla 1: Fundamentos de Ciberseguridad','Presencial (03 hrs)','Marzo – Abril'],['Charla 2: Riesgos y Prevención','Presencial (03 hrs)','Abril – Mayo'],['Charla 3: Marco Legal en Chile','Presencial (03 hrs)','Mayo – Junio'],['Charla 4: Herramientas y Protocolos (Taller práctico)','Presencial (04 hrs)','Junio – Julio']],
-    costs:[['Charla individual','Sesión de 03 hrs (hasta 30 personas)','$300.000 – $500.000'],['Charla 4 (taller práctico)','Sesión de 04 hrs con componente práctico','$400.000 – $700.000'],['PROGRAMA COMPLETO (4 charlas)','13 horas totales de formación','$1.300.000 – $2.200.000']],
+    
     deliverables:['Material de cada charla (presentaciones en formato digital, guías de apoyo).','Compendio de normativa legal aplicable al ámbito educativo.','Certificado de participación/capacitación por cada charla o por el programa completo.']},
   3:{tag:'Servicio 3 · Calendario Escolar',title:'Acompañamiento en Fechas Conmemorativas 2026',
     intro:'El Calendario Escolar 2026 contempla diversas conmemoraciones nacionales e internacionales que cada comunidad educativa puede incorporar en su planificación. Este servicio vincula ciberseguridad con estas fechas, generando instancias de reflexión sobre el uso seguro de la tecnología.',
     objGen:['Visibilizar la ciberseguridad como componente esencial de la convivencia escolar.','Fortalecer la prevención del ciberacoso y la violencia digital mediante ponencias y talleres.','Generar espacios de reflexión sobre el uso seguro de internet y dispositivos tecnológicos.'],
     objEsp:['Planificar y ejecutar ponencias y talleres específicos para cada fecha conmemorativa.','Sensibilizar a estudiantes, docentes y apoderados sobre consecuencias legales del ciberacoso.','Integrar la dimensión digital en las actividades de convivencia y seguridad escolares.','Proveer material pedagógico diferenciado por nivel (parvularia, básica, media).','Evaluar el impacto de las actividades y proponer acciones de seguimiento.','Vincular actividades con el Plan de Gestión de la Convivencia Escolar y el PISE.'],
     actions:[['Día contra el Ciberacoso: Ponencia + taller','Presencial (03–04 hrs)','13 o 16 de marzo'],['Día de la Convivencia Escolar: Charla convivencia digital','Presencial (03–04 hrs)','27–30 de abril'],['Día del Internet: Taller ciudadanía digital responsable','Presencial (03 hrs)','15 o 18 de mayo'],['Semana de Seguridad Escolar: Charla + ejercicio práctico','Presencial (04 hrs)','25–29 de mayo'],['Día UNESCO: Ponencia de cierre anual + evaluación','Presencial (03–04 hrs)','5 de noviembre'],['Planificación previa y seguimiento posterior','Online (02 hrs por evento)','Según agenda']],
-    costs:[['Ponencia/taller individual','Sesión presencial 03–04 hrs por conmemoración','$300.000 – $500.000'],['Planificación + seguimiento','Reunión previa y retroalimentación posterior online','Incluidos'],['PAQUETE 5 CONMEMORACIONES','5 ponencias + planificación y seguimiento','$1.500.000 – $2.500.000']],
+    
     deliverables:['Material de cada ponencia/taller (presentaciones, videos, infografías).','Guías de actividades diferenciadas por nivel educativo.','Material gráfico digital para difusión en la comunidad educativa.','Informe de cada actividad con registro.','Informe anual de acompañamiento con recomendaciones para el año siguiente.','Certificado de participación para los asistentes.']},
   4:{tag:'Servicio 4 · Convivencia Educativa',title:'Actualización Documentación de Convivencia Educativa 2026',
     intro:'Este servicio ofrece una revisión técnico-pedagógica y legal de los instrumentos de gestión obligatorios para los establecimientos educacionales. El objetivo es asegurar que la documentación institucional cumpla con la normativa vigente de la Superintendencia de Educación y esté articulada de manera coherente con el proyecto educativo de cada comunidad. Incorpora además la implementación de la Ley N° 21.801, que prohíbe el uso de dispositivos móviles en establecimientos de nivel parvulario, básico y medio y obliga a adaptar el RICE antes del 30 de junio de 2026. La carga horaria estimada es de 31.5 a 63 horas cronológicas de trabajo especializado.',
     objGen:['Actualizar y articular los planes de gestión y reglamentos internos para garantizar el cumplimiento normativo y la coherencia institucional.','Fortalecer la gestión de la convivencia escolar mediante protocolos de actuación claros y validados por la comunidad educativa.','Promover una cultura de seguridad y prevención integral a través de la actualización del PISE y la formación de padres.','Acompañar la implementación efectiva de la Ley N° 21.801, asegurando el cumplimiento normativo en el uso de dispositivos móviles.'],
     objEsp:['Revisar y actualizar el Plan de Gestión de Convivencia, el Plan de Sexualidad, Afectividad y Género, y el Plan de Formación Ciudadana.','Diseñar o actualizar el Proyecto Educativo Institucional (PEI) y el Plan de Sellos.','Adecuar el Reglamento Interno de Convivencia Escolar (RICE) y desarrollar 9 protocolos de actuación ante diversas situaciones de riesgo.','Conformar el Comité de Seguridad Escolar y adaptar el Plan Integral de Seguridad Escolar (PISE).','Implementar una Escuela para Padres enfocada en la educación digital y el manejo de dispositivos.','Diagnosticar el estado del RICE respecto a la regulación de dispositivos móviles y asesorar su modificación conforme a la Ley N° 21.801.','Diseñar los protocolos de custodia, excepciones, infracciones y comunicación con apoderados que exige la ley.','Capacitar a docentes, asistentes y equipo directivo en la aplicación de la normativa, incorporando el concepto de autonomía progresiva en educación media.'],
     actions:[['Actualización Plan de Convivencia, Sexualidad y Formación Ciudadana','Trabajo colaborativo con estamentos','Marzo – Junio'],['Construcción/actualización de PEI y Plan de Sellos','Reuniones presenciales con estamentos','Marzo – Junio'],['Actualización del RICE + 9 protocolos de actuación','Presencial con talleres roll play de validación','Marzo – Junio'],['Adaptación del PISE y conformación Comité de Seguridad','Presencial / Online','Abril – Junio'],['Escuela para Padres: talleres educación digital','Presencial (sesiones programadas)','Mayo – Noviembre'],['Diagnóstico del RICE y brecha respecto a la Ley 21.801','Presencial / Online (03 hrs)','Marzo – Abril'],['Diseño de protocolos de celulares (custodia, excepciones, infracciones)','Online con validación presencial','Abril – Mayo'],['Charla apoderados y capacitación docente: uso responsable del celular','Presencial (05 hrs totales)','Mayo'],['Seguimiento de la implementación de la Ley 21.801','Online / Presencial','Junio']],
-    costs:[['Planes de Gestión Integral','Plan Convivencia, Sexualidad y Formación Ciudadana + articulación','$1.000.000 – $1.500.000'],['Proyecto Educativo (PEI)','Construcción/actualización PEI + Plan Sellos y reuniones','$1.000.000 – $1.500.000'],['RICE y Protocolos','Reglamento Interno + 9 protocolos con talleres roll play','$1.000.000 – $1.500.000'],['Seguridad Escolar (PISE)','Protocolos de emergencia y Comité de Seguridad','$1.000.000 – $1.500.000'],['Escuela para Padres','Talleres educación digital y bienestar integral','$1.000.000 – $1.500.000'],['Ley N° 21.801 · Celulares en el aula','Diagnóstico y modificación del RICE, protocolos, charla a apoderados y capacitación docente','$1.400.000 – $2.200.000'],['PAQUETE INTEGRAL SERVICIO 4','Todos los componentes (31.5 – 63 hrs especializadas)','$6.400.000 – $9.700.000']],
+    
     deliverables:['Documentos actualizados de los 3 planes de gestión y el PEI.','Compendio de 9 protocolos de actuación validados.','Reglamento Interno (RICE) adecuado a la normativa vigente.','Plan Integral de Seguridad Escolar (PISE) personalizado.','Material didáctico y guías prácticas para la Escuela para Padres.','Propuesta de modificación del RICE alineada a la Ley N° 21.801, con protocolos de custodia, excepciones e infracciones.','Material informativo para apoderados y estudiantes sobre el uso responsable del celular.','Material de capacitación para docentes y asistentes, con certificado de participación.']}
 };
 
@@ -2071,7 +2013,7 @@ function _doDownloadFullProgram(colegioName){
   doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(13);
   doc.text('PROGRAMA INTEGRAL DE CIBERSEGURIDAD EDUCATIVA 2026',PL+12,y+10);
   doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...GOLD);
-  doc.text('Propuesta con detalle de servicios y costos — Claudio Rivero Peña E.I.R.L.',PL+12,y+17);
+  doc.text((window.ILR_SIN_PRECIOS ? 'Propuesta con el detalle de los servicios' : 'Propuesta con detalle de servicios y costos') + ' — Claudio Rivero Peña E.I.R.L.',PL+12,y+17);
   y+=30;
 
   // Intro paragraph
@@ -2103,24 +2045,24 @@ function _doDownloadFullProgram(colegioName){
       m.actions.map(a=>[a[0],a[1]+' · '+a[2]]),
       PL,TW,NAVY,GOLD,y,(cy,n)=>checkPage(cy,n));
 
-    // Costs table
-    y=pdfSectionTitle(doc,'Costos Estimados (CLP)',PL,TW,GOLD,LGRAY,NAVY,(checkPage(y,18)));
-    y=pdfTable(doc,['COMPONENTE','DESCRIPCIÓN','RANGO CLP'],m.costs,PL,TW,NAVY,GOLD,y,(cy,n)=>checkPage(cy,n));
-    doc.setTextColor(138,148,168); doc.setFont('helvetica','italic'); doc.setFontSize(8);
-    doc.text('Modalidad: Boleta de honorarios. Pago único o cuotas. Sujeto a negociación.',PL,y); y+=10;
+    // Costs table (se omite en la version publicada)
+    if(!window.ILR_SIN_PRECIOS){
+      
+    }
   });
 
-  // CONSOLIDATED SUMMARY
-  y=checkPage(y,30);
-  y=pdfSectionTitle(doc,'RESUMEN CONSOLIDADO — PAQUETE INTEGRAL',PL,TW,GOLD,LGRAY,NAVY,y);
-  const summaryRows=[
-    ['Servicio 1','Implementación Ley Marco de Ciberseguridad (Ley 21.663)','$1.800.000 – $2.800.000'],
-    ['Servicio 2','Programa de Capacitación en Ciberseguridad (4 charlas)','$1.300.000 – $2.200.000'],
-    ['Servicio 3','Acompañamiento en 5 Conmemoraciones del Calendario Escolar','$1.500.000 – $2.500.000'],
-    ['Servicio 4','Convivencia Educativa 2026 + Ley N° 21.801 (celulares en el aula)','$6.400.000 – $9.700.000'],
-    ['PAQUETE INTEGRAL','Contratación conjunta de los 4 servicios con descuento','$11.000.000 – $17.000.000'],
-  ];
-  y=pdfTable(doc,['SERVICIO','DESCRIPCIÓN','RANGO CLP'],summaryRows,PL,TW,NAVY,GOLD,y,(cy,n)=>checkPage(cy,n));
+  // CONSOLIDATED SUMMARY (se omite en la version publicada)
+  if(window.ILR_SIN_PRECIOS){
+    y=checkPage(y,26);
+    y=pdfSectionTitle(doc,'VALORES',PL,TW,GOLD,LGRAY,NAVY,y);
+    y=pdfParagraph(doc,'Los valores de cada servicio se entregan en una propuesta hecha a la medida del establecimiento, '
+      + 'según su tamaño, sus prioridades y los servicios que decida contratar. Escríbame a '
+      + 'consultorciberdocchile@gmail.com o al +569 3245 8664 y se la preparo sin costo.',
+      PL,TW,y,(cy,n)=>checkPage(cy,n));
+    y+=4;
+  } else {
+  
+  }
 
   // Signature block
   y=checkPage(y,50);
