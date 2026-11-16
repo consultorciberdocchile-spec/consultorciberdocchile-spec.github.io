@@ -1,0 +1,10 @@
+# Nunca debe salir de este equipo
+privado/
+firma_digital.js
+
+# Material pesado que no es parte del sitio
+*.mp4
+*.m4a
+*.zip
+Thumbs.db
+desktop.ini
