@@ -668,13 +668,6 @@ body.sin-precios #resumenConsolidado{display:none !important;}
 </head>
 <body>
 <script>
-/* --- Copia publicada en internet -------------------------------------------
-   Esta linea la pone construir_publicacion.ps1 y NO existe en la version de su
-   equipo. Hace que el PDF del programa salga sin tablas de costos.
-   Los precios de la pagina no estan ocultos: fueron eliminados del archivo.   */
-window.ILR_SIN_PRECIOS = true;
-</script>
-<script>
 /* ═══════════════════════════════════════════════════════════════
    CUENTA REGRESIVA DE UNA HORA
    Una por presentación: cada una recuerda su tiempo, así que cerrar
@@ -850,7 +843,7 @@ window.ILRCuentaRegresiva = (function(){
             </ul>
           </div>
           <!-- PRICE TOGGLE -->
-          
+          <!--ILR#0-->
           <button class="btn-detail" onclick="openModal(1)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -875,7 +868,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Charla 4: Herramientas y Protocolos — taller (4 hrs)</li>
             </ul>
           </div>
-          
+          <!--ILR#1-->
           <button class="btn-detail" onclick="openModal(2)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -901,7 +894,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Día UNESCO contra Violencia Escolar (5 noviembre)</li>
             </ul>
           </div>
-          
+          <!--ILR#2-->
           <button class="btn-detail" onclick="openModal(3)">Ver Módulo Completo →</button>
         </div>
       </div>
@@ -929,7 +922,7 @@ window.ILRCuentaRegresiva = (function(){
               <li>Material didáctico y guías para Escuela para Padres.</li>
             </ul>
           </div>
-          
+          <!--ILR#3-->
           <button class="btn-detail" onclick="openModal(4)">Ver Detalle Completo</button>
         </div>
       </div>
@@ -999,14 +992,11 @@ window.ILRCuentaRegresiva = (function(){
     <!-- ══════════════════════════════════════════════ -->
     <!-- PRESENTACIONES                                 -->
     <!-- ══════════════════════════════════════════════ -->
-    <div style="margin-top:48px;">
-      <div class="section-title">Presentaciones</div>
-      <div class="pz-grid" id="pzGrid"></div>
-    </div>
+    <!--ILR#11-->
     <!-- /PRESENTACIONES -->
 
 
-    
+    <!--ILR#4-->
   </div><!-- /dash-body -->
 </div>
 
@@ -1289,28 +1279,28 @@ const modules={
     objGen:['Orientar a los establecimientos en la comprensión y aplicación de los principios de la Ley 21.663.','Fortalecer la gobernanza digital mediante políticas y protocolos de ciberseguridad alineados al marco legal.','Proteger los datos personales de estudiantes, apoderados y funcionarios frente a amenazas digitales.','Preparar a la comunidad educativa para responder de manera eficaz ante incidentes de ciberseguridad.'],
     objEsp:['Diagnóstico del nivel de madurez en ciberseguridad del establecimiento.','Diseño e implementación de Política de Seguridad de la Información adaptada al contexto educativo.','Elaboración de protocolos de respuesta ante incidentes (fuga de datos, ransomware, phishing, suplantación).','Capacitación al equipo directivo y personal TI en deberes derivados de la Ley 21.663.','Identificación y clasificación de activos de información críticos.','Plan de mejora continua en ciberseguridad con indicadores de seguimiento.'],
     actions:[['Diagnóstico de madurez en ciberseguridad','Presencial / Online (04 hrs)','Marzo – Abril'],['Taller: Comprendiendo la Ley Marco 21.663','Presencial (02 hrs)','Marzo – Abril'],['Diseño de Política de Seguridad de la Información','Online con entregas parciales','Abril – Mayo'],['Elaboración de protocolos de respuesta ante incidentes','Online con validación presencial','Mayo – Junio'],['Capacitación al equipo directivo y personal TI','Presencial (02 hrs)','Junio'],['Entrega de informe final con plan de mejora','Online / Presencial','Julio']],
-    
+    <!--ILR#5-->
     deliverables:['Informe de diagnóstico de madurez en ciberseguridad.','Política de Seguridad de la Información institucional (documento formal).','Protocolos de respuesta ante incidentes de ciberseguridad.','Material de capacitación (presentaciones, guías rápidas).','Informe final con plan de mejora continua.','Certificado de participación para los asistentes.']},
   2:{tag:'Servicio 2 · Capacitación',title:'Cursos de Capacitación en Ciberseguridad Educativa',
     intro:'Programa de 4 charlas/talleres diseñados para el contexto educativo. Aborda desde los fundamentos de la ciberseguridad hasta herramientas prácticas y marco legal aplicable. Cada sesión contempla hasta 30 participantes. Para grupos mayores se cotizará de forma especial.',
     objGen:['Desarrollar competencias en ciberseguridad promoviendo una cultura de prevención y autocuidado digital.','Dotar a los profesionales de la educación de herramientas prácticas para identificar y prevenir amenazas.','Fortalecer el conocimiento del marco legal vigente en ciberseguridad aplicable al sector educativo.'],
     objEsp:['Charla 1: Fundamentos — confidencialidad, integridad, disponibilidad; panorama actual de amenazas.','Charla 2: Riesgos y Prevención — phishing, malware, grooming, ciberacoso; estrategias preventivas.','Charla 3: Marco Legal — Ley 21.663, Ley 21.801, Ley 19.628 y derechos digitales de menores.','Charla 4: Herramientas y Protocolos — filtros, contraseñas, autenticación multifactor.'],
     actions:[['Charla 1: Fundamentos de Ciberseguridad','Presencial (03 hrs)','Marzo – Abril'],['Charla 2: Riesgos y Prevención','Presencial (03 hrs)','Abril – Mayo'],['Charla 3: Marco Legal en Chile','Presencial (03 hrs)','Mayo – Junio'],['Charla 4: Herramientas y Protocolos (Taller práctico)','Presencial (04 hrs)','Junio – Julio']],
-    
+    <!--ILR#6-->
     deliverables:['Material de cada charla (presentaciones en formato digital, guías de apoyo).','Compendio de normativa legal aplicable al ámbito educativo.','Certificado de participación/capacitación por cada charla o por el programa completo.']},
   3:{tag:'Servicio 3 · Calendario Escolar',title:'Acompañamiento en Fechas Conmemorativas 2026',
     intro:'El Calendario Escolar 2026 contempla diversas conmemoraciones nacionales e internacionales que cada comunidad educativa puede incorporar en su planificación. Este servicio vincula ciberseguridad con estas fechas, generando instancias de reflexión sobre el uso seguro de la tecnología.',
     objGen:['Visibilizar la ciberseguridad como componente esencial de la convivencia escolar.','Fortalecer la prevención del ciberacoso y la violencia digital mediante ponencias y talleres.','Generar espacios de reflexión sobre el uso seguro de internet y dispositivos tecnológicos.'],
     objEsp:['Planificar y ejecutar ponencias y talleres específicos para cada fecha conmemorativa.','Sensibilizar a estudiantes, docentes y apoderados sobre consecuencias legales del ciberacoso.','Integrar la dimensión digital en las actividades de convivencia y seguridad escolares.','Proveer material pedagógico diferenciado por nivel (parvularia, básica, media).','Evaluar el impacto de las actividades y proponer acciones de seguimiento.','Vincular actividades con el Plan de Gestión de la Convivencia Escolar y el PISE.'],
     actions:[['Día contra el Ciberacoso: Ponencia + taller','Presencial (03–04 hrs)','13 o 16 de marzo'],['Día de la Convivencia Escolar: Charla convivencia digital','Presencial (03–04 hrs)','27–30 de abril'],['Día del Internet: Taller ciudadanía digital responsable','Presencial (03 hrs)','15 o 18 de mayo'],['Semana de Seguridad Escolar: Charla + ejercicio práctico','Presencial (04 hrs)','25–29 de mayo'],['Día UNESCO: Ponencia de cierre anual + evaluación','Presencial (03–04 hrs)','5 de noviembre'],['Planificación previa y seguimiento posterior','Online (02 hrs por evento)','Según agenda']],
-    
+    <!--ILR#7-->
     deliverables:['Material de cada ponencia/taller (presentaciones, videos, infografías).','Guías de actividades diferenciadas por nivel educativo.','Material gráfico digital para difusión en la comunidad educativa.','Informe de cada actividad con registro.','Informe anual de acompañamiento con recomendaciones para el año siguiente.','Certificado de participación para los asistentes.']},
   4:{tag:'Servicio 4 · Convivencia Educativa',title:'Actualización Documentación de Convivencia Educativa 2026',
     intro:'Este servicio ofrece una revisión técnico-pedagógica y legal de los instrumentos de gestión obligatorios para los establecimientos educacionales. El objetivo es asegurar que la documentación institucional cumpla con la normativa vigente de la Superintendencia de Educación y esté articulada de manera coherente con el proyecto educativo de cada comunidad. Incorpora además la implementación de la Ley N° 21.801, que prohíbe el uso de dispositivos móviles en establecimientos de nivel parvulario, básico y medio y obliga a adaptar el RICE antes del 30 de junio de 2026. La carga horaria estimada es de 31.5 a 63 horas cronológicas de trabajo especializado.',
     objGen:['Actualizar y articular los planes de gestión y reglamentos internos para garantizar el cumplimiento normativo y la coherencia institucional.','Fortalecer la gestión de la convivencia escolar mediante protocolos de actuación claros y validados por la comunidad educativa.','Promover una cultura de seguridad y prevención integral a través de la actualización del PISE y la formación de padres.','Acompañar la implementación efectiva de la Ley N° 21.801, asegurando el cumplimiento normativo en el uso de dispositivos móviles.'],
     objEsp:['Revisar y actualizar el Plan de Gestión de Convivencia, el Plan de Sexualidad, Afectividad y Género, y el Plan de Formación Ciudadana.','Diseñar o actualizar el Proyecto Educativo Institucional (PEI) y el Plan de Sellos.','Adecuar el Reglamento Interno de Convivencia Escolar (RICE) y desarrollar 9 protocolos de actuación ante diversas situaciones de riesgo.','Conformar el Comité de Seguridad Escolar y adaptar el Plan Integral de Seguridad Escolar (PISE).','Implementar una Escuela para Padres enfocada en la educación digital y el manejo de dispositivos.','Diagnosticar el estado del RICE respecto a la regulación de dispositivos móviles y asesorar su modificación conforme a la Ley N° 21.801.','Diseñar los protocolos de custodia, excepciones, infracciones y comunicación con apoderados que exige la ley.','Capacitar a docentes, asistentes y equipo directivo en la aplicación de la normativa, incorporando el concepto de autonomía progresiva en educación media.'],
     actions:[['Actualización Plan de Convivencia, Sexualidad y Formación Ciudadana','Trabajo colaborativo con estamentos','Marzo – Junio'],['Construcción/actualización de PEI y Plan de Sellos','Reuniones presenciales con estamentos','Marzo – Junio'],['Actualización del RICE + 9 protocolos de actuación','Presencial con talleres roll play de validación','Marzo – Junio'],['Adaptación del PISE y conformación Comité de Seguridad','Presencial / Online','Abril – Junio'],['Escuela para Padres: talleres educación digital','Presencial (sesiones programadas)','Mayo – Noviembre'],['Diagnóstico del RICE y brecha respecto a la Ley 21.801','Presencial / Online (03 hrs)','Marzo – Abril'],['Diseño de protocolos de celulares (custodia, excepciones, infracciones)','Online con validación presencial','Abril – Mayo'],['Charla apoderados y capacitación docente: uso responsable del celular','Presencial (05 hrs totales)','Mayo'],['Seguimiento de la implementación de la Ley 21.801','Online / Presencial','Junio']],
-    
+    <!--ILR#8-->
     deliverables:['Documentos actualizados de los 3 planes de gestión y el PEI.','Compendio de 9 protocolos de actuación validados.','Reglamento Interno (RICE) adecuado a la normativa vigente.','Plan Integral de Seguridad Escolar (PISE) personalizado.','Material didáctico y guías prácticas para la Escuela para Padres.','Propuesta de modificación del RICE alineada a la Ley N° 21.801, con protocolos de custodia, excepciones e infracciones.','Material informativo para apoderados y estudiantes sobre el uso responsable del celular.','Material de capacitación para docentes y asistentes, con certificado de participación.']}
 };
 
@@ -2038,7 +2028,7 @@ function _doDownloadFullProgram(colegioName){
 
     // Costs table (se omite en la version publicada)
     if(!window.ILR_SIN_PRECIOS){
-      
+      <!--ILR#9-->
     }
   });
 
@@ -2052,7 +2042,7 @@ function _doDownloadFullProgram(colegioName){
       PL,TW,y,(cy,n)=>checkPage(cy,n));
     y+=4;
   } else {
-  
+  <!--ILR#10-->
   }
 
   // Signature block
@@ -5440,228 +5430,8 @@ function descargarConvivenciaPDF(colegioName){
 }
 </script>
 
-<!-- VISOR DE PRESENTACIONES -->
-<div class="pzv" id="pzv" role="dialog" aria-modal="true" aria-label="Visor de presentaciones">
-  <div class="pzv-bar">
-    <div class="pzv-ttl" id="pzvTtl"></div>
-    <div class="pzv-num" id="pzvNum"></div>
-    <button class="pzv-ico" id="pzvFilm" title="Miniaturas (T)" aria-label="Mostrar miniaturas">▦</button>
-    <button class="pzv-ico" id="pzvFull" title="Pantalla completa (F)" aria-label="Pantalla completa">⛶</button>
-    <button class="pzv-ico" id="pzvClose" title="Cerrar (Esc)" aria-label="Cerrar">✕</button>
-  </div>
-  <div class="pzv-stage" id="pzvStage">
-    <button class="pzv-side prev" id="pzvSidePrev" aria-label="Lámina anterior"></button>
-    <button class="pzv-side next" id="pzvSideNext" aria-label="Lámina siguiente"></button>
-    <button class="pzv-arrow prev" id="pzvPrev" aria-label="Lámina anterior">‹</button>
-    <img id="pzvImg" alt=""/>
-    <button class="pzv-arrow next" id="pzvNext" aria-label="Lámina siguiente">›</button>
-    <div class="pzv-hint" id="pzvHint">Use ← → para avanzar · F pantalla completa · Esc para salir</div>
-  </div>
-  <div class="pzv-film" id="pzvFilmstrip"></div>
-</div>
-
-<script>
-/* ═══════════════ PRESENTACIONES ═══════════════
-   El listado lo escribe PUBLICAR_PPT.bat entre las marcas de abajo.
-   No editar a mano salvo para corregir un título. */
-/* PRESENTACIONES:INICIO */
-window.ILR_PRESENTACIONES = [
-    {
-        "slug":  "ley-21719-colegio-chile-norte",
-        "titulo":  "Ley 21.719: alcance, multas y primeras medidas",
-        "descripcion":  "Sesion ejecutiva para el equipo directivo del Colegio Chile Norte: que alcanza la ley, a que multas queda expuesto el colegio y las primeras medidas a tomar.",
-        "etiqueta":  "Sesion ejecutiva",
-        "fecha":  "2026-11-16",
-        "laminas":  15,
-        "ext":  "jpg",
-        "tags":  [
-                     "Ley 21.719",
-                     "Proteccion de datos",
-                     "Multas",
-                     "Colegio Chile Norte"
-                 ],
-        "pptx":  "presentaciones/ley-21719-colegio-chile-norte/Ley_21719_Colegio_Chile_Norte.pptx",
-        "pdf":  "presentaciones/ley-21719-colegio-chile-norte/ley-21719-colegio-chile-norte.pdf"
-    }
-];
-/* PRESENTACIONES:FIN */
-
-(function(){
-  'use strict';
-  var pres = Array.isArray(window.ILR_PRESENTACIONES) ? window.ILR_PRESENTACIONES : [];
-  var idx = 0, lam = 1, total = 0, actual = null;
-
-  function esc(t){
-    return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-    });
-  }
-  /* El slug viene del nombre de archivo: se limita a lo que puede ser una carpeta */
-  function slugSeguro(x){ return String(x||'').replace(/[^A-Za-z0-9._-]/g,''); }
-  function ruta(p, n){
-    return 'presentaciones/' + slugSeguro(p.slug) + '/' +
-           String(n).padStart(2,'0') + '.' + slugSeguro(p.ext || 'jpg');
-  }
-
-  function tarjeta(p, i){
-    var chips = (p.tags||[]).map(function(t){ return '<span class="pz-chip">'+esc(t)+'</span>'; }).join('');
-    var descargas = '';
-    if(p.pptx) descargas += '<a class="pz-btn ghost" href="'+esc(p.pptx)+'" download>PPTX</a>';
-    if(p.pdf)  descargas += '<a class="pz-btn ghost" href="'+esc(p.pdf)+'" download>PDF</a>';
-    return '<div class="pz-card">'+
-      '<button class="pz-cover" data-abrir="'+i+'" aria-label="Abrir '+esc(p.titulo)+'">'+
-        '<img src="'+esc(ruta(p,1))+'" alt="Portada de '+esc(p.titulo)+'" loading="lazy"/>'+
-        '<span class="pz-play"><span>Ver presentación</span></span>'+
-        '<span class="pz-count">'+(p.laminas||0)+' láminas</span>'+
-      '</button>'+
-      '<div class="pz-body">'+
-        '<div class="pz-tag">'+esc(p.etiqueta || 'Presentación')+'</div>'+
-        '<div class="pz-title">'+esc(p.titulo)+'</div>'+
-        '<p class="pz-desc">'+esc(p.descripcion||'')+'</p>'+
-        '<div class="pz-chips">'+chips+'</div>'+
-        '<div class="pz-actions">'+
-          '<button class="pz-btn" data-abrir="'+i+'">Abrir →</button>'+descargas+
-        '</div>'+
-      '</div></div>';
-  }
-
-  function publicarHTML(){
-    return '<button class="pz-add" id="pzAdd">'+
-      '<span class="ic">⊕</span><b>Publicar una presentación</b>'+
-      '<span>Arrastre su archivo .pptx sobre <b>PUBLICAR_PPT.bat</b><br/>y aparecerá aquí al recargar</span></button>';
-  }
-
-  function pintar(){
-    var g = document.getElementById('pzGrid');
-    if(!g) return;
-    if(!pres.length){
-      g.innerHTML = '<div class="pz-empty"><h4>Aún no hay presentaciones publicadas</h4>'+
-        '<p>Arrastre cualquier archivo <b>.pptx</b> sobre <b>PUBLICAR_PPT.bat</b>, en esta misma carpeta. '+
-        'La presentación se convierte en láminas navegables y aparece aquí la próxima vez que abra la página.</p></div>';
-      return;
-    }
-    g.innerHTML = pres.map(tarjeta).join('') + publicarHTML();
-  }
-
-  /* ─── visor ─── */
-  var v, img, ttl, num, film, hint;
-  function cache(n){
-    if(n < 1 || n > total) return;
-    var i = new Image(); i.src = ruta(actual, n);
-  }
-  function mostrar(n){
-    lam = Math.min(Math.max(1, n), total);
-    img.src = ruta(actual, lam);
-    img.alt = 'Lámina ' + lam + ' de ' + total + ' — ' + (actual.titulo||'');
-    num.textContent = lam + ' / ' + total;
-    document.getElementById('pzvPrev').disabled = (lam === 1);
-    document.getElementById('pzvNext').disabled = (lam === total);
-    var sel = film.querySelector('button.sel'); if(sel) sel.classList.remove('sel');
-    var b = film.children[lam-1]; if(b){ b.classList.add('sel'); b.scrollIntoView({block:'nearest',inline:'center'}); }
-    cache(lam+1); cache(lam-1);
-  }
-  function abrir(i){
-    actual = pres[i]; if(!actual) return;
-    idx = i; total = Math.max(1, parseInt(actual.laminas,10) || 1);
-    ttl.textContent = actual.titulo || 'Presentación';
-    film.innerHTML = '';
-    for(var n=1; n<=total; n++){
-      var b = document.createElement('button');
-      b.type = 'button'; b.dataset.n = n; b.setAttribute('aria-label','Ir a la lámina '+n);
-      var t = document.createElement('img');
-      t.src = ruta(actual,n); t.loading = 'lazy'; t.alt = 'Lámina '+n;
-      b.appendChild(t); film.appendChild(b);
-    }
-    v.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    mostrar(1);
-    hint.style.opacity = '1';
-    setTimeout(function(){ hint.style.opacity = '0'; }, 3800);
-    ILRCuentaRegresiva.iniciar('ppt:' + (actual.slug || idx), document.getElementById('pzvStage'), ' ilr-cd--flot');
-    document.getElementById('pzvClose').focus();
-  }
-  function cerrar(){
-    v.classList.remove('open');
-    document.body.style.overflow = '';
-    if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function(){});
-    ILRCuentaRegresiva.detener();
-    img.src = ''; film.innerHTML = '';
-  }
-  function pantallaCompleta(){
-    if(document.fullscreenElement){
-      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
-    } else if(v.requestFullscreen){
-      v.requestFullscreen().catch(function(){});
-    }
-  }
-
-  function iniciar(){
-    pintar();
-    v    = document.getElementById('pzv');
-    img  = document.getElementById('pzvImg');
-    ttl  = document.getElementById('pzvTtl');
-    num  = document.getElementById('pzvNum');
-    film = document.getElementById('pzvFilmstrip');
-    hint = document.getElementById('pzvHint');
-    if(!v) return;
-
-    document.addEventListener('click', function(e){
-      var t = e.target.closest('[data-abrir]');
-      if(t){ abrir(parseInt(t.dataset.abrir,10)); return; }
-      if(e.target.closest('#pzAdd')){
-        alert('Para publicar una presentación:\n\n' +
-              '1. Deje el archivo .pptx donde quiera (por ejemplo, en su escritorio).\n' +
-              '2. Arrástrelo sobre PUBLICAR_PPT.bat, en la carpeta «Sitio Web Propio».\n' +
-              '3. Vuelva a abrir esta página: la presentación ya estará aquí.');
-      }
-    });
-
-    document.getElementById('pzvClose').addEventListener('click', cerrar);
-    document.getElementById('pzvFull').addEventListener('click', pantallaCompleta);
-    document.getElementById('pzvPrev').addEventListener('click', function(){ mostrar(lam-1); });
-    document.getElementById('pzvNext').addEventListener('click', function(){ mostrar(lam+1); });
-    document.getElementById('pzvSidePrev').addEventListener('click', function(){ mostrar(lam-1); });
-    document.getElementById('pzvSideNext').addEventListener('click', function(){ mostrar(lam+1); });
-    document.getElementById('pzvFilm').addEventListener('click', function(){
-      film.classList.toggle('open');
-      this.classList.toggle('on', film.classList.contains('open'));
-    });
-    film.addEventListener('click', function(e){
-      var b = e.target.closest('button[data-n]');
-      if(b) mostrar(parseInt(b.dataset.n,10));
-    });
-    document.addEventListener('fullscreenchange', function(){
-      document.getElementById('pzvFull').classList.toggle('on', !!document.fullscreenElement);
-    });
-
-    document.addEventListener('keydown', function(e){
-      if(!v.classList.contains('open')) return;
-      var k = e.key;
-      if(k === 'Escape'){ cerrar(); }
-      else if(k === 'ArrowRight' || k === 'PageDown' || k === ' '){ e.preventDefault(); mostrar(lam+1); }
-      else if(k === 'ArrowLeft'  || k === 'PageUp'){ e.preventDefault(); mostrar(lam-1); }
-      else if(k === 'Home'){ e.preventDefault(); mostrar(1); }
-      else if(k === 'End'){ e.preventDefault(); mostrar(total); }
-      else if(k === 'f' || k === 'F'){ e.preventDefault(); pantallaCompleta(); }
-      else if(k === 't' || k === 'T'){ e.preventDefault(); document.getElementById('pzvFilm').click(); }
-    });
-
-    var x0 = null;
-    document.getElementById('pzvStage').addEventListener('touchstart', function(e){
-      x0 = e.changedTouches[0].clientX;
-    }, {passive:true});
-    document.getElementById('pzvStage').addEventListener('touchend', function(e){
-      if(x0 === null) return;
-      var d = e.changedTouches[0].clientX - x0;
-      if(Math.abs(d) > 45) mostrar(lam + (d < 0 ? 1 : -1));
-      x0 = null;
-    }, {passive:true});
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
-  else iniciar();
-})();
-</script>
+<!--ILR#12-->
+<!--ILR#13-->
 
 </body>
 </html>
