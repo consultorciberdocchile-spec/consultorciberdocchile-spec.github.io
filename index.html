@@ -662,6 +662,31 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
 }
 @media print{.ilr-cd{display:none !important;}}
 
+/* Barra de la vista: volver y el momento actual */
+.ilr-barra{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin:0 0 22px;min-height:38px;}
+.ilr-atras{display:inline-flex;align-items:center;gap:8px;background:#fff;
+  border:1px solid #DDE2EE;border-radius:10px;padding:9px 17px;color:var(--navy);
+  font-family:'Source Sans 3',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;
+  transition:border-color .18s,color .18s,background .18s;}
+.ilr-atras:hover:not(:disabled){border-color:var(--gold);color:var(--gold-dark);background:#FFFCF4;}
+.ilr-atras:disabled{opacity:.42;cursor:default;}
+.ilr-atras svg{width:15px;height:15px;}
+.ilr-reloj{display:flex;flex-direction:column;align-items:flex-end;gap:1px;line-height:1.15;
+  font-variant-numeric:tabular-nums;user-select:none;}
+.ilr-reloj .hora{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;
+  color:var(--navy);letter-spacing:1px;}
+.ilr-reloj .fecha{font-size:11px;color:var(--gray);text-transform:capitalize;}
+/* Descarga individual desde la tarjeta de cada módulo */
+.card-descarga{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  margin-top:10px;background:#fff;border:1.5px solid var(--navy);border-radius:10px;padding:11px;
+  color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:background .18s,color .18s;}
+.card-descarga:hover{background:var(--navy);color:#fff;}
+.card-descarga svg{width:15px;height:15px;}
+
+
 .precios-cabecera{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;
   flex-wrap:wrap;margin-bottom:26px;}
 .precios-nota{font-size:14px;color:var(--gray);line-height:1.65;max-width:62ch;margin:0;}
@@ -675,15 +700,33 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
 /* ═══ Menú lateral de módulos ═══
    Solo aparece con sesión iniciada. Patrón de barra superior + navegación
    lateral, que es lo que un panel de trabajo debe parecer. */
-.ilr-nav{position:fixed;top:68px;left:0;bottom:0;width:272px;z-index:40;
+.ilr-nav{position:fixed;top:0;left:0;bottom:0;width:272px;z-index:60;
   background:#101D3A;border-right:1px solid rgba(255,255,255,.07);
-  overflow-y:auto;overscroll-behavior:contain;padding:18px 0 32px;display:none;}
-body.con-nav .ilr-nav{display:block;}
+  display:none;flex-direction:column;}
+body.con-nav .ilr-nav{display:flex;}
 body.con-nav .dash-body{margin-left:272px;max-width:none;padding-left:40px;padding-right:40px;}
-body.con-nav .dash-header{padding-left:20px;}
-.ilr-nav::-webkit-scrollbar{width:9px;}
-.ilr-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:5px;}
-.ilr-nav::-webkit-scrollbar-track{background:transparent;}
+body.con-nav .dash-header{margin-left:272px;padding-left:28px;}
+  /* La marca ya vive en el menú: en la cabecera sobraba. */
+  body.con-nav .dash-brand{display:none;}
+  body.con-nav .dash-header{justify-content:flex-end;gap:14px;}
+.ilr-nav-marca{display:flex;align-items:center;gap:12px;padding:16px 20px;
+  border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
+.ilr-nav-marca img{width:40px;height:40px;border-radius:11px;object-fit:contain;display:block;}
+.ilr-nav-marca .n1{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;
+  color:#fff;text-transform:uppercase;letter-spacing:.6px;line-height:1.15;}
+.ilr-nav-marca .n2{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.ilr-nav-lista{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:10px 0 18px;}
+.ilr-nav-pie{flex-shrink:0;border-top:1px solid rgba(255,255,255,.07);padding:14px 20px;}
+.ilr-salir{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  background:rgba(231,76,60,.14);border:1px solid rgba(231,76,60,.45);border-radius:10px;
+  padding:11px;color:#FF8A7A;font-family:'Barlow Condensed',sans-serif;font-size:14px;
+  font-weight:700;letter-spacing:1.4px;text-transform:uppercase;cursor:pointer;
+  transition:background .18s,color .18s,border-color .18s;}
+.ilr-salir:hover{background:#E74C3C;border-color:#E74C3C;color:#fff;}
+.ilr-salir svg{width:15px;height:15px;}
+.ilr-nav-lista::-webkit-scrollbar{width:9px;}
+.ilr-nav-lista::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:5px;}
+.ilr-nav-lista::-webkit-scrollbar-track{background:transparent;}
 .ilr-nav-rotulo{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:rgba(255,255,255,.34);padding:16px 24px 8px;}
 .ilr-nav-item{display:flex;align-items:center;gap:11px;width:100%;background:none;border:none;
@@ -726,11 +769,12 @@ body.con-nav .dash-header{padding-left:20px;}
 .ilr-bloque li{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:5px;}
 .ilr-descargas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
 @media(max-width:900px){
-  .ilr-nav{top:0;padding-top:76px;transform:translateX(-100%);transition:transform .22s ease;
+  .ilr-nav{transform:translateX(-100%);transition:transform .22s ease;
     box-shadow:6px 0 30px rgba(0,0,0,.4);}
-  body.con-nav .ilr-nav{display:block;}
   body.con-nav.nav-abierta .ilr-nav{transform:translateX(0);}
   body.con-nav .dash-body{margin-left:0;padding-left:18px;padding-right:18px;}
+  body.con-nav .dash-header{margin-left:0;padding-left:12px;}
+  .ilr-reloj{display:none;}
 }
 .ilr-nav-boton{display:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
   color:#fff;width:40px;height:40px;border-radius:10px;cursor:pointer;align-items:center;
@@ -987,6 +1031,7 @@ window.ILRCuentaRegresiva = (function(){
           <!-- PRICE TOGGLE -->
           <!--ILR#0-->
           <button class="btn-detail" onclick="openModal(1)">Ver Módulo Completo →</button>
+          <button class="card-descarga" onclick="downloadModulePDF(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Descargar este módulo</button>
         </div>
       </div>
 
@@ -1012,6 +1057,7 @@ window.ILRCuentaRegresiva = (function(){
           </div>
           <!--ILR#1-->
           <button class="btn-detail" onclick="openModal(2)">Ver Módulo Completo →</button>
+          <button class="card-descarga" onclick="downloadModulePDF(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Descargar este módulo</button>
         </div>
       </div>
 
@@ -1038,6 +1084,7 @@ window.ILRCuentaRegresiva = (function(){
           </div>
           <!--ILR#2-->
           <button class="btn-detail" onclick="openModal(3)">Ver Módulo Completo →</button>
+          <button class="card-descarga" onclick="downloadModulePDF(3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Descargar este módulo</button>
         </div>
       </div>
 
@@ -1066,6 +1113,7 @@ window.ILRCuentaRegresiva = (function(){
           </div>
           <!--ILR#3-->
           <button class="btn-detail" onclick="openModal(4)">Ver Detalle Completo</button>
+          <button class="card-descarga" onclick="downloadModulePDF(4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Descargar este módulo</button>
         </div>
       </div>
 
@@ -2226,6 +2274,15 @@ function _doDownloadFullProgram(colegioName){
 function ingresarDashboard() {
   document.getElementById('welcomeScreen').style.display = 'none';
   document.getElementById('dashboardScreen').style.display = 'block';
+  // El menú lateral pertenece al panel: antes de entrar no debe verse.
+  if (typeof window.ILRmontarNav === 'function') window.ILRmontarNav();
+}
+function salirDeLaAplicacion() {
+  document.body.classList.remove('con-nav', 'nav-abierta');
+  document.getElementById('dashboardScreen').style.display = 'none';
+  document.getElementById('welcomeScreen').style.display = 'flex';
+  window.scrollTo({ top: 0 });
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
 }
 window.doLogin = ingresarDashboard;
 </script>
@@ -5893,50 +5950,67 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   MENÚ LATERAL
-   Aparece solo con sesión. Cada módulo se despliega y se abre en el
-   panel principal. Quien entra aterriza en Precios, que es a lo que
-   viene. Sin sesión, la página se queda como estaba.
+   MENÚ LATERAL DEL PANEL
+   Se monta al entrar a la plataforma, nunca antes. Cada entrada
+   abre su contenido en el centro. Arriba de la vista, volver;
+   abajo, la hora. Al pie del menú, salir.
    ═══════════════════════════════════════════════════════════════ */
 (function(){
   var s = window.ILR_SESION;
   if (!s) return;
   var puede = function(p){ return (s.permisos || []).indexOf(p) >= 0; };
 
-  var SERVICIOS = [1,2,3,4];
-  var SUB = ['Descripción', 'Objetivos', 'Acciones y fechas', 'Entregables'];
+  var SERVICIOS = [1, 2, 3, 4];
+  var APARTADOS = [
+    ['Descripción',      'serv-descripcion'],
+    ['Objetivos',        'serv-objetivos'],
+    ['Acciones y fechas','serv-acciones'],
+    ['Entregables',      'serv-entregables']
+  ];
+  var historial = [];
   var actual = null;
 
   function esc(x){ return String(x == null ? '' : x).replace(/[&<>"']/g,
     function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
-  function vistas(){ return document.querySelectorAll('.ilr-vista'); }
-
+  // ── Navegación ────────────────────────────────────────────────────────────
   function marcar(clave){
     var items = document.querySelectorAll('.ilr-nav-item[data-vista]');
     for (var i = 0; i < items.length; i++)
       items[i].classList.toggle('activo', items[i].dataset.vista === clave);
   }
 
-  function irA(clave, suave){
-    var v = vistas();
+  function irA(clave, opciones){
+    opciones = opciones || {};
+    if (actual && actual !== clave && !opciones.volviendo) historial.push(actual);
+    var v = document.querySelectorAll('.ilr-vista');
     for (var i = 0; i < v.length; i++) v[i].classList.remove('visible');
     if (clave.indexOf('servicio-') === 0) {
       pintarServicio(parseInt(clave.split('-')[1], 10));
       document.getElementById('vista-servicio').classList.add('visible');
     } else {
       var d = document.getElementById('vista-' + clave);
-      if (d) d.classList.add('visible');
-      else { var ini = document.getElementById('vista-inicio'); if (ini) ini.classList.add('visible'); }
+      (d || document.getElementById('vista-inicio')).classList.add('visible');
     }
     actual = clave;
     marcar(clave);
     document.body.classList.remove('nav-abierta');
-    if (!suave) window.scrollTo({ top: 0, behavior: 'smooth' });
+    refrescarAtras();
+    if (!opciones.sinSubir) window.scrollTo({ top: 0, behavior: 'smooth' });
     try { history.replaceState(null, '', '#' + clave); } catch(e){}
   }
   window.ILRirA = irA;
 
+  function atras(){
+    if (!historial.length) return;
+    irA(historial.pop(), { volviendo: true });
+  }
+  function refrescarAtras(){
+    var b = document.getElementById('ilrAtras');
+    if (b) b.disabled = historial.length === 0;
+  }
+
+  // ── La vista de un módulo ─────────────────────────────────────────────────
   function pintarServicio(id){
     var m = (typeof modules !== 'undefined') && modules[id];
     var caja = document.getElementById('vista-servicio');
@@ -5946,7 +6020,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join('');
     var costos = '';
     if (puede('ver_precios') && m.costs) {
-      costos = '<div class="ilr-bloque"><h3>Valores</h3>' +
+      costos = '<div class="ilr-bloque" id="serv-valores"><h3>Valores</h3>' +
         '<table class="modal-table" style="margin-top:0;"><thead><tr><th>Componente</th><th>Descripción</th><th>Rango CLP</th></tr></thead><tbody>' +
         m.costs.map(function(c){
           return '<tr><td>' + esc(c[0]) + '</td><td>' + esc(c[1]) + '</td><td class="cost-cell">' + esc(c[2]) + '</td></tr>';
@@ -5972,30 +6046,47 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       costos;
   }
 
-  function item(clave, etiqueta, num){
+  // ── Piezas del menú ───────────────────────────────────────────────────────
+  function rotulo(txt){
+    var d = document.createElement('div');
+    d.className = 'ilr-nav-rotulo';
+    d.textContent = txt;
+    return d;
+  }
+  function item(clave, etiqueta){
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'ilr-nav-item';
     b.dataset.vista = clave;
-    b.innerHTML = (num ? '<span class="num">' + num + '</span>' : '') +
-                  '<span class="texto">' + esc(etiqueta) + '</span>';
+    b.innerHTML = '<span class="texto">' + esc(etiqueta) + '</span>';
     b.addEventListener('click', function(){ irA(clave); });
     return b;
   }
 
   function construir(){
-    if (document.getElementById('ilrNav')) return;
+    if (document.getElementById('ilrNav')) { document.body.classList.add('con-nav'); return; }
+
     var nav = document.createElement('nav');
     nav.className = 'ilr-nav';
     nav.id = 'ilrNav';
-    nav.setAttribute('aria-label', 'Secciones');
+    nav.setAttribute('aria-label', 'Secciones de la plataforma');
 
-    if (puede('ver_precios')) {
-      nav.appendChild(rotulo('Propuesta'));
-      nav.appendChild(item('precios', 'Precios y propuesta'));
-    }
+    // Marca, arriba del todo
+    var marca = document.createElement('div');
+    marca.className = 'ilr-nav-marca';
+    var logo = document.querySelector('.dash-brand img');
+    marca.innerHTML = (logo ? '<img src="' + logo.getAttribute('src') + '" alt="">' : '') +
+      '<div><div class="n1">ILR · Ciberseguridad</div><div class="n2">Educación</div></div>';
+    nav.appendChild(marca);
 
-    nav.appendChild(rotulo('Módulos del programa'));
+    var lista = document.createElement('div');
+    lista.className = 'ilr-nav-lista';
+
+    lista.appendChild(rotulo('Panel'));
+    lista.appendChild(item('inicio', 'Los cuatro módulos'));
+    if (puede('ver_precios')) lista.appendChild(item('precios', 'Precios y propuesta'));
+
+    lista.appendChild(rotulo('Módulos del programa'));
     SERVICIOS.forEach(function(id){
       var m = (typeof modules !== 'undefined') && modules[id];
       if (!m) return;
@@ -6009,69 +6100,117 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
         '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>';
       var sub = document.createElement('div');
       sub.className = 'ilr-sub';
-      SUB.forEach(function(nombre, i){
+      var entradas = APARTADOS.slice();
+      if (puede('ver_precios')) entradas.push(['Valores', 'serv-valores']);
+      entradas.forEach(function(par){
         var a = document.createElement('a');
         a.href = 'javascript:void 0';
-        a.textContent = nombre;
+        a.textContent = par[0];
         a.addEventListener('click', function(e){
           e.preventDefault();
-          irA('servicio-' + id, true);
-          var destino = document.getElementById(['serv-descripcion','serv-objetivos','serv-acciones','serv-entregables'][i]);
-          if (destino) destino.scrollIntoView({ behavior:'smooth', block:'start' });
+          irA('servicio-' + id, { sinSubir: true });
+          var destino = document.getElementById(par[1]);
+          if (destino) destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
         sub.appendChild(a);
       });
-      if (puede('ver_precios')) {
-        var av = document.createElement('a');
-        av.href = 'javascript:void 0';
-        av.textContent = 'Valores';
-        av.addEventListener('click', function(e){
-          e.preventDefault(); irA('servicio-' + id, true);
-          var c = document.querySelector('#vista-servicio .ilr-bloque:last-child');
-          if (c) c.scrollIntoView({ behavior:'smooth', block:'start' });
-        });
-        sub.appendChild(av);
-      }
       fila.addEventListener('click', function(){
         var abierto = sub.classList.toggle('abierto');
         fila.setAttribute('aria-expanded', abierto ? 'true' : 'false');
         irA('servicio-' + id);
       });
-      nav.appendChild(fila);
-      nav.appendChild(sub);
+      lista.appendChild(fila);
+      lista.appendChild(sub);
     });
 
-    nav.appendChild(document.createElement('div')).className = 'ilr-nav-sep';
-    nav.appendChild(rotulo('Material'));
-    nav.appendChild(item('apoyo', 'Material de apoyo'));
-    if (puede('ver_presentaciones')) nav.appendChild(item('presentaciones', 'Presentaciones'));
-    nav.appendChild(item('inicio', 'Vista general'));
+    var sep = document.createElement('div');
+    sep.className = 'ilr-nav-sep';
+    lista.appendChild(sep);
+    lista.appendChild(rotulo('Material'));
+    lista.appendChild(item('apoyo', 'Material de apoyo'));
+    if (puede('ver_presentaciones')) lista.appendChild(item('presentaciones', 'Presentaciones'));
+    nav.appendChild(lista);
 
+    // Salir, al pie
+    var pie = document.createElement('div');
+    pie.className = 'ilr-nav-pie';
+    var salir = document.createElement('button');
+    salir.type = 'button';
+    salir.className = 'ilr-salir';
+    salir.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true">' +
+      '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Salir';
+    salir.addEventListener('click', async function(){
+      salir.disabled = true;
+      try { await fetch('/api/salir', { method:'POST', credentials:'same-origin' }); } catch(e){}
+      if (typeof salirDeLaAplicacion === 'function') salirDeLaAplicacion();
+      location.reload();
+    });
+    pie.appendChild(salir);
+    nav.appendChild(pie);
     document.body.appendChild(nav);
-    document.body.classList.add('con-nav');
 
+    // Barra de la vista: volver arriba, hora abajo
+    var cuerpo = document.querySelector('.dash-body');
+    if (cuerpo) {
+      var barra = document.createElement('div');
+      barra.className = 'ilr-barra';
+      barra.innerHTML = '<div></div><button type="button" class="ilr-atras" id="ilrAtras" disabled>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Atrás</button>';
+      cuerpo.insertBefore(barra, cuerpo.firstChild);
+      barra.querySelector('#ilrAtras').addEventListener('click', atras);
+
+      var reloj = document.createElement('div');
+      reloj.className = 'ilr-barra';
+      reloj.style.marginTop = '34px';
+      reloj.innerHTML = '<div></div><div class="ilr-reloj" id="ilrReloj"><div class="hora">--:--</div><div class="fecha"></div></div>';
+      cuerpo.appendChild(reloj);
+      marchaDelReloj();
+    }
+
+    // Botón del menú en pantalla angosta
     var boton = document.createElement('button');
     boton.className = 'ilr-nav-boton';
     boton.setAttribute('aria-label', 'Abrir el menú');
     boton.innerHTML = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M3 6h18M3 12h18M3 18h18"/></svg>';
     boton.addEventListener('click', function(){ document.body.classList.toggle('nav-abierta'); });
-    var marca = document.querySelector('.dash-brand');
-    if (marca && marca.parentNode) marca.parentNode.insertBefore(boton, marca);
+    var m2 = document.querySelector('.dash-brand');
+    if (m2 && m2.parentNode) m2.parentNode.insertBefore(boton, m2);
+
+    document.body.classList.add('con-nav');
 
     var inicial = (location.hash || '').replace('#','');
     var valida = inicial && (document.getElementById('vista-' + inicial) || inicial.indexOf('servicio-') === 0);
-    irA(valida ? inicial : (puede('ver_precios') ? 'precios' : 'inicio'), true);
+    historial = [];
+    irA(valida ? inicial : 'inicio', { sinSubir: true });
+    historial = [];
+    refrescarAtras();
+  }
+  window.ILRmontarNav = construir;
+
+  function marchaDelReloj(){
+    var DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio',
+                 'agosto','septiembre','octubre','noviembre','diciembre'];
+    function pinta(){
+      var r = document.getElementById('ilrReloj');
+      if (!r) return;
+      var d = new Date();
+      var dd = function(n){ return (n < 10 ? '0' : '') + n; };
+      r.querySelector('.hora').textContent = dd(d.getHours()) + ':' + dd(d.getMinutes()) + ':' + dd(d.getSeconds());
+      r.querySelector('.fecha').textContent =
+        DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()] + ' de ' + d.getFullYear();
+    }
+    pinta();
+    setInterval(pinta, 1000);
   }
 
-  function rotulo(txt){
-    var d = document.createElement('div');
-    d.className = 'ilr-nav-rotulo';
-    d.textContent = txt;
-    return d;
+  // Si ya se está dentro del panel (por ejemplo tras recargar), montar ya.
+  function quizaMontar(){
+    var panel = document.getElementById('dashboardScreen');
+    if (panel && getComputedStyle(panel).display !== 'none') construir();
   }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', construir);
-  else construir();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', quizaMontar);
+  else quizaMontar();
 })();
 </script>
 
