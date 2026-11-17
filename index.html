@@ -662,6 +662,42 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
 }
 @media print{.ilr-cd{display:none !important;}}
 
+/* Panel de usuarios */
+.usr-alta{background:#fff;border-radius:16px;padding:24px 26px;margin-bottom:22px;
+  box-shadow:0 2px 14px rgba(31,78,121,.07);}
+.usr-rejilla{display:grid;grid-template-columns:1.4fr 1fr .8fr auto;gap:14px;align-items:end;}
+@media(max-width:860px){.usr-rejilla{grid-template-columns:1fr;}}
+.usr-campo label{display:block;font-size:11px;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.usr-campo input,.usr-campo select{width:100%;padding:11px 13px;border:2px solid #DDE2EE;
+  border-radius:10px;font-size:14.5px;font-family:'Source Sans 3',sans-serif;color:var(--text);
+  background:#FAFBFD;outline:none;box-sizing:border-box;transition:border-color .18s;}
+.usr-campo input:focus,.usr-campo select:focus{border-color:var(--gold);background:#fff;}
+.usr-tabla{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:0 2px 14px rgba(31,78,121,.07);}
+.usr-tabla th{background:var(--navy);color:#fff;text-align:left;padding:11px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:12.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;}
+.usr-tabla td{padding:12px 14px;border-bottom:1px solid #EDF0F6;font-size:13.5px;vertical-align:middle;}
+.usr-tabla tr:last-child td{border-bottom:none;}
+.usr-marca{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;
+  padding:3px 10px;border-radius:20px;}
+.usr-si{background:#E8F6EE;color:#1E8449;}
+.usr-no{background:#FDECEA;color:#A93226;}
+.usr-pend{background:#FEF5E0;color:#9A6B00;}
+.usr-acciones{display:flex;gap:7px;flex-wrap:wrap;}
+.usr-mini{background:#F0F2F8;border:1px solid #D7DDEA;border-radius:8px;padding:6px 11px;
+  font-size:12px;color:var(--navy);cursor:pointer;transition:background .15s,border-color .15s;}
+.usr-mini:hover{background:var(--navy);border-color:var(--navy);color:#fff;}
+.usr-aviso{border-radius:12px;padding:14px 17px;font-size:13.5px;line-height:1.65;margin-bottom:18px;}
+.usr-aviso.ok{background:#E8F6EE;border:1px solid #A9DFBF;color:#1D6F42;}
+.usr-aviso.ojo{background:#FEF5E0;border:1px solid #F5D98B;color:#7A5600;}
+.usr-aviso.mal{background:#FDECEA;border:1px solid #F5B7B1;color:#A93226;}
+.usr-codigo{font-family:Consolas,Menlo,monospace;font-size:18px;font-weight:700;letter-spacing:2px;
+  background:#fff;border:1px dashed #C3CAD9;border-radius:9px;padding:10px 14px;display:inline-block;
+  margin-top:8px;color:var(--navy);user-select:all;}
+
+
 /* Barra de la vista: volver y el momento actual */
 .ilr-barra{display:flex;align-items:center;justify-content:space-between;gap:16px;
   margin:0 0 22px;min-height:38px;}
@@ -1193,6 +1229,7 @@ window.ILRCuentaRegresiva = (function(){
     <!--ILR#4-->
     </div><!-- /vista-precios -->
     <div class="ilr-vista" id="vista-servicio"></div>
+    <div class="ilr-vista" id="vista-usuarios"></div>
   </div><!-- /dash-body -->
 </div>
 
@@ -5741,12 +5778,12 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     tit.textContent = 'Acceso';
     bajada.textContent = 'Los precios y las presentaciones solo se ven desde una cuenta autorizada.';
     cuerpo.innerHTML =
-      '<div class="acc-campo"><label for="accUsuario">Usuario</label>' +
+      '<div class="acc-campo"><label for="accUsuario">Usuario o correo</label>' +
       '<input id="accUsuario" autocomplete="username" spellcheck="false" value="' + esc(usuarioRecordado) + '"></div>' +
       '<div class="acc-campo"><label for="accClave">Contraseña</label>' +
       '<input id="accClave" type="password" autocomplete="current-password"></div>' +
       '<button class="acc-btn" id="accEnviar">Entrar</button>' +
-      '<button class="acc-link" id="accPrimera">Es mi primer acceso y tengo un código de activación</button>';
+      '<button class="acc-link" id="accPrimera">Es mi primer acceso y tengo un código</button>';
     var u = document.getElementById('accUsuario'), c = document.getElementById('accClave');
     var enviar = async function(){
       var b = document.getElementById('accEnviar');
@@ -5772,13 +5809,14 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
   // Paso: código de activación (primer acceso)
   pasos.activacion = function(){
     tit.textContent = 'Primer acceso';
-    bajada.textContent = 'Escriba el código de activación que se generó al crear la cuenta. Se usa una sola vez.';
+    bajada.textContent = 'Escriba su correo y el código de 16 caracteres que le llegó. El código se usa una sola vez.';
     cuerpo.innerHTML =
-      '<div class="acc-campo"><label for="accUsuario2">Usuario</label>' +
-      '<input id="accUsuario2" spellcheck="false" value="' + esc(usuarioRecordado) + '"></div>' +
+      '<div class="acc-campo"><label for="accUsuario2">Correo electrónico</label>' +
+      '<input id="accUsuario2" type="email" autocomplete="email" spellcheck="false" placeholder="nombre@colegio.cl" value="' + esc(usuarioRecordado) + '"></div>' +
       '<div class="acc-campo"><label for="accCodigoAct">Código de activación</label>' +
       '<input id="accCodigoAct" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" style="letter-spacing:2px;text-transform:uppercase;"></div>' +
       '<button class="acc-btn" id="accEnviar">Continuar</button>' +
+      '<button class="acc-link" id="accManual">Descargar el manual paso a paso (PDF)</button>' +
       '<button class="acc-link" id="accVolver">Volver</button>';
     var enviar = async function(){
       var b = document.getElementById('accEnviar');
@@ -5798,6 +5836,9 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     document.getElementById('accEnviar').addEventListener('click', enviar);
     document.getElementById('accCodigoAct').addEventListener('keydown', function(e){ if(e.key==='Enter') enviar(); });
     document.getElementById('accVolver').addEventListener('click', function(){ ir('acceder'); });
+    document.getElementById('accManual').addEventListener('click', function(){
+      if (typeof descargarManualAcceso === 'function') descargarManualAcceso();
+    });
     document.getElementById(usuarioRecordado ? 'accCodigoAct' : 'accUsuario2').focus();
   };
 
@@ -5991,6 +6032,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     } else {
       var d = document.getElementById('vista-' + clave);
       (d || document.getElementById('vista-inicio')).classList.add('visible');
+      if (clave === 'usuarios' && typeof window.ILRusuarios === 'function') window.ILRusuarios();
     }
     actual = clave;
     marcar(clave);
@@ -6129,6 +6171,13 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     lista.appendChild(rotulo('Material'));
     lista.appendChild(item('apoyo', 'Material de apoyo'));
     if (puede('ver_presentaciones')) lista.appendChild(item('presentaciones', 'Presentaciones'));
+    if (puede('gestionar_usuarios')) {
+      var sep2 = document.createElement('div');
+      sep2.className = 'ilr-nav-sep';
+      lista.appendChild(sep2);
+      lista.appendChild(rotulo('Administración'));
+      lista.appendChild(item('usuarios', 'Usuarios y accesos'));
+    }
     nav.appendChild(lista);
 
     // Salir, al pie
@@ -6212,6 +6261,270 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', quizaMontar);
   else quizaMontar();
 })();
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   USUARIOS (solo administración) y MANUAL DE ACCESO
+   El alta es por invitación: se escribe el correo de la persona y
+   el sistema le manda su código de 16 caracteres. Si el envío de
+   correo no está configurado, el código se muestra aquí para
+   pasarlo a mano, y se avisa de ello.
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  var s = window.ILR_SESION;
+  if (!s || (s.permisos || []).indexOf('gestionar_usuarios') < 0) return;
+
+  function esc(x){ return String(x == null ? '' : x).replace(/[&<>"']/g,
+    function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  async function api(ruta, datos){
+    var r = await fetch('/api/' + ruta, {
+      method: datos ? 'POST' : 'GET',
+      headers: {'Content-Type':'application/json'},
+      credentials: 'same-origin',
+      body: datos ? JSON.stringify(datos) : undefined
+    });
+    var j = {}; try { j = await r.json(); } catch(e){}
+    if (!r.ok) throw new Error(j.error || 'No se pudo completar la operación.');
+    return j;
+  }
+
+  var caja, estado = { usuarios: [], roles: [], correoListo: false }, aviso = '';
+
+  function fecha(x){
+    if (!x) return '—';
+    var d = new Date(x.replace(' ', 'T') + (x.indexOf('Z') < 0 && x.indexOf('+') < 0 ? 'Z' : ''));
+    if (isNaN(d)) return esc(x).slice(0, 16);
+    var dd = function(n){ return (n < 10 ? '0' : '') + n; };
+    return dd(d.getDate()) + '/' + dd(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + dd(d.getHours()) + ':' + dd(d.getMinutes());
+  }
+
+  function pintar(){
+    if (!caja) return;
+    var filas = estado.usuarios.map(function(u){
+      var estadoCuenta = !u.activo
+        ? '<span class="usr-marca usr-no">Desactivada</span>'
+        : (!u.tiene_clave ? '<span class="usr-marca usr-pend">Invitada</span>'
+                          : (u.mfa_activo ? '<span class="usr-marca usr-si">Activa</span>'
+                                          : '<span class="usr-marca usr-pend">Sin MFA</span>'));
+      var acciones = '';
+      if (u.usuario !== s.usuario) {
+        if (!u.tiene_clave) acciones += '<button class="usr-mini" data-accion="reinvitar" data-u="' + esc(u.usuario) + '">Reenviar código</button>';
+        else acciones += '<button class="usr-mini" data-accion="reiniciar" data-u="' + esc(u.usuario) + '">Reiniciar acceso</button>';
+        acciones += '<button class="usr-mini" data-accion="estado" data-u="' + esc(u.usuario) + '" data-activo="' + (u.activo ? '0' : '1') + '">' +
+                    (u.activo ? 'Desactivar' : 'Reactivar') + '</button>';
+      } else {
+        acciones = '<span style="color:var(--gray);font-size:12px;">Su cuenta</span>';
+      }
+      return '<tr><td><strong>' + esc(u.usuario) + '</strong>' +
+             (u.nombre ? '<div style="color:var(--gray);font-size:12.5px;">' + esc(u.nombre) + '</div>' : '') +
+             '</td><td>' + esc(u.rol) + '</td><td>' + estadoCuenta + '</td><td>' + fecha(u.ultimo_acceso) +
+             '</td><td><div class="usr-acciones">' + acciones + '</div></td></tr>';
+    }).join('');
+
+    // Admin al final y nunca preseleccionado: dar permisos de más por
+    // descuido es más caro que quedarse corto.
+    var ordenados = estado.roles.slice().sort(function(a, b){
+      if (a.nombre === 'admin') return 1;
+      if (b.nombre === 'admin') return -1;
+      return a.nombre === 'comercial' ? -1 : (b.nombre === 'comercial' ? 1 : 0);
+    });
+    var opciones = ordenados.map(function(r){
+      return '<option value="' + esc(r.nombre) + '">' + esc(r.nombre) + ' — ' + esc(r.descripcion) + '</option>';
+    }).join('');
+
+    caja.innerHTML =
+      '<div class="ilr-vista-top"><div class="ilr-vista-num">' +
+      '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">' +
+      '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>' +
+      '<path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>' +
+      '<div><div class="ilr-vista-tag">Administración</div>' +
+      '<div class="ilr-vista-tit">Usuarios y accesos</div></div></div>' +
+      (estado.correoListo ? '' :
+        '<div class="usr-aviso ojo"><strong>El envío de correo no está configurado todavía.</strong> ' +
+        'Puede dar de alta a quien quiera, pero el código no saldrá por correo: aparecerá aquí para que ' +
+        'usted se lo pase. Para que se envíe solo, hay que añadir la clave del servicio de correo.</div>') +
+      aviso +
+      '<div class="usr-alta">' +
+        '<h3 style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:var(--navy);' +
+        'text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;">Invitar a alguien</h3>' +
+        '<div class="usr-rejilla">' +
+          '<div class="usr-campo"><label for="usrCorreo">Correo electrónico (será su usuario)</label>' +
+          '<input id="usrCorreo" type="email" placeholder="director@colegio.cl" spellcheck="false"></div>' +
+          '<div class="usr-campo"><label for="usrNombre">Nombre</label>' +
+          '<input id="usrNombre" placeholder="Nombre y apellido"></div>' +
+          '<div class="usr-campo"><label for="usrRol">Perfil</label><select id="usrRol">' + opciones + '</select></div>' +
+          '<div class="usr-campo"><button class="btn-detail" style="width:auto;padding:12px 22px;" id="usrCrear">Invitar</button></div>' +
+        '</div>' +
+      '</div>' +
+      '<table class="usr-tabla"><thead><tr><th>Cuenta</th><th>Perfil</th><th>Estado</th><th>Último acceso</th><th></th></tr></thead>' +
+      '<tbody>' + (filas || '<tr><td colspan="5" style="color:var(--gray);">Todavía no hay más cuentas.</td></tr>') + '</tbody></table>' +
+      '<p style="font-size:13px;color:var(--gray);margin-top:16px;line-height:1.7;">' +
+      'Cada invitación lleva un código de 16 caracteres que sirve <strong>una sola vez</strong>. ' +
+      'Quien lo reciba crea su contraseña y vincula Google Authenticator; hasta entonces no entra. ' +
+      '<button class="usr-mini" id="usrManual" style="margin-left:6px;">Descargar el manual para enviarlo</button></p>';
+
+    var crear = document.getElementById('usrCrear');
+    if (crear) crear.addEventListener('click', invitar);
+    var man = document.getElementById('usrManual');
+    if (man) man.addEventListener('click', function(){
+      if (typeof descargarManualAcceso === 'function') descargarManualAcceso();
+    });
+    caja.querySelectorAll('.usr-mini[data-accion]').forEach(function(b){
+      b.addEventListener('click', function(){ accionar(b.dataset.accion, b.dataset.u, b.dataset.activo); });
+    });
+  }
+
+  function contarCodigo(r, verbo){
+    if (r.correo && r.correo.enviado) {
+      aviso = '<div class="usr-aviso ok"><strong>Listo.</strong> El código se envió a ' + esc(r.creado || r.reiniciado) + '.</div>';
+    } else {
+      var porque = r.correo && r.correo.motivo === 'sin_configurar'
+        ? 'el envío de correo no está configurado'
+        : 'el servicio de correo lo rechazó';
+      aviso = '<div class="usr-aviso ojo"><strong>Cuenta ' + verbo + ', pero el correo no salió</strong> porque ' + porque +
+        '. Páselo usted:<div class="usr-codigo">' + esc(r.codigo) + '</div>' +
+        '<div style="margin-top:6px;font-size:12.5px;">Este código no se vuelve a mostrar.</div></div>';
+    }
+  }
+
+  async function invitar(){
+    var correo = (document.getElementById('usrCorreo').value || '').trim();
+    var nombre = (document.getElementById('usrNombre').value || '').trim();
+    var rol = document.getElementById('usrRol').value;
+    var b = document.getElementById('usrCrear');
+    b.disabled = true; b.textContent = 'Invitando…';
+    try {
+      var r = await api('usuarios', { accion:'crear', usuario: correo, nombre: nombre, rol: rol });
+      contarCodigo(r, 'creada');
+      await cargar();
+    } catch(e){
+      aviso = '<div class="usr-aviso mal">' + esc(e.message) + '</div>';
+      pintar();
+    }
+  }
+
+  async function accionar(accion, usuario, activo){
+    try {
+      if (accion === 'estado') {
+        await api('usuarios', { accion:'estado', usuario: usuario, activo: activo === '1' });
+        aviso = '';
+      } else {
+        var r = await api('usuarios', { accion: accion, usuario: usuario });
+        contarCodigo(r, accion === 'reinvitar' ? 'reinvitada' : 'reiniciada');
+      }
+      await cargar();
+    } catch(e){
+      aviso = '<div class="usr-aviso mal">' + esc(e.message) + '</div>';
+      pintar();
+    }
+  }
+
+  async function cargar(){
+    try {
+      var r = await api('usuarios');
+      estado = { usuarios: r.usuarios || [], roles: r.roles || [], correoListo: !!r.correoListo };
+    } catch(e){
+      aviso = '<div class="usr-aviso mal">' + esc(e.message) + '</div>';
+    }
+    pintar();
+  }
+
+  window.ILRusuarios = function(){
+    caja = document.getElementById('vista-usuarios');
+    if (!caja) return;
+    if (!estado.usuarios.length) { caja.innerHTML = '<div class="ilr-bloque"><p>Cargando…</p></div>'; cargar(); }
+    else pintar();
+  };
+})();
+
+/* ── Manual de acceso en PDF ─────────────────────────────────────────────── */
+function descargarManualAcceso(){
+  if (!window.jspdf || !window.jspdf.jsPDF) { alert('No se pudo preparar el PDF.'); return; }
+  var doc = new window.jspdf.jsPDF({ unit:'pt', format:'a4' });
+  var A = doc.internal.pageSize.getWidth(), M = 56, y = 0;
+  var NAVY = [16,29,58], ORO = [232,168,0], GRIS = [122,131,152];
+
+  doc.setFillColor.apply(doc, NAVY); doc.rect(0, 0, A, 118, 'F');
+  doc.setFillColor.apply(doc, ORO); doc.rect(M, 44, 5, 34, 'F');
+  doc.setTextColor.apply(doc, ORO); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  doc.text('ILR · CIBERSEGURIDAD EN EDUCACIÓN', M + 16, 56);
+  doc.setTextColor(255,255,255); doc.setFontSize(19);
+  doc.text('Cómo entrar a la plataforma', M + 16, 76);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(200,208,225);
+  doc.text('Guía paso a paso para su primer acceso', M + 16, 94);
+  y = 150;
+
+  function parrafo(txt, tam, negrita, color){
+    doc.setFont('helvetica', negrita ? 'bold' : 'normal');
+    doc.setFontSize(tam || 11);
+    doc.setTextColor.apply(doc, color || [44,51,69]);
+    var lineas = doc.splitTextToSize(txt, A - M * 2);
+    for (var i = 0; i < lineas.length; i++){
+      if (y > 770) { doc.addPage(); y = 70; }
+      doc.text(lineas[i], M, y); y += (tam || 11) * 1.5;
+    }
+  }
+  function titulo(txt){
+    y += 12;
+    if (y > 740) { doc.addPage(); y = 70; }
+    doc.setFillColor.apply(doc, ORO); doc.rect(M, y - 11, 3, 15, 'F');
+    parrafo('   ' + txt, 13, true, NAVY);
+    y += 4;
+  }
+  function paso(n, txt){
+    if (y > 740) { doc.addPage(); y = 70; }
+    doc.setFillColor.apply(doc, NAVY); doc.circle(M + 8, y - 4, 9, 'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(10);
+    doc.text(String(n), M + 8, y - 1, { align:'center' });
+    doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(44,51,69);
+    var lineas = doc.splitTextToSize(txt, A - M * 2 - 30);
+    for (var i = 0; i < lineas.length; i++){
+      if (y > 770) { doc.addPage(); y = 70; }
+      doc.text(lineas[i], M + 30, y); y += 16;
+    }
+    y += 9;
+  }
+
+  parrafo('Ha recibido una invitación para entrar a la plataforma de la consultoría. ' +
+          'El acceso pide tres cosas: su correo, una contraseña que usted crea, y un código ' +
+          'que cambia cada 30 segundos en su teléfono. Esta guía le lleva por los tres.', 11);
+  titulo('Antes de empezar');
+  parrafo('Tenga a mano su teléfono con la aplicación Google Authenticator instalada. ' +
+          'Es gratuita y está en App Store y en Google Play. El último paso no se puede dejar para después.', 11);
+  titulo('Su primer acceso');
+  paso(1, 'Abra la plataforma y pulse «Ingresar a la Plataforma».');
+  paso(2, 'Arriba a la derecha, pulse «Acceder».');
+  paso(3, 'Pulse «Es mi primer acceso y tengo un código».');
+  paso(4, 'Escriba su correo electrónico (ese es su usuario) y el código de 16 caracteres que recibió. Sirve una sola vez.');
+  paso(5, 'Cree su contraseña. Tiene que cumplir las cinco reglas a la vez: al menos 8 caracteres, una minúscula, una MAYÚSCULA, un número y un carácter especial (por ejemplo ! @ # $). Las verá ponerse en verde según las cumple; el botón no se enciende hasta que están todas.');
+  paso(6, 'Aparecerá un código QR. Abra Google Authenticator, pulse «+» y elija «Escanear un código QR». Apunte al código. Si la cámara no coopera, debajo del QR está la clave para escribirla a mano con la opción «Introducir clave de configuración».');
+  paso(7, 'Escriba en la web los 6 dígitos que muestra la aplicación. Entrará directamente.');
+  titulo('Las veces siguientes');
+  parrafo('Correo, contraseña y los 6 dígitos del momento. La aplicación los renueva cada 30 segundos; ' +
+          'si uno no entra, espere al siguiente.', 11);
+  titulo('Si algo va mal');
+  parrafo('• Cinco intentos fallidos bloquean la cuenta durante 15 minutos. No es avería: espere y vuelva.\n' +
+          '• Si pierde el teléfono o el código de invitación, pida al administrador que reinicie su acceso. ' +
+          'Recibirá un código nuevo y volverá a empezar por el paso 3.\n' +
+          '• El código de invitación caduca al usarlo. Si ya creó su contraseña, no lo necesita nunca más.', 11);
+  titulo('Por qué se pide el segundo factor');
+  parrafo('Porque una contraseña sola se puede adivinar, reutilizar o filtrar. El código del teléfono ' +
+          'cambia cada 30 segundos y no viaja por correo ni por mensaje, así que no se puede interceptar. ' +
+          'Es la diferencia entre una puerta con llave y una puerta con llave y alarma.', 11);
+
+  var paginas = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= paginas; p++){
+    doc.setPage(p);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, GRIS);
+    doc.text('ILR · Ciberseguridad en Educación  ·  consultorciberdocchile@gmail.com  ·  +569 3245 8664',
+             M, 812);
+    doc.text(p + ' / ' + paginas, A - M, 812, { align:'right' });
+  }
+  doc.save('ILR_Como_entrar_a_la_plataforma.pdf');
+}
 </script>
 
 </body>
