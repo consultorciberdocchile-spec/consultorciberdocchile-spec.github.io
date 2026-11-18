@@ -707,6 +707,7 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
 .pzv-caido p{font-size:15px;color:rgba(255,255,255,.72);max-width:46ch;line-height:1.6;}
 .pz-bajar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;
   padding-top:10px;border-top:1px solid rgba(10,18,34,.09);}
+.pz-anadir{cursor:pointer;border-style:dashed;}
 .pz-bajar>span{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;
   letter-spacing:1.4px;text-transform:uppercase;color:rgba(10,18,34,.5);}
 .pz-subir textarea{width:100%;border:1px solid rgba(10,18,34,.16);border-radius:9px;
@@ -6865,6 +6866,20 @@ function descargarManualAcceso(){
     } catch (e) { location.reload(); }
   }
 
+  /* ── Añadir el .pptx a una presentación que ya está publicada ──────────── */
+  /* Sin esto habría que volver a publicarla entera solo por adjuntar el
+     original, que es lo único que faltaba. */
+  async function subirPptx(slug, titulo, archivo){
+    try {
+      aviso('trabajando', 'Guardando el .pptx de \u00ab' + esc(titulo) + '\u00bb\u2026');
+      await api('archivo?slug=' + encodeURIComponent(slug) + '&clase=pptx&nombre=' +
+                encodeURIComponent(archivo.name), { method: 'POST', body: archivo });
+      aviso('bien', '<b>Listo:</b> \u00ab' + esc(titulo) +
+            '\u00bb ya se puede descargar tambi\u00e9n en .pptx.');
+      await refrescar();
+    } catch (e) { aviso('mal', esc(e.message)); }
+  }
+
   /* ── Eliminar ──────────────────────────────────────────────────────────── */
   async function eliminar(slug, titulo){
     try {
@@ -6924,6 +6939,32 @@ function descargarManualAcceso(){
         b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
         b.addEventListener('click', function(ev){ ev.stopPropagation(); pedirConfirmacion(card, p.slug, p.titulo); });
         card.appendChild(b);
+
+        // A la que le falta el original, se le ofrece adjuntarlo aquí mismo.
+        if (!p.pptx) {
+          var fila = card.querySelector('.pz-bajar');
+          if (!fila) {
+            fila = document.createElement('div');
+            fila.className = 'pz-bajar';
+            fila.innerHTML = '<span>Descargar en</span>';
+            (card.querySelector('.pz-body') || card).appendChild(fila);
+          }
+          if (!fila.querySelector('.pz-anadir')) {
+            var lbl = document.createElement('label');
+            lbl.className = 'pz-btn ghost pz-anadir';
+            lbl.title = 'A\u00f1adir el .pptx para que se pueda descargar';
+            lbl.textContent = '+ .PPTX';
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.accept = '.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation';
+            inp.style.display = 'none';
+            inp.addEventListener('change', function(){
+              if (inp.files[0]) subirPptx(p.slug, p.titulo, inp.files[0]);
+            });
+            lbl.appendChild(inp);
+            fila.appendChild(lbl);
+          }
+        }
       });
 
       // Y la caja para subir la siguiente, siempre al final
