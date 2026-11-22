@@ -1001,6 +1001,11 @@ body.con-nav .ilr-nav-boton{display:none;}
   border:none;border-radius:10px;color:var(--navy-dark);font-family:'Barlow Condensed',sans-serif;
   font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:6px;}
 .acc-btn:disabled{opacity:.55;cursor:default;}
+.acc-consiente{display:flex;gap:10px;align-items:flex-start;margin:4px 0 16px;cursor:pointer;
+  font-size:12px;line-height:1.55;color:var(--gray);}
+.acc-consiente input{width:16px;height:16px;margin:2px 0 0;flex:0 0 auto;accent-color:var(--gold);}
+.acc-nota{font-size:13.5px;line-height:1.65;color:var(--gray);margin:0 0 14px;}
+.acc-nota strong{color:var(--navy);}
 .acc-link{display:block;width:100%;background:none;border:none;color:var(--navy);font-size:12.5px;
   text-decoration:underline;cursor:pointer;margin-top:14px;text-align:center;}
 .acc-aviso{display:none;background:#FDECEA;border:1px solid #F5B7B1;color:#A93226;border-radius:9px;
@@ -6003,7 +6008,9 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       '<div class="acc-campo"><label for="accClave">Contraseña</label>' +
       '<input id="accClave" type="password" autocomplete="current-password"></div>' +
       '<button class="acc-btn" id="accEnviar">Entrar</button>' +
-      '<button class="acc-link" id="accPrimera">Es mi primer acceso y tengo un código</button>';
+      '<button class="acc-link" id="accPrimera">Es mi primer acceso y tengo un código</button>' +
+      '<button class="acc-link" id="accRegistro" style="color:var(--gold-dark);font-weight:700;">' +
+      'Soy nuevo y quiero registrarme</button>';
     var u = document.getElementById('accUsuario'), c = document.getElementById('accClave');
     var enviar = async function(){
       var b = document.getElementById('accEnviar');
@@ -6012,6 +6019,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
         usuarioRecordado = u.value.trim();
         var r = await pedir('acceder', { usuario: usuarioRecordado, clave: c.value });
         if (r.paso === 'activacion') { ir('activacion'); return; }
+        if (r.paso === 'dentro') { location.reload(); return; }
         ir(r.paso === 'crear_clave' ? 'crear_clave'
            : r.paso === 'configurar_mfa' ? 'configurar_mfa' : 'codigo');
       } catch(e){
@@ -6024,6 +6032,71 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     u.addEventListener('keydown', function(e){ if(e.key === 'Enter') c.focus(); });
     (usuarioRecordado ? c : u).focus();
     document.getElementById('accPrimera').addEventListener('click', function(){ ir('activacion'); });
+    document.getElementById('accRegistro').addEventListener('click', function(){ ir('registro'); });
+  };
+
+  // Paso: inscripción de un colegio nuevo
+  // No crea ninguna cuenta: manda la solicitud. La cuenta nace cuando el
+  // administrador la acepta desde el enlace que le llega por correo.
+  pasos.registro = function(){
+    tit.textContent = 'Inscripción';
+    bajada.textContent = 'Si es nuevo y quiere registrarse, rellene el siguiente formulario. Damos cumplimiento a la Ley de Protección de Datos 21.719, y solo utilizaremos sus datos para el registro y su acceso a la plataforma.';
+    cuerpo.innerHTML =
+      '<div class="acc-campo"><label for="regColegio">Colegio</label>' +
+      '<input id="regColegio" autocomplete="organization" placeholder="Nombre del establecimiento"></div>' +
+      '<div class="acc-campo"><label for="regNombre">Nombre y apellidos</label>' +
+      '<input id="regNombre" autocomplete="name" placeholder="Quién solicita el acceso"></div>' +
+      '<div class="acc-campo"><label for="regCorreo">Correo institucional</label>' +
+      '<input id="regCorreo" type="email" autocomplete="email" spellcheck="false" placeholder="con este entrará a la plataforma"></div>' +
+      '<div class="acc-campo"><label for="regCorreo2">Segundo correo</label>' +
+      '<input id="regCorreo2" type="email" spellcheck="false" placeholder="para recuperar su contraseña"></div>' +
+      '<label class="acc-consiente" for="regOk"><input type="checkbox" id="regOk">' +
+      '<span>Autorizo el tratamiento de estos datos para mi registro y mi acceso a la plataforma, ' +
+      'conforme a la Ley 21.719 de Protección de Datos Personales.</span></label>' +
+      '<button class="acc-btn" id="accEnviar">Enviar solicitud</button>' +
+      '<button class="acc-link" id="accVolver">Volver</button>';
+    var enviar = async function(){
+      var b = document.getElementById('accEnviar');
+      b.disabled = true; b.textContent = 'Enviando…';
+      try {
+        await pedir('registro', {
+          colegio:   document.getElementById('regColegio').value,
+          nombre:    document.getElementById('regNombre').value,
+          correo:    document.getElementById('regCorreo').value,
+          correoRec: document.getElementById('regCorreo2').value,
+          consiente: document.getElementById('regOk').checked
+        });
+        usuarioRecordado = document.getElementById('regCorreo').value.trim();
+        ir('registro_ok');
+      } catch(e){
+        mostrarAviso(e.message);
+        b.disabled = false; b.textContent = 'Enviar solicitud';
+      }
+    };
+    document.getElementById('accEnviar').addEventListener('click', enviar);
+    document.getElementById('accVolver').addEventListener('click', function(){ ir('acceder'); });
+    document.getElementById('regColegio').focus();
+  };
+
+  pasos.registro_ok = function(){
+    tit.textContent = 'Solicitud enviada';
+    bajada.textContent = 'Gracias. Su solicitud queda en revisión.';
+    cuerpo.innerHTML =
+      '<p class="acc-nota">Revisaremos los datos y, en cuanto se apruebe, le llegará un correo ' +
+      'a su dirección institucional con un botón para entrar y crear su contraseña.</p>' +
+      '<p class="acc-nota">Todavía no existe ninguna cuenta: se crea al aprobar la solicitud.</p>' +
+      '<button class="acc-btn" id="accEnviar">Cerrar</button>';
+    document.getElementById('accEnviar').addEventListener('click', cerrar);
+  };
+
+  // Paso: cuenta lista, a entrar con el correo y la contraseña recién creada
+  pasos.listo = function(){
+    tit.textContent = 'Su cuenta ya está lista';
+    bajada.textContent = 'La contraseña quedó guardada. Entre ahora con su correo y esa contraseña.';
+    cuerpo.innerHTML =
+      '<p class="acc-nota">Usuario: <strong>' + esc(usuarioRecordado) + '</strong></p>' +
+      '<button class="acc-btn" id="accEnviar">Acceder</button>';
+    document.getElementById('accEnviar').addEventListener('click', function(){ ir('acceder'); });
   };
 
   // Paso: código de activación (primer acceso)
@@ -6064,7 +6137,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
 
   // Paso: crear la contraseña
   var REGLAS = [
-    ['al menos 8 caracteres',        function(v){ return v.length >= 8; }],
+    ['al menos 12 caracteres',       function(v){ return v.length >= 12; }],
     ['una letra minúscula',          function(v){ return /[a-záéíóúñü]/.test(v); }],
     ['una letra MAYÚSCULA',          function(v){ return /[A-ZÁÉÍÓÚÑÜ]/.test(v); }],
     ['un número',                    function(v){ return /\d/.test(v); }],
@@ -6100,8 +6173,8 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     btn.addEventListener('click', async function(){
       btn.disabled = true; btn.textContent = 'Guardando…';
       try {
-        await pedir('crear-clave', { clave: nueva.value, repetir: rep2.value });
-        ir('configurar_mfa');
+        var r = await pedir('crear-clave', { clave: nueva.value, repetir: rep2.value });
+        ir(r.paso === 'listo' ? 'listo' : 'configurar_mfa');
       } catch(e){
         mostrarAviso(e.message);
         btn.disabled = false; btn.textContent = 'Guardar contraseña';
@@ -6202,6 +6275,19 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       if (e.key === 'Escape' && fondo.classList.contains('abierto')) cerrar();
     });
     pintarCabecera();
+
+    // El correo de alta trae un enlace con el código: se abre el primer
+    // acceso con todo puesto, y la dirección se limpia para que el código no
+    // se quede en el historial del navegador.
+    var q = new URLSearchParams(location.search);
+    var codigo = q.get('alta');
+    if (codigo && !window.ILR_SESION) {
+      usuarioRecordado = (q.get('u') || '').trim();
+      history.replaceState(null, '', location.pathname + location.hash);
+      abrir('activacion');
+      var campo = document.getElementById('accCodigoAct');
+      if (campo) campo.value = codigo;
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
   else arrancar();
@@ -6516,7 +6602,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     return j;
   }
 
-  var caja, estado = { usuarios: [], roles: [], correoListo: false }, aviso = '';
+  var caja, estado = { usuarios: [], roles: [], solicitudes: [], correoListo: false }, aviso = '';
 
   function fecha(x){
     if (!x) return '—';
@@ -6572,6 +6658,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
         'Puede dar de alta a quien quiera, pero el código no saldrá por correo: aparecerá aquí para que ' +
         'usted se lo pase. Para que se envíe solo, hay que añadir la clave del servicio de correo.</div>') +
       aviso +
+      pintarSolicitudes() +
       '<div class="usr-alta">' +
         '<h3 style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:var(--navy);' +
         'text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;">Invitar a alguien</h3>' +
@@ -6591,6 +6678,9 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       'Quien lo reciba crea su contraseña y vincula Google Authenticator; hasta entonces no entra. ' +
       '<button class="usr-mini" id="usrManual" style="margin-left:6px;">Descargar el manual para enviarlo</button></p>';
 
+    caja.querySelectorAll('.usr-mini[data-sol]').forEach(function(b){
+      b.addEventListener('click', function(){ resolver(b.dataset.sol, b.dataset.id); });
+    });
     var crear = document.getElementById('usrCrear');
     if (crear) crear.addEventListener('click', invitar);
     var man = document.getElementById('usrManual');
@@ -6600,6 +6690,71 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     caja.querySelectorAll('.usr-mini[data-accion]').forEach(function(b){
       b.addEventListener('click', function(){ accionar(b.dataset.accion, b.dataset.u, b.dataset.activo); });
     });
+  }
+
+  function pintarSolicitudes(){
+    var todas = estado.solicitudes || [];
+    var pend = todas.filter(function(x){ return x.estado === 'pendiente'; });
+    var resueltas = todas.filter(function(x){ return x.estado !== 'pendiente'; }).slice(0, 5);
+    if (!todas.length) return '';
+
+    var filas = pend.map(function(x){
+      return '<tr><td><strong>' + esc(x.colegio) + '</strong>' +
+        '<div style="color:var(--gray);font-size:12.5px;">' + esc(x.nombre) + '</div></td>' +
+        '<td>' + esc(x.correo) +
+        '<div style="color:var(--gray);font-size:12.5px;">recuperación: ' + esc(x.correo_rec || '—') + '</div></td>' +
+        '<td>' + fecha(x.creada) + '</td>' +
+        '<td><div class="usr-acciones">' +
+          '<button class="usr-mini" data-sol="aceptar" data-id="' + esc(x.id) + '">Aceptar</button>' +
+          '<button class="usr-mini" data-sol="rechazar" data-id="' + esc(x.id) + '">Rechazar</button>' +
+        '</div></td></tr>';
+    }).join('');
+
+    var historial = resueltas.map(function(x){
+      return esc(x.colegio) + ' · ' + esc(x.correo) + ' · <strong>' + esc(x.estado) + '</strong>' +
+             (x.resuelta ? ' el ' + fecha(x.resuelta) : '');
+    }).join('<br>');
+
+    return '<div class="usr-alta" style="border-left:3px solid var(--gold);">' +
+      '<h3 style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:var(--navy);' +
+      'text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px;">Solicitudes de registro' +
+      (pend.length ? ' (' + pend.length + ' pendiente' + (pend.length > 1 ? 's' : '') + ')' : '') + '</h3>' +
+      '<p style="font-size:13px;color:var(--gray);margin:0 0 14px;line-height:1.6;">' +
+      'Llegan del formulario de inscripción de la pantalla de acceso. Al aceptar se crea la cuenta con el ' +
+      'perfil <strong>cliente</strong>: ve los precios y no ve las presentaciones.</p>' +
+      (filas
+        ? '<table class="usr-tabla"><thead><tr><th>Colegio</th><th>Correos</th><th>Recibida</th><th></th></tr></thead>' +
+          '<tbody>' + filas + '</tbody></table>'
+        : '<p style="font-size:13px;color:var(--gray);margin:0;">No hay solicitudes pendientes.</p>') +
+      (historial ? '<p style="font-size:12.5px;color:var(--gray);margin-top:14px;line-height:1.7;">' +
+                   'Últimas resueltas:<br>' + historial + '</p>' : '') +
+      '</div>';
+  }
+
+  async function resolver(accion, id){
+    if (accion === 'rechazar' && !confirm('¿Rechazar esta solicitud? No se creará ninguna cuenta.')) return;
+    var motivo = accion === 'rechazar'
+      ? (prompt('Motivo que se le enviará al colegio (puede dejarlo vacío):') || '')
+      : '';
+    try {
+      var r = await api('solicitudes', { accion: accion, id: Number(id), motivo: motivo });
+      if (accion === 'aceptar') {
+        if (r.correo && r.envio && r.envio.enviado) {
+          aviso = '<div class="usr-aviso ok"><strong>Cuenta creada.</strong> El aviso con el acceso salió hacia ' + esc(r.correo) + '.</div>';
+        } else {
+          aviso = '<div class="usr-aviso ojo"><strong>Cuenta creada, pero el correo no salió.</strong> ' +
+            'Pásele usted este código de activación, que sirve una sola vez:' +
+            '<div class="usr-codigo">' + esc(r.codigo) + '</div>' +
+            '<div style="margin-top:6px;font-size:12.5px;">No se vuelve a mostrar.</div></div>';
+        }
+      } else {
+        aviso = '<div class="usr-aviso ok">Solicitud rechazada. No se creó ninguna cuenta.</div>';
+      }
+      await cargar();
+    } catch(e){
+      aviso = '<div class="usr-aviso mal">' + esc(e.message) + '</div>';
+      pintar();
+    }
   }
 
   function contarCodigo(r, verbo){
@@ -6650,7 +6805,10 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
   async function cargar(){
     try {
       var r = await api('usuarios');
-      estado = { usuarios: r.usuarios || [], roles: r.roles || [], correoListo: !!r.correoListo };
+      var sol = { solicitudes: [] };
+      try { sol = await api('solicitudes'); } catch(e2){}
+      estado = { usuarios: r.usuarios || [], roles: r.roles || [],
+                 solicitudes: sol.solicitudes || [], correoListo: !!r.correoListo };
     } catch(e){
       aviso = '<div class="usr-aviso mal">' + esc(e.message) + '</div>';
     }
