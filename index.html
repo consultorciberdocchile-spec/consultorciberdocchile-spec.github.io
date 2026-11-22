@@ -6740,7 +6740,10 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
       var r = await api('solicitudes', { accion: accion, id: Number(id), motivo: motivo });
       if (accion === 'aceptar') {
         if (r.correo && r.envio && r.envio.enviado) {
-          aviso = '<div class="usr-aviso ok"><strong>Cuenta creada.</strong> El aviso con el acceso salió hacia ' + esc(r.correo) + '.</div>';
+          aviso = '<div class="usr-aviso ok"><strong>Cuenta creada.</strong> El aviso con el acceso salió hacia ' +
+            esc(r.correo) + '. Por si acaso, el código que lleva ese correo es:' +
+            '<div class="usr-codigo">' + esc(r.codigo) + '</div>' +
+            '<div style="margin-top:6px;font-size:12.5px;">No se vuelve a mostrar.</div></div>';
         } else {
           aviso = '<div class="usr-aviso ojo"><strong>Cuenta creada, pero el correo no salió.</strong> ' +
             'Pásele usted este código de activación, que sirve una sola vez:' +
