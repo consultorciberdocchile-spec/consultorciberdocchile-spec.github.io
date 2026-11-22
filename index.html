@@ -926,6 +926,29 @@ body.con-nav .dash-header{margin-left:272px;padding-left:28px;}
   text-decoration:none;transition:color .16s,background .16s;}
 .ilr-sub a:hover{color:var(--gold-light);background:rgba(255,255,255,.045);}
 .ilr-nav-sep{height:1px;background:rgba(255,255,255,.07);margin:14px 24px;}
+.noticia-rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;}
+.noticia-card{display:flex;flex-direction:column;}
+.noticia-card .module-title{text-transform:none;font-size:17px;line-height:1.3;letter-spacing:.2px;}
+.noticia-card .module-body{display:flex;flex-direction:column;flex:1;}
+.noticia-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:11.5px;
+  font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;}
+.noticia-meta .punto{color:var(--gold-dark);}
+.noticia-meta .rss{border:1px solid #DDE2EE;border-radius:999px;padding:2px 9px;
+  letter-spacing:.8px;color:#6B7490;background:#F7F9FD;}
+.noticia-importa{background:#FFF8E8;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:12px 14px;margin:14px 0 4px;}
+.noticia-importa h4{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-dark);margin:0 0 5px;}
+.noticia-importa p{font-size:13.5px;line-height:1.6;color:var(--navy);margin:0;}
+.noticia-pie{margin-top:auto;padding-top:16px;}
+.noticia-btn{display:block;text-align:center;text-decoration:none;}
+.noticia-vacia{border:1px dashed #D5DBE8;border-radius:16px;padding:34px 26px;text-align:center;
+  background:#FAFBFE;}
+.noticia-vacia h3{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;
+  color:var(--navy);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 8px;}
+.noticia-vacia p{font-size:14px;line-height:1.7;color:var(--gray);margin:0 auto;max-width:460px;}
+.noticia-card a:focus-visible,.ilr-nav-item:focus-visible{outline:3px solid var(--gold-dark);
+  outline-offset:2px;}
 .ilr-vista{display:block;}
 body.con-nav .ilr-vista{display:none;}
 body.con-nav .ilr-vista.visible{display:block;}
@@ -1362,6 +1385,18 @@ window.ILRCuentaRegresiva = (function(){
 
     </div><!-- /modules-grid -->
     </div><!-- /vista-inicio -->
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- ACTUALIDAD                                     -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="ilr-vista" id="vista-actualidad" style="margin-top:48px;">
+      <div class="section-title">Actualidad en ciberseguridad educativa</div>
+      <p style="font-size:14px;line-height:1.7;color:var(--gray);max-width:720px;margin:-14px 0 24px;">
+        Una noticia al día sobre lo que afecta a los colegios chilenos, tomada de fuentes
+        oficiales o medios verificables. Se muestran las tres últimas.
+      </p>
+      <div class="noticia-rejilla" id="noticiasRejilla" aria-live="polite" aria-busy="true"></div>
+    </div>
 
     <!-- ══════════════════════════════════════════════ -->
     <!-- MATERIAL DE APOYO                              -->
@@ -6331,6 +6366,157 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
 </script>
 
 
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ACTUALIDAD
+   Tres noticias, la mas reciente primero. El contenido viene de
+   fuera, asi que nada de innerHTML: cada texto entra como texto,
+   y la direccion solo se usa si es https y trae un dominio.
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  var MAXIMO = 3;
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var NOMBRES = {
+    1:'Ley Marco de Ciberseguridad', 2:'Capacitacion en ciberseguridad',
+    3:'Calendario Escolar', 4:'Convivencia Educativa',
+    5:'Proteccion de Datos Personales', 6:'Inclusion y PIE',
+    7:'Escuela para Padres'
+  };
+
+  function fechaCorta(iso){
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return '';
+    var p = iso.split('-');
+    return parseInt(p[2],10) + ' ' + MESES[parseInt(p[1],10)-1] + ' ' + p[0];
+  }
+
+  /* Mismo esquema que exige el servidor: si una noticia no cuadra, no se pinta. */
+  function valida(n){
+    if (!n || typeof n !== 'object') return null;
+    var url = typeof n.url === 'string' ? n.url : '';
+    if (url.indexOf('https://') !== 0 || url.length > 500) return null;
+    var numero = n.servicio && Number(n.servicio.numero);
+    if (!(numero >= 1 && numero <= 7)) return null;
+    var txt = function(x, max){ return (typeof x === 'string' ? x : '').slice(0, max); };
+    var titulo = txt(n.titulo, 220), resumen = txt(n.resumen, 600);
+    if (!titulo || !resumen) return null;
+    return {
+      titulo: titulo,
+      resumen: resumen,
+      porQue: n.origen === 'rss' ? '' : txt(n.por_que_importa, 300),
+      numero: numero,
+      servicio: txt((n.servicio && n.servicio.nombre) || NOMBRES[numero] || '', 80),
+      fuente: txt(n.fuente, 80),
+      url: url,
+      fecha: fechaCorta(n.fecha_publicacion),
+      rss: n.origen === 'rss'
+    };
+  }
+
+  function nodo(etiqueta, clase, texto){
+    var e = document.createElement(etiqueta);
+    if (clase) e.className = clase;
+    if (texto != null) e.textContent = texto;
+    return e;
+  }
+
+  function tarjeta(n){
+    var art = nodo('article', 'module-card noticia-card');
+
+    var cab = nodo('div', 'module-header');
+    cab.appendChild(nodo('div', 'module-num', String(n.numero)));
+    var cabTxt = nodo('div', 'module-header-text');
+    cabTxt.appendChild(nodo('div', 'module-tag', 'Servicio ' + n.numero + ' \u00b7 ' + n.servicio));
+    var h3 = nodo('h3', 'module-title', n.titulo);
+    cabTxt.appendChild(h3);
+    cab.appendChild(cabTxt);
+    art.appendChild(cab);
+
+    var cuerpo = nodo('div', 'module-body');
+
+    var meta = nodo('div', 'noticia-meta');
+    if (n.fecha) {
+      var t = nodo('time', null, n.fecha);
+      t.setAttribute('datetime', n.fecha);
+      meta.appendChild(t);
+      meta.appendChild(nodo('span', 'punto', '\u00b7'));
+    }
+    meta.appendChild(nodo('span', null, n.fuente));
+    if (n.rss) meta.appendChild(nodo('span', 'rss', 'resumen del medio'));
+    cuerpo.appendChild(meta);
+
+    cuerpo.appendChild(nodo('p', 'module-desc', n.resumen));
+
+    if (n.porQue) {
+      var caja = nodo('div', 'noticia-importa');
+      caja.appendChild(nodo('h4', null, 'Por qu\u00e9 importa a tu colegio'));
+      caja.appendChild(nodo('p', null, n.porQue));
+      cuerpo.appendChild(caja);
+    }
+
+    var pie = nodo('div', 'noticia-pie');
+    var a = nodo('a', 'btn-detail noticia-btn', 'Leer en la fuente \u2192');
+    a.href = n.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.setAttribute('aria-label', 'Leer en ' + n.fuente + ': ' + n.titulo);
+    pie.appendChild(a);
+    cuerpo.appendChild(pie);
+
+    art.appendChild(cuerpo);
+    return art;
+  }
+
+  function vacia(mensaje){
+    var caja = nodo('div', 'noticia-vacia');
+    caja.appendChild(nodo('h3', null, 'Sin novedades por ahora'));
+    caja.appendChild(nodo('p', null, mensaje));
+    return caja;
+  }
+
+  async function traer(){
+    var rutas = ['/api/noticias', 'data/noticias.json'];
+    for (var i = 0; i < rutas.length; i++){
+      try {
+        var r = await fetch(rutas[i], { cache: 'no-cache', credentials: 'same-origin' });
+        if (!r.ok) continue;
+        var d = await r.json();
+        if (Array.isArray(d)) return d;
+      } catch (e) { /* se prueba la siguiente */ }
+    }
+    return null;
+  }
+
+  async function arrancar(){
+    var caja = document.getElementById('noticiasRejilla');
+    if (!caja) return;
+    var crudas = await traer();
+    caja.setAttribute('aria-busy', 'false');
+    caja.textContent = '';
+
+    if (crudas === null) {
+      caja.appendChild(vacia('No se pudo cargar la actualidad en este momento. '
+        + 'Vuelva a intentarlo en unos minutos.'));
+      return;
+    }
+    var buenas = [];
+    for (var i = 0; i < crudas.length && buenas.length < MAXIMO; i++){
+      var n = valida(crudas[i]);
+      if (n) buenas.push(n);
+    }
+    if (!buenas.length) {
+      caja.appendChild(vacia('Todav\u00eda no hay noticias publicadas. '
+        + 'Esta secci\u00f3n se actualiza cada d\u00eda h\u00e1bil con una sola noticia, '
+        + 'elegida por su impacto real en los colegios.'));
+      return;
+    }
+    for (var j = 0; j < buenas.length; j++) caja.appendChild(tarjeta(buenas[j]));
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
+})();
+</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
    MENÚ LATERAL DEL PANEL
@@ -6511,6 +6697,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     sep.className = 'ilr-nav-sep';
     lista.appendChild(sep);
     lista.appendChild(rotulo('Material'));
+    lista.appendChild(item('actualidad', 'Actualidad'));
     lista.appendChild(item('apoyo', 'Material de apoyo'));
     if (puede('ver_presentaciones')) lista.appendChild(item('presentaciones', 'Presentaciones'));
     if (puede('gestionar_usuarios')) {

@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Respaldo diario de la seccion Actualidad.
+#
+#  Corre solo si ese dia nadie publico con /noticia-del-dia. No usa IA ni
+#  claves: lee los RSS de config/fuentes.json y publica el mejor candidato si
+#  supera el umbral. El unico permiso que necesita es escribir en este mismo
+#  repositorio, que GitHub concede con su token integrado.
+#
+#  LA HORA. El cron de GitHub es UTC y no sabe de horario de verano chileno:
+#    · verano  (primer sabado de septiembre a primer sabado de abril, UTC-3)
+#         07:00 en Chile = 10:00 UTC
+#    · invierno (resto del ano, UTC-4)
+#         07:00 en Chile = 11:00 UTC
+#  Por eso se programan las dos horas y el script se retira solo si en Chile
+#  no son las 7. Resultado: una sola publicacion al dia, todo el ano, sin
+#  tocar este archivo en marzo ni en septiembre.
+# ─────────────────────────────────────────────────────────────────────────────
+name: Noticia del dia (respaldo RSS)
+
+on:
+  schedule:
+    - cron: "0 10 * * *"   # 07:00 en Chile durante el horario de verano
+    - cron: "0 11 * * *"   # 07:00 en Chile durante el horario de invierno
+  workflow_dispatch:
+    inputs:
+      forzar:
+        description: "Ignorar la comprobacion de hora de Chile"
+        type: boolean
+        default: true
+      seco:
+        description: "Solo mostrar que haria, sin escribir ni publicar"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: noticia-del-dia
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pruebas antes de tocar nada
+        run: python scripts/probar_noticias.py
+
+      - name: Buscar y publicar
+        id: noticia
+        run: |
+          python scripts/noticias_rss.py \
+            ${{ (github.event_name == 'workflow_dispatch' && inputs.forzar) && '--forzar' || '' }} \
+            ${{ (github.event_name == 'workflow_dispatch' && inputs.seco) && '--seco' || '' }}
+
+      - name: Confirmar que el JSON quedo bien
+        run: python -c "import sys; sys.path.insert(0,'scripts'); import noticias_lib as L; L.validar(L.cargar_noticias(), L.leer_json(L.RUTA_ESQUEMA), L.leer_json(L.RUTA_FUENTES)); print('data/noticias.json valido')"
+
+      - name: Commit si hubo cambios
+        run: |
+          if [ -z "$(git status --porcelain data/noticias.json logs/noticias.log)" ]; then
+            echo "Sin cambios: no se publico nada hoy."
+            exit 0
+          fi
+          fuente=$(python -c "import json;d=json.load(open('data/noticias.json'));print(d[0]['fuente'] if d else 'sin fuente')")
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/noticias.json logs/noticias.log
+          git commit -m "noticia: $(date -u -d '-4 hours' +%Y-%m-%d) - $fuente (rss)"
+          git push

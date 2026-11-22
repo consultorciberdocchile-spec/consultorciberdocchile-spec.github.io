@@ -1,0 +1,28 @@
+{
+  "_comentario": "Esquema de data/noticias.json. Lo leen el validador de Python (scripts/noticias_lib.py) y el del navegador, para que los dos exijan exactamente lo mismo. Si se agrega un campo, se agrega aqui primero.",
+  "version": 1,
+  "maximo": 3,
+  "campos": {
+    "id":               { "tipo": "texto",  "requerido": true,  "min": 8,  "max": 80,  "patron": "^[a-z0-9]{4}-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9]{6}$" },
+    "titulo":           { "tipo": "texto",  "requerido": true,  "min": 10, "max": 220 },
+    "resumen":          { "tipo": "texto",  "requerido": true,  "min": 20, "max": 600 },
+    "por_que_importa":  { "tipo": "texto",  "requerido": true,  "min": 0,  "max": 300 },
+    "servicio":         { "tipo": "objeto", "requerido": true,
+                          "campos": {
+                            "numero": { "tipo": "entero", "requerido": true, "min": 1, "max": 7 },
+                            "nombre": { "tipo": "texto",  "requerido": true, "min": 3, "max": 80 }
+                          } },
+    "fuente":           { "tipo": "texto",  "requerido": true,  "min": 2,  "max": 80 },
+    "url":              { "tipo": "url",    "requerido": true,  "max": 500 },
+    "fecha_publicacion":{ "tipo": "fecha",  "requerido": true },
+    "fecha_ingreso":    { "tipo": "fecha",  "requerido": true },
+    "origen":           { "tipo": "texto",  "requerido": true, "valores": ["claude-code", "rss"] }
+  },
+  "reglas": [
+    "El arreglo nunca supera 'maximo' elementos.",
+    "La primera posicion es la noticia mas reciente por fecha_ingreso.",
+    "No se repite la misma url ni el mismo id.",
+    "por_que_importa va vacio cuando origen es 'rss'.",
+    "La url debe ser https y su dominio debe estar en la lista blanca de fuentes.json."
+  ]
+}

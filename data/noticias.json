@@ -1,0 +1,47 @@
+[
+  {
+    "titulo": "Datos personales, combustibles y sala cuna en los temas despachados por la Cámara",
+    "resumen": "La Cámara despachó a promulgación el proyecto que posterga la entrada en vigencia de la Ley 21.719 desde diciembre de 2026 hasta el 15 de octubre de 2027, para dar tiempo a instalar la Agencia de Protección de Datos Personales, cuyo Consejo Directivo además pasa de tres a cinco integrantes. Mientras el texto no se publique en el Diario Oficial, LeyChile sigue mostrando el 1 de diciembre de 2026 como fecha de entrada en vigencia.",
+    "por_que_importa": "La diferencia es de nueve días: si la publicación se demora, su colegio queda obligado desde el 1 de diciembre con la ley tal como está escrita hoy.",
+    "servicio": {
+      "numero": 5,
+      "nombre": "Protección de Datos Personales"
+    },
+    "fuente": "Cámara de Diputados",
+    "url": "https://www.camara.cl/cms/2026/11/20/datos-personales-combustibles-y-sala-cuna-en-los-temas-despachados-por-la-camara/",
+    "fecha_publicacion": "2026-11-20",
+    "origen": "claude-code",
+    "fecha_ingreso": "2026-11-22",
+    "id": "9b91-2026-11-22-301632"
+  },
+  {
+    "titulo": "Recomendaciones ANCI ante el uso de herramientas de IA en ciberataques",
+    "resumen": "La Agencia Nacional de Ciberseguridad advierte que herramientas como ARTEX no inventan ataques nuevos: automatizan y aceleran los de siempre, y dejan pocos rastros propios porque se orquestan desde la infraestructura del atacante. Por eso recomienda no perseguir la herramienta, sino reducir la superficie expuesta —servicios publicados sin necesidad, sistemas sin actualizar, autenticación débil— y reforzar la detección de comportamientos maliciosos.",
+    "por_que_importa": "Las tres debilidades que nombra la Agencia son las que más se repiten en un colegio: el portal publicado sin necesidad, el servidor sin actualizar y las claves sin segundo factor.",
+    "servicio": {
+      "numero": 2,
+      "nombre": "Capacitación en ciberseguridad educativa"
+    },
+    "fuente": "ANCI",
+    "url": "https://anci.gob.cl/noticias/recomendaciones-anci-ante-el-uso-de-herramientas-de-ia-en-ciberataques/",
+    "fecha_publicacion": "2026-11-19",
+    "origen": "claude-code",
+    "fecha_ingreso": "2026-11-22",
+    "id": "5168-2026-11-22-6d89b1"
+  },
+  {
+    "titulo": "Comienza consulta pública sobre MFA",
+    "resumen": "La Agencia Nacional de Ciberseguridad abrió a consulta pública el estándar obligatorio de autenticación multifactor y otras medidas de prevención de incidentes. Aplica a las instituciones calificadas como servicios esenciales y a los operadores de importancia vital según la Ley 21.663. La consulta quedó abierta por 30 días corridos desde el 19 de noviembre, en el Portal de Reportes de la Agencia.",
+    "por_que_importa": "Su colegio no está en esa lista, pero el estándar fija el piso con que el Estado medirá a quienes sí lo están: es la mejor referencia gratuita para decidir dónde exigir doble factor en sus propios sistemas.",
+    "servicio": {
+      "numero": 1,
+      "nombre": "Ley Marco de Ciberseguridad"
+    },
+    "fuente": "ANCI",
+    "url": "https://anci.gob.cl/noticias/consulta-publica-normativa-mfa/",
+    "fecha_publicacion": "2026-11-19",
+    "origen": "claude-code",
+    "fecha_ingreso": "2026-11-22",
+    "id": "a94b-2026-11-22-bf97b3"
+  }
+]

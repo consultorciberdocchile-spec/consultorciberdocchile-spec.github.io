@@ -1,0 +1,94 @@
+{
+  "_comentario": "Palabras clave ponderadas por servicio, para el respaldo sin IA (scripts/noticias_rss.py). El puntaje de una noticia es la suma de los pesos de las palabras que aparecen, con el titulo contando el triple que el extracto, multiplicado por el peso de la fuente. Las palabras de 'penalizacion' restan: sirven para descartar lo que suena parecido pero no le sirve a un colegio.",
+
+  "factor_titulo": 3.0,
+  "factor_extracto": 1.0,
+  "escala": 1.0,
+
+  "servicios": {
+    "1": {
+      "nombre": "Ley Marco de Ciberseguridad",
+      "palabras": {
+        "ley 21.663": 26, "ley marco de ciberseguridad": 26, "anci": 22,
+        "agencia nacional de ciberseguridad": 24, "csirt": 16,
+        "reglamento de ciberseguridad": 20, "incidente de ciberseguridad": 16,
+        "deber de reportar": 14, "servicios esenciales": 12, "ciberseguridad": 9
+      }
+    },
+    "2": {
+      "nombre": "Capacitación en ciberseguridad educativa",
+      "palabras": {
+        "ciberataque": 18, "ransomware": 18, "phishing": 16, "suplantacion": 14,
+        "estafa": 10, "brecha de seguridad": 16, "hackeo": 14,
+        "capacitacion docente": 12, "alfabetizacion digital": 12
+      }
+    },
+    "3": {
+      "nombre": "Calendario Escolar",
+      "palabras": {
+        "calendario escolar": 18, "dia del internet": 18,
+        "dia contra el ciberacoso": 22, "semana de la convivencia": 20,
+        "mes de la convivencia": 18, "conmemoracion escolar": 12, "unesco": 8
+      }
+    },
+    "4": {
+      "nombre": "Convivencia Educativa",
+      "palabras": {
+        "convivencia escolar": 22, "convivencia educativa": 22,
+        "ley 21.801": 26, "celulares en el aula": 22, "uso de celular": 16,
+        "reglamento interno": 18, "rice": 16, "plan de gestion": 14,
+        "violencia escolar": 18, "superintendencia de educacion": 16,
+        "denuncia": 10, "protocolo de actuacion": 16, "pise": 14,
+        "ley 21.809": 22, "ley 21.827": 22, "mochilas": 12
+      }
+    },
+    "5": {
+      "nombre": "Protección de Datos Personales",
+      "palabras": {
+        "ley 21.719": 26, "proteccion de datos": 22, "datos personales": 20,
+        "filtracion de datos": 22, "agencia de proteccion de datos": 24,
+        "datos sensibles": 18, "consentimiento": 12, "tratamiento de datos": 16,
+        "derecho al olvido": 14, "biometrico": 12
+      }
+    },
+    "6": {
+      "nombre": "Inclusión y PIE",
+      "palabras": {
+        "programa de integracion escolar": 26, "pie": 10,
+        "decreto 170": 22, "decreto 83": 20, "decreto 67": 18,
+        "educacion inclusiva": 20, "ley 21.545": 22, "tea": 10,
+        "necesidades educativas especiales": 20, "fudei": 22,
+        "ley 20.422": 18, "ley 20.845": 18, "diversificacion de la ensenanza": 18
+      }
+    },
+    "7": {
+      "nombre": "Escuela para Padres",
+      "palabras": {
+        "grooming": 26, "ciberacoso": 24, "ciberbullying": 24,
+        "huella digital": 20, "control parental": 20, "redes sociales": 12,
+        "apoderados": 14, "pantallas": 14, "tiempo de pantalla": 18,
+        "material de abuso sexual infantil": 22, "sextorsion": 22,
+        "deepfake": 18, "imagenes falsas": 16, "menores en internet": 20
+      }
+    }
+  },
+
+  "bonificacion_fuente_oficial": 8,
+
+  "penalizacion": {
+    "_comentario": "Restan puntos: temas que comparten vocabulario pero no le sirven a un colegio.",
+    "futbol": 25, "seleccion chilena": 25, "farandula": 25, "teleserie": 25,
+    "criptomoneda": 18, "bitcoin": 18, "bolsa de comercio": 15,
+    "campana presidencial": 15, "encuesta cadem": 15,
+    "universidad de": 6, "educacion superior": 10, "cae": 12,
+    "jardin infantil": 4
+  },
+
+  "exige_contexto_escolar": {
+    "_comentario": "Si la noticia puntua sobre todo por palabras genericas (ciberseguridad, estafa, datos personales), ademas debe aparecer alguna de estas para confirmar que habla del mundo escolar. Si no aparece ninguna, se resta esta cantidad.",
+    "palabras": ["colegio", "escuela", "establecimiento educacional", "estudiante", "alumno",
+                 "docente", "profesor", "apoderado", "mineduc", "escolar", "liceo",
+                 "comunidad educativa", "sostenedor", "aula"],
+    "castigo": 30
+  }
+}

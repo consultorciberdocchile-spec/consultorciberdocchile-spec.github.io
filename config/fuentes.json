@@ -1,0 +1,111 @@
+{
+  "_comentario": "Lista blanca de fuentes para la seccion Actualidad. Solo se publica una noticia si su dominio final (despues de redirecciones) termina en uno de dominios_permitidos. Los feeds se verificaron uno por uno el 22-11-2026; los que no tienen RSS quedan anotados en sin_feed y solo se alcanzan con /noticia-del-dia, que lee las paginas directamente.",
+  "actualizado": "2026-11-22",
+  "ventana_dias": 7,
+  "umbral_relevancia": 70,
+  "maximo_noticias": 3,
+
+  "dominios_permitidos": [
+    "anci.gob.cl",
+    "csirt.gob.cl",
+    "bcn.cl",
+    "leychile.cl",
+    "diariooficial.interior.gob.cl",
+    "mineduc.cl",
+    "supereduc.cl",
+    "agenciaeducacion.cl",
+    "senado.cl",
+    "camara.cl",
+    "defensorianinez.cl",
+    "pdichile.cl",
+    "gob.cl",
+    "latercera.com",
+    "emol.com",
+    "biobiochile.cl",
+    "cooperativa.cl",
+    "elmostrador.cl",
+    "df.cl",
+    "ciperchile.cl",
+    "24horas.cl",
+    "t13.cl",
+    "incibe.es",
+    "unicef.org",
+    "unesco.org",
+    "enisa.europa.eu"
+  ],
+
+  "feeds": [
+    {
+      "nombre": "Ministerio de Educación",
+      "dominio": "mineduc.cl",
+      "url": "https://www.mineduc.cl/feed/",
+      "tipo": "oficial",
+      "peso": 1.35,
+      "verificado": "2026-11-22"
+    },
+    {
+      "nombre": "Superintendencia de Educación",
+      "dominio": "supereduc.cl",
+      "url": "https://www.supereduc.cl/feed/",
+      "tipo": "oficial",
+      "peso": 1.35,
+      "verificado": "2026-11-22"
+    },
+    {
+      "nombre": "Agencia de Calidad de la Educación",
+      "dominio": "agenciaeducacion.cl",
+      "url": "https://www.agenciaeducacion.cl/feed/",
+      "tipo": "oficial",
+      "peso": 1.25,
+      "verificado": "2026-11-22"
+    },
+    {
+      "nombre": "Defensoría de la Niñez",
+      "dominio": "defensorianinez.cl",
+      "url": "https://www.defensorianinez.cl/feed/",
+      "tipo": "oficial",
+      "peso": 1.25,
+      "verificado": "2026-11-22"
+    },
+    {
+      "nombre": "La Tercera",
+      "dominio": "latercera.com",
+      "url": "https://www.latercera.com/arcio/rss/",
+      "tipo": "medio",
+      "peso": 1.0,
+      "verificado": "2026-11-22"
+    },
+    {
+      "nombre": "CIPER",
+      "dominio": "ciperchile.cl",
+      "url": "https://www.ciperchile.cl/feed/",
+      "tipo": "medio",
+      "peso": 1.0,
+      "verificado": "2026-11-22"
+    }
+  ],
+
+  "sin_feed": [
+    { "nombre": "ANCI", "dominio": "anci.gob.cl", "motivo": "El sitio existe y se lee, pero no publica RSS. Probados /feed/ y /rss/ el 22-11-2026." },
+    { "nombre": "CSIRT de Gobierno", "dominio": "csirt.gob.cl", "motivo": "Sin RSS. Probados /feed/, /rss/, /alertas/feed/ y /noticias/feed/." },
+    { "nombre": "BCN / LeyChile", "dominio": "bcn.cl", "motivo": "No ofrece RSS de noticias. Se usa como fuente de contraste normativo en /noticia-del-dia." },
+    { "nombre": "Diario Oficial", "dominio": "diariooficial.interior.gob.cl", "motivo": "Sin RSS. Se consulta directamente cuando hay una publicacion normativa." },
+    { "nombre": "Senado", "dominio": "senado.cl", "motivo": "Sin RSS en las rutas habituales." },
+    { "nombre": "Cámara de Diputados", "dominio": "camara.cl", "motivo": "Sin RSS; ademas responde 403 a clientes automaticos." },
+    { "nombre": "Emol", "dominio": "emol.com", "motivo": "La ruta /rss/ devuelve HTML, no un feed." },
+    { "nombre": "BioBioChile", "dominio": "biobiochile.cl", "motivo": "Sin RSS publico en las rutas probadas." },
+    { "nombre": "Cooperativa", "dominio": "cooperativa.cl", "motivo": "El RSS historico ya no responde." },
+    { "nombre": "El Mostrador", "dominio": "elmostrador.cl", "motivo": "Sin /feed/ activo." },
+    { "nombre": "Diario Financiero", "dominio": "df.cl", "motivo": "Sin RSS publico." },
+    { "nombre": "24 Horas", "dominio": "24horas.cl", "motivo": "Sin RSS publico." },
+    { "nombre": "T13", "dominio": "t13.cl", "motivo": "Sin RSS publico." },
+    { "nombre": "PDI", "dominio": "pdichile.cl", "motivo": "Sin RSS; se consulta directamente." },
+    { "nombre": "INCIBE", "dominio": "incibe.es", "motivo": "No entrega XML en /feed ni /rss/noticias." },
+    { "nombre": "UNICEF / UNESCO / ENISA", "dominio": "unicef.org", "motivo": "Fuentes secundarias; sin feed estable en las rutas probadas." },
+    { "nombre": "Agencia de Protección de Datos Personales", "dominio": "gob.cl", "motivo": "Organismo en instalacion: aun no tiene sitio propio con noticias. Revisar en 2027." }
+  ],
+
+  "redes_sociales": {
+    "politica": "Solo se citan publicaciones de cuentas oficiales de las instituciones de esta lista cuando la publicacion se puede abrir y leer sin iniciar sesion. Si exige cuenta, se omite. Nunca se hace scraping que contravenga los terminos de uso del servicio."
+  }
+}
