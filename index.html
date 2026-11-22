@@ -734,7 +734,7 @@ if (window.top !== window.self) { try { window.top.location = window.self.locati
 
 
 /* ═══ Vista general sobria ═══
-   Los seis módulos caben en pantalla: la tarjeta deja el titular, una
+   Los siete módulos caben en pantalla: la tarjeta deja el titular, una
    frase y las dos acciones. El detalle completo vive un clic más adentro. */
 .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}
 .module-card-ancho{grid-column:1 / -1;}
@@ -1331,6 +1331,35 @@ window.ILRCuentaRegresiva = (function(){
         </div>
       </div>
 
+      <!-- MODULE 7 -->
+      <div class="module-card">
+        <div class="module-header" onclick="openModal(7)">
+          <div class="module-num">7</div>
+          <div class="module-header-text">
+            <div class="module-tag">Servicio 7 &middot; Escuela para Padres</div>
+            <div class="module-title">Escuela para Padres: Prevenci&oacute;n en Redes e Internet</div>
+          </div>
+        </div>
+        <div class="module-body">
+          <p class="module-desc">Cinco encuentros con apoderados y estudiantes, fuera del horario de clases, para que la prevenci&oacute;n no se quede en la puerta del colegio. Cada charla se apoya en una fecha del calendario escolar y termina con acuerdos concretos para la casa: qu&eacute; se configura, qu&eacute; se conversa y qu&eacute; se hace en las primeras horas cuando algo ya ocurri&oacute;.</p>
+          <div class="module-deliverables">
+            <div class="del-title">Entregables principales</div>
+            <ul class="del-list">
+              <li>Cinco charlas presenciales para apoderados y estudiantes (hasta 120 por sesi&oacute;n)</li>
+              <li>Gu&iacute;a de acuerdos familiares y de configuraci&oacute;n de controles parentales</li>
+              <li>Ruta de denuncia y resguardo de pruebas, paso a paso</li>
+              <li>Material de difusi&oacute;n para el colegio y certificados de participaci&oacute;n</li>
+            </ul>
+          </div>
+          <!-- PRICE TOGGLE -->
+          <!--ILR#6-->
+          <div class="module-acciones">
+            <button class="btn-detail" onclick="openModal(7)">Ver M&oacute;dulo Completo &rarr;</button>
+            <button class="card-descarga" onclick="downloadModulePDF(7)" aria-label="Descargar el m&oacute;dulo 7 en PDF" title="Descargar este m&oacute;dulo en PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="texto">Descargar este m&oacute;dulo</span></button>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /modules-grid -->
     </div><!-- /vista-inicio -->
 
@@ -1398,13 +1427,13 @@ window.ILRCuentaRegresiva = (function(){
     <!-- PRESENTACIONES                                 -->
     <!-- ══════════════════════════════════════════════ -->
     <div class="ilr-vista" id="vista-presentaciones" style="margin-top:48px;">
-    <!--ILR#15-->
+    <!--ILR#17-->
     </div>
     <!-- /PRESENTACIONES -->
 
 
     <div class="ilr-vista" id="vista-precios">
-    <!--ILR#6-->
+    <!--ILR#7-->
     </div><!-- /vista-precios -->
     <div class="ilr-vista" id="vista-servicio"></div>
     <div class="ilr-vista" id="vista-usuarios"></div>
@@ -1735,43 +1764,50 @@ const modules={
     objGen:['Orientar a los establecimientos en la comprensión y aplicación de los principios de la Ley 21.663.','Fortalecer la gobernanza digital mediante políticas y protocolos de ciberseguridad alineados al marco legal.','Proteger los datos personales de estudiantes, apoderados y funcionarios frente a amenazas digitales.','Preparar a la comunidad educativa para responder de manera eficaz ante incidentes de ciberseguridad.'],
     objEsp:['Diagnóstico del nivel de madurez en ciberseguridad del establecimiento.','Diseño e implementación de Política de Seguridad de la Información adaptada al contexto educativo.','Elaboración de protocolos de respuesta ante incidentes (fuga de datos, ransomware, phishing, suplantación).','Capacitación al equipo directivo y personal TI en deberes derivados de la Ley 21.663.','Identificación y clasificación de activos de información críticos.','Plan de mejora continua en ciberseguridad con indicadores de seguimiento.'],
     actions:[['Diagnóstico de madurez en ciberseguridad','Presencial / Online (04 hrs)','Marzo – Abril'],['Taller: Comprendiendo la Ley Marco 21.663','Presencial (02 hrs)','Marzo – Abril'],['Diseño de Política de Seguridad de la Información','Online con entregas parciales','Abril – Mayo'],['Elaboración de protocolos de respuesta ante incidentes','Online con validación presencial','Mayo – Junio'],['Capacitación al equipo directivo y personal TI','Presencial (02 hrs)','Junio'],['Entrega de informe final con plan de mejora','Online / Presencial','Julio']],
-    <!--ILR#7-->
+    <!--ILR#8-->
     deliverables:['Informe de diagnóstico de madurez en ciberseguridad.','Política de Seguridad de la Información institucional (documento formal).','Protocolos de respuesta ante incidentes de ciberseguridad.','Material de capacitación (presentaciones, guías rápidas).','Informe final con plan de mejora continua.','Certificado de participación para los asistentes.']},
   2:{tag:'Servicio 2 · Capacitación',title:'Cursos de Capacitación en Ciberseguridad Educativa',
     intro:'Programa de 4 charlas/talleres diseñados para el contexto educativo. Aborda desde los fundamentos de la ciberseguridad hasta herramientas prácticas y marco legal aplicable. Cada sesión contempla hasta 30 participantes. Para grupos mayores se cotizará de forma especial.',
     objGen:['Desarrollar competencias en ciberseguridad promoviendo una cultura de prevención y autocuidado digital.','Dotar a los profesionales de la educación de herramientas prácticas para identificar y prevenir amenazas.','Fortalecer el conocimiento del marco legal vigente en ciberseguridad aplicable al sector educativo.'],
     objEsp:['Charla 1: Fundamentos — confidencialidad, integridad, disponibilidad; panorama actual de amenazas.','Charla 2: Riesgos y Prevención — phishing, malware, grooming, ciberacoso; estrategias preventivas.','Charla 3: Marco Legal — Ley 21.663, Ley 21.801, Ley 19.628 y derechos digitales de menores.','Charla 4: Herramientas y Protocolos — filtros, contraseñas, autenticación multifactor.'],
     actions:[['Charla 1: Fundamentos de Ciberseguridad','Presencial (03 hrs)','Marzo – Abril'],['Charla 2: Riesgos y Prevención','Presencial (03 hrs)','Abril – Mayo'],['Charla 3: Marco Legal en Chile','Presencial (03 hrs)','Mayo – Junio'],['Charla 4: Herramientas y Protocolos (Taller práctico)','Presencial (04 hrs)','Junio – Julio']],
-    <!--ILR#8-->
+    <!--ILR#9-->
     deliverables:['Material de cada charla (presentaciones en formato digital, guías de apoyo).','Compendio de normativa legal aplicable al ámbito educativo.','Certificado de participación/capacitación por cada charla o por el programa completo.']},
   3:{tag:'Servicio 3 · Calendario Escolar',title:'Acompañamiento en Fechas Conmemorativas 2026',
     intro:'El Calendario Escolar 2026 contempla diversas conmemoraciones nacionales e internacionales que cada comunidad educativa puede incorporar en su planificación. Este servicio vincula ciberseguridad con estas fechas, generando instancias de reflexión sobre el uso seguro de la tecnología.',
     objGen:['Visibilizar la ciberseguridad como componente esencial de la convivencia escolar.','Fortalecer la prevención del ciberacoso y la violencia digital mediante ponencias y talleres.','Generar espacios de reflexión sobre el uso seguro de internet y dispositivos tecnológicos.'],
     objEsp:['Planificar y ejecutar ponencias y talleres específicos para cada fecha conmemorativa.','Sensibilizar a estudiantes, docentes y apoderados sobre consecuencias legales del ciberacoso.','Integrar la dimensión digital en las actividades de convivencia y seguridad escolares.','Proveer material pedagógico diferenciado por nivel (parvularia, básica, media).','Evaluar el impacto de las actividades y proponer acciones de seguimiento.','Vincular actividades con el Plan de Gestión de la Convivencia Escolar y el PISE.'],
     actions:[['Día contra el Ciberacoso: Ponencia + taller','Presencial (03–04 hrs)','13 o 16 de marzo'],['Día de la Convivencia Escolar: Charla convivencia digital','Presencial (03–04 hrs)','27–30 de abril'],['Día del Internet: Taller ciudadanía digital responsable','Presencial (03 hrs)','15 o 18 de mayo'],['Semana de Seguridad Escolar: Charla + ejercicio práctico','Presencial (04 hrs)','25–29 de mayo'],['Día UNESCO: Ponencia de cierre anual + evaluación','Presencial (03–04 hrs)','5 de noviembre'],['Planificación previa y seguimiento posterior','Online (02 hrs por evento)','Según agenda']],
-    <!--ILR#9-->
+    <!--ILR#10-->
     deliverables:['Material de cada ponencia/taller (presentaciones, videos, infografías).','Guías de actividades diferenciadas por nivel educativo.','Material gráfico digital para difusión en la comunidad educativa.','Informe de cada actividad con registro.','Informe anual de acompañamiento con recomendaciones para el año siguiente.','Certificado de participación para los asistentes.']},
   4:{tag:'Servicio 4 · Convivencia Educativa',title:'Actualización Documentación de Convivencia Educativa 2026',
     intro:'Este servicio ofrece una revisión técnico-pedagógica y legal de los instrumentos de gestión obligatorios para los establecimientos educacionales. El objetivo es asegurar que la documentación institucional cumpla con la normativa vigente de la Superintendencia de Educación y esté articulada de manera coherente con el proyecto educativo de cada comunidad. Incorpora además la implementación de la Ley N° 21.801, que prohíbe el uso de dispositivos móviles en establecimientos de nivel parvulario, básico y medio y obliga a adaptar el RICE antes del 30 de junio de 2026. La carga horaria estimada es de 31.5 a 63 horas cronológicas de trabajo especializado.',
     objGen:['Actualizar y articular los planes de gestión y reglamentos internos para garantizar el cumplimiento normativo y la coherencia institucional.','Fortalecer la gestión de la convivencia escolar mediante protocolos de actuación claros y validados por la comunidad educativa.','Promover una cultura de seguridad y prevención integral a través de la actualización del PISE y la formación de padres.','Acompañar la implementación efectiva de la Ley N° 21.801, asegurando el cumplimiento normativo en el uso de dispositivos móviles.'],
     objEsp:['Revisar y actualizar el Plan de Gestión de Convivencia, el Plan de Sexualidad, Afectividad y Género, y el Plan de Formación Ciudadana.','Diseñar o actualizar el Proyecto Educativo Institucional (PEI) y el Plan de Sellos.','Adecuar el Reglamento Interno de Convivencia Escolar (RICE) y desarrollar 9 protocolos de actuación ante diversas situaciones de riesgo.','Conformar el Comité de Seguridad Escolar y adaptar el Plan Integral de Seguridad Escolar (PISE).','Implementar una Escuela para Padres enfocada en la educación digital y el manejo de dispositivos.','Diagnosticar el estado del RICE respecto a la regulación de dispositivos móviles y asesorar su modificación conforme a la Ley N° 21.801.','Diseñar los protocolos de custodia, excepciones, infracciones y comunicación con apoderados que exige la ley.','Capacitar a docentes, asistentes y equipo directivo en la aplicación de la normativa, incorporando el concepto de autonomía progresiva en educación media.'],
     actions:[['Actualización Plan de Convivencia, Sexualidad y Formación Ciudadana','Trabajo colaborativo con estamentos','Marzo – Junio'],['Construcción/actualización de PEI y Plan de Sellos','Reuniones presenciales con estamentos','Marzo – Junio'],['Actualización del RICE + 9 protocolos de actuación','Presencial con talleres roll play de validación','Marzo – Junio'],['Adaptación del PISE y conformación Comité de Seguridad','Presencial / Online','Abril – Junio'],['Escuela para Padres: talleres educación digital','Presencial (sesiones programadas)','Mayo – Noviembre'],['Diagnóstico del RICE y brecha respecto a la Ley 21.801','Presencial / Online (03 hrs)','Marzo – Abril'],['Diseño de protocolos de celulares (custodia, excepciones, infracciones)','Online con validación presencial','Abril – Mayo'],['Charla apoderados y capacitación docente: uso responsable del celular','Presencial (05 hrs totales)','Mayo'],['Seguimiento de la implementación de la Ley 21.801','Online / Presencial','Junio']],
-    <!--ILR#10-->
+    <!--ILR#11-->
     deliverables:['Documentos actualizados de los 3 planes de gestión y el PEI.','Compendio de 9 protocolos de actuación validados.','Reglamento Interno (RICE) adecuado a la normativa vigente.','Plan Integral de Seguridad Escolar (PISE) personalizado.','Material didáctico y guías prácticas para la Escuela para Padres.','Propuesta de modificación del RICE alineada a la Ley N° 21.801, con protocolos de custodia, excepciones e infracciones.','Material informativo para apoderados y estudiantes sobre el uso responsable del celular.','Material de capacitación para docentes y asistentes, con certificado de participación.']},
   5:{tag:'Servicio 5 · Ley 21.719',title:'Implementación Ley de Protección de Datos Personales',
     intro:'La Ley N° 21.719 de Protección de Datos Personales fue publicada en el Diario Oficial el 13 de diciembre de 2024 y su vigencia legal es el 1 de diciembre de 2026. Su artículo 16 quáter nombra de modo expreso a los establecimientos educacionales y les fija una obligación especial sobre la información de niños, niñas y adolescentes. El colegio es «responsable de datos» aunque la operación la lleve un tercero: si la plataforma de gestión sufre una filtración, es el colegio quien responde ante las familias y ante la Agencia.',
     objGen:['Dejar al establecimiento en condiciones de acreditar que trata los datos de su comunidad conforme a la Ley 21.719.','Reducir la exposición a las multas del artículo 35, que para datos de estudiantes caen en los tramos grave y gravísimo.','Construir, antes de cualquier incidente, las circunstancias atenuantes que reconoce el artículo 36.','Instalar la protección de datos como una práctica de gestión del equipo directivo, no como una tarea de informática.'],
     objEsp:['Inventariar los datos que el colegio ya trata: matrícula y familias, salud y PIE, SEP, notas y convivencia, fotografías y videos, plataformas y proveedores.','Designar un responsable de datos en el equipo directivo, con un suplente.','Ordenar las autorizaciones por finalidad y según la edad del estudiante: menores de 14, de 14 a 17, y datos sensibles bajo 16 años.','Revisar los accesos por rol, la baja de exfuncionarios y los contratos con plataformas y proveedores.','Dejar por escrito el protocolo ante filtraciones: quién decide, a quién se avisa y en qué plazo.','Formar al equipo directivo y al personal administrativo, que trata la mayor parte de los datos.'],
     actions:[['Diagnóstico e inventario de datos','Presencial / Online (04 hrs)','Días 1 a 30'],['Designación del responsable de datos y su suplente','Online','Días 1 a 30'],['Registro de autorizaciones por finalidad','Online con entregas parciales','Días 31 a 60'],['Accesos por rol y cláusulas para proveedores','Online con validación presencial','Días 31 a 60'],['Protocolo ante filtraciones y mesa de simulacro','Presencial (03 hrs)','Días 61 a 90'],['Capacitación al equipo directivo y administrativo','Presencial (02 hrs)','Días 61 a 90']],
-    <!--ILR#11-->
+    <!--ILR#12-->
     deliverables:['Inventario de datos personales del establecimiento (documento formal).','Acta de designación del responsable de datos y su suplente.','Formularios de autorización por finalidad, con las reglas por edad.','Matriz de accesos por rol y cláusulas de seguridad para contratos con proveedores.','Protocolo de actuación ante filtraciones, con plazos de aviso a la Agencia y a las familias.','Material de capacitación y certificados de participación.','Informe final con la hoja de ruta a 90 días y la evidencia para acreditar diligencia.']},
   6:{tag:'Servicio 6 · Inclusión y PIE',title:'Inclusión y Diversificación Educativa',
     intro:'Programa dirigido a los profesionales del Programa de Integración Escolar y a los equipos de aula. Aborda la documentación que exige la normativa vigente —Decreto Supremo N° 170/2009, Decreto Exento N° 83/2015, Decreto N° 67/2018, Ley N° 20.422, Ley N° 20.845, Ley N° 21.545 (Ley TEA) y Ley N° 20.370 (LGE)— y la traduce en registros concretos: evaluación diagnóstica, ingreso, seguimiento y reevaluación. Se compone de diez talleres, de hasta 20 participantes cada uno, que pueden contratarse por separado o como programa completo, y de una auditoría opcional de la documentación del PIE.',
     objGen:['Fortalecer las competencias de los profesionales del Programa de Integración Escolar en el conocimiento, elaboración, revisión y gestión de la documentación requerida por la normativa vigente.','Favorecer el correcto desarrollo de los procesos de evaluación, ingreso, seguimiento y reevaluación de los estudiantes.','Asegurar el cumplimiento de los procedimientos y registros ministeriales.','Mantener una documentación pertinente, actualizada, organizada y coherente con las necesidades educativas y con los apoyos efectivamente proporcionados.'],
     objEsp:['Comprender los principios y fundamentos de la educación inclusiva y la diversificación de la enseñanza.','Identificar las barreras para el aprendizaje y la participación presentes en los contextos educativos.','Desarrollar estrategias pedagógicas diversificadas que respondan a las distintas necesidades, características y ritmos de aprendizaje.','Incorporar herramientas de planificación, evaluación y acompañamiento desde un enfoque inclusivo.','Promover prácticas educativas que favorezcan la participación, la equidad y el aprendizaje de todos los estudiantes.'],
     actions:[['Taller 1 · Fundamentos de la educación inclusiva','Ley 20.370 (LGE) y Ley 20.845 · Presencial (03 hrs)','A convenir'],['Taller 2 · Barreras para el aprendizaje y la participación','Levantamiento en el propio establecimiento · Presencial (03 hrs)','A convenir'],['Taller 3 · Evaluación diagnóstica e identificación de NEE','Decreto Supremo N° 170/2009 · Presencial (03 hrs)','A convenir'],['Taller 4 · Ingreso, reevaluación y expediente del estudiante','Decreto Supremo N° 170/2009 · Presencial (03 hrs)','A convenir'],['Taller 5 · Diseño Universal para el Aprendizaje (DUA)','Decreto Exento N° 83/2015 · Presencial (03 hrs)','A convenir'],['Taller 6 · Adecuaciones curriculares significativas y no significativas','Decreto Exento N° 83/2015 · Presencial (03 hrs)','A convenir'],['Taller 7 · Evaluación, calificación y promoción diversificadas','Decreto N° 67/2018 · Presencial (03 hrs)','A convenir'],['Taller 8 · Estudiantes autistas en el contexto educativo','Ley N° 21.545 (Ley TEA) · Presencial (03 hrs)','A convenir'],['Taller 9 · Accesibilidad e igualdad de oportunidades','Ley N° 20.422 · Presencial (03 hrs)','A convenir'],['Taller 10 · Documentación del PIE: registros, plazos y respaldo','Cierre del programa · Presencial (03 hrs)','A convenir'],['Auditoría documental del PIE (opcional)','Revisión de carpetas y formatos, con informe de brechas','Según alcance']],
-    <!--ILR#12-->
-    deliverables:['Material de cada taller (presentaciones y guías rápidas) y certificados de participación.','Formatos de registro del PIE revisados: evaluación diagnóstica, ingreso, seguimiento y reevaluación.','Matriz de barreras para el aprendizaje y la participación detectadas en el establecimiento.','Orientaciones de diversificación y adecuaciones curriculares conforme al Decreto Exento N° 83/2015.','Criterios de evaluación diversificada conforme al Decreto N° 67/2018.','Informe de auditoría documental con brechas, responsables y plazos (si se contrata).','Hoja de ruta para mantener la documentación al día ante una fiscalización.']}
+    <!--ILR#13-->
+    deliverables:['Material de cada taller (presentaciones y guías rápidas) y certificados de participación.','Formatos de registro del PIE revisados: evaluación diagnóstica, ingreso, seguimiento y reevaluación.','Matriz de barreras para el aprendizaje y la participación detectadas en el establecimiento.','Orientaciones de diversificación y adecuaciones curriculares conforme al Decreto Exento N° 83/2015.','Criterios de evaluación diversificada conforme al Decreto N° 67/2018.','Informe de auditoría documental con brechas, responsables y plazos (si se contrata).','Hoja de ruta para mantener la documentación al día ante una fiscalización.']},
+  7:{tag:'Servicio 7 · Escuela para Padres',title:'Escuela para Padres: Prevención en Redes e Internet',
+    intro:'La mayor parte de lo que preocupa al colegio no ocurre en el colegio: ocurre de noche, en el teléfono, en un grupo del que ningún adulto forma parte. Este servicio abre cinco encuentros con apoderados y estudiantes juntos, fuera del horario de clases, para que las medidas de cuidado que el establecimiento ya tiene escritas se sostengan también en la casa. Cada charla se ancla en una fecha del calendario escolar 2026 y termina con acuerdos concretos, no con buenas intenciones: qué se configura esa misma noche, qué se conversa en la mesa y qué se hace en las primeras horas cuando el daño ya está hecho. Complementa el Servicio 3, que trabaja las mismas fechas dentro de la jornada escolar: aquí el destinatario es la familia.',
+    objGen:['Preparar a apoderados y estudiantes para convivir en un ambiente de prevención frente al uso de las redes sociales e internet, de modo que el cuidado acordado en el colegio tenga continuidad en el hogar.','Instalar en las familias criterios propios para decidir sobre edad, tiempo, privacidad y contenidos, en vez de reglas prestadas que se abandonan a la primera discusión.','Reducir el tiempo que transcurre entre que un estudiante sufre un hecho en línea y el momento en que un adulto se entera y actúa.'],
+    objEsp:['Reconocer las señales tempranas del ciberacoso y distinguirlo de un conflicto pasajero entre pares.','Configurar en el propio teléfono, durante la sesión, la privacidad de las aplicaciones que los estudiantes usan de verdad.','Comprender qué es la huella digital, qué queda publicado para siempre y qué derechos entrega la Ley 21.719 sobre los datos personales de un menor.','Conocer el conducto regular del establecimiento y el protocolo que debe activarse, para no resolver por cuenta propia lo que corresponde al colegio.','Resguardar la evidencia de un hecho en línea antes de borrarlo, y saber dónde se denuncia.','Acordar en familia reglas de uso realistas, escritas y revisables, con el estudiante presente y de acuerdo.','Sostener el acuerdo después de la charla, con el material de seguimiento que queda en manos del apoderado.'],
+    actions:[['Charla 1 · Ciberacoso: señales, conducto regular y primeras 24 horas','Presencial (02 hrs) · apoderados y estudiantes','13 o 16 de marzo'],['Charla 2 · Semana de la Convivencia: autocuidado y lo esencial de ciberseguridad','Presencial (02 hrs) · apoderados y estudiantes','27-30 de abril'],['Charla 3 · Día del Internet: acuerdos de uso, edad, tiempo y controles parentales','Presencial (02 hrs) · con los teléfonos en la mano','15 o 18 de mayo'],['Charla 4 · Huella digital: lo que queda publicado y la Ley 21.719','Presencial (02 hrs) · apoderados y estudiantes','Agosto, a convenir'],['Charla 5 · Taller General: cierre, dudas abiertas y plan familiar del año','Presencial (02-03 hrs) · trabajo por grupos','Noviembre, a convenir'],['Coordinación previa y encuesta de cierre','Online (01 hr por charla)','Antes y después de cada sesión']],
+    <!--ILR#14-->
+    deliverables:['Cinco charlas presenciales para apoderados y estudiantes, de hasta 120 participantes cada una.','Guía de acuerdos familiares: una plantilla breve que la familia firma y revisa, no un reglamento de diez páginas.','Instructivo de configuración de privacidad y controles parentales, con las aplicaciones que los estudiantes usan hoy.','Ruta de denuncia y resguardo de pruebas: qué capturar, cómo guardarlo y a quién avisar, en una hoja.','Material gráfico para que el colegio convoque y difunda cada charla.','Informe por charla con asistencia, dudas recurrentes y recomendaciones al equipo de convivencia.','Certificado de participación para los apoderados asistentes.']}
 };
 
 // ===== MODAL =====
@@ -2468,12 +2504,12 @@ function _doDownloadFullProgram(colegioName){
   y+=30;
 
   // Intro paragraph
-  const introText='La presente propuesta contempla seis servicios diferenciados que pueden ser contratados de manera individual o como paquete integral, adaptándose a las necesidades específicas de cada establecimiento educacional de nivel parvulario, básico y medio.';
+  const introText='La presente propuesta contempla siete servicios diferenciados que pueden ser contratados de manera individual o como paquete integral, adaptándose a las necesidades específicas de cada establecimiento educacional de nivel parvulario, básico y medio.';
   y=pdfParagraph(doc,introText,PL,TW,y,(cy,n)=>checkPage(cy,n));
   y+=4;
 
   // Each module
-  [1,2,3,4,5,6].forEach(id=>{
+  [1,2,3,4,5,6,7].forEach(id=>{
     const m=modules[id];
     y=checkPage(y,30);
 
@@ -2498,7 +2534,7 @@ function _doDownloadFullProgram(colegioName){
 
     // Costs table (se omite en la version publicada)
     if(!window.ILR_SIN_PRECIOS){
-      <!--ILR#13-->
+      <!--ILR#15-->
     }
   });
 
@@ -2512,7 +2548,7 @@ function _doDownloadFullProgram(colegioName){
       PL,TW,y,(cy,n)=>checkPage(cy,n));
     y+=4;
   } else {
-  <!--ILR#14-->
+  <!--ILR#16-->
   }
 
   // Signature block
@@ -5909,8 +5945,8 @@ function descargarConvivenciaPDF(colegioName){
 }
 </script>
 
-<!--ILR#16-->
-<!--ILR#17-->
+<!--ILR#18-->
+<!--ILR#19-->
 
 
 <script>
@@ -6307,7 +6343,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
   if (!s) return;
   var puede = function(p){ return (s.permisos || []).indexOf(p) >= 0; };
 
-  var SERVICIOS = [1, 2, 3, 4, 5, 6];
+  var SERVICIOS = [1, 2, 3, 4, 5, 6, 7];
   var APARTADOS = [
     ['Descripción',      'serv-descripcion'],
     ['Objetivos',        'serv-objetivos'],
@@ -6431,7 +6467,7 @@ var qrcode=function(){function i(t,r){function a(t,r){g=function(t){for(var r=ne
     lista.className = 'ilr-nav-lista';
 
     lista.appendChild(rotulo('Panel'));
-    lista.appendChild(item('inicio', 'Los seis módulos'));
+    lista.appendChild(item('inicio', 'Los siete módulos'));
     if (puede('ver_precios')) lista.appendChild(item('precios', 'Precios y propuesta'));
 
     lista.appendChild(rotulo('Módulos del programa'));
