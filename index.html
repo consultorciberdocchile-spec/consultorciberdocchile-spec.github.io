@@ -7776,7 +7776,28 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dar
   .ilr-rail .noticia-rejilla{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));}
 }
 @media(max-width:600px){
+  /* La cabecera lleva tres cosas desde que existe el selector de idioma:
+     descarga, ES/EN y Acceder. En un telefono no caben las tres a ancho
+     completo y empujaban la pagina de lado. Aqui se encogen y la marca
+     cede el espacio que haga falta. */
+  .dash-header{padding:0 12px;gap:10px;}
+  .dash-brand{min-width:0;flex:1 1 auto;}
+  .dash-brand-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    font-size:15px;line-height:1.1;}
+  /* El subtitulo se va: en 390px solo servia para que el nombre se
+     cortara en «ILR ...», que no dice nada. */
+  .dash-brand-text span{display:none;}
+  .dash-header-right{gap:7px;flex-shrink:0;}
+  .idioma-btn{padding:5px 8px;font-size:11px;letter-spacing:.8px;}
+  .btn-acceso{padding:8px 11px;font-size:12px;}
   .ilr-wa{left:16px;bottom:16px;width:52px;height:52px;}
+}
+@media(max-width:480px){
+  /* Por debajo de 480px no caben el nombre y tres controles. Acceder se
+     queda en su candado: el texto sigue en el DOM, asi que un lector de
+     pantalla lo sigue anunciando, pero deja de robarle sitio a la marca. */
+  .hero-acceso .btn-acceso{font-size:0;gap:0;padding:9px 11px;}
+  .hero-acceso .btn-acceso svg{width:16px;height:16px;}
   .ilr-vm{margin-top:38px;}
   .ilr-vm-card{padding:20px 18px;}
 }
