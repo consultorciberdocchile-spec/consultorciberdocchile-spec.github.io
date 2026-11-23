@@ -1143,6 +1143,10 @@ window.ILRCuentaRegresiva = (function(){
     <button class="btn-primary" onclick="ingresarDashboard()" style="width:100%;font-size:16px;padding:16px 24px;letter-spacing:1px;">
       Ingresar a la Plataforma &rarr;
     </button>
+    <div class="idioma idioma-auth" role="group" aria-label="Idioma del sitio / Site language">
+      <button type="button" class="idioma-btn" data-idioma="es" aria-pressed="true">ES</button>
+      <button type="button" class="idioma-btn" data-idioma="en" aria-pressed="false">EN</button>
+    </div>
   </div>
 </div>
 
@@ -1168,6 +1172,10 @@ window.ILRCuentaRegresiva = (function(){
         </svg>
         <span class="btn-label">Descargue nuestro programa</span>
       </button>
+      <div class="idioma" role="group" aria-label="Idioma del sitio / Site language">
+        <button type="button" class="idioma-btn" data-idioma="es" aria-pressed="true">ES</button>
+        <button type="button" class="idioma-btn" data-idioma="en" aria-pressed="false">EN</button>
+      </div>
       <div class="hero-acceso" id="heroAcceso"></div>
     </div>
   </header>
@@ -7585,6 +7593,307 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dar
   .module-card:hover,.material-card:hover{transform:none;}
 }
 </style>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CONMUTADOR DE IDIOMA · ES / EN
+     Traduce la interfaz y los siete modulos. Funciona por diccionario de
+     coincidencia exacta sobre los nodos de texto ya existentes: no hay que
+     etiquetar el marcado y, sobre todo, lo que el diccionario no conoce se
+     queda tal cual, en espanol. Nada se rompe por una traduccion que falte.
+
+     Queda a proposito en espanol:
+       · los nombres de las leyes chilenas (Ley 21.719 no tiene nombre en
+         ingles; traducirlo confunde a quien luego la busca);
+       · los titulares y resumenes de Actualidad (son de cada dia);
+       · las fichas largas de cada modulo y el PDF de la propuesta.
+
+     Un observador vuelve a traducir lo que el sitio dibuja despues (el menu
+     lateral, el panel de acceso, las tarjetas de noticias), y la eleccion se
+     recuerda en el navegador.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style>
+.idioma{display:inline-flex;border:1px solid rgba(255,255,255,.28);border-radius:999px;
+  overflow:hidden;background:rgba(255,255,255,.06);}
+.idioma-btn{background:none;border:none;color:rgba(255,255,255,.75);cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.3px;
+  padding:7px 13px;line-height:1;transition:background .2s,color .2s;}
+.idioma-btn:hover{color:#fff;background:rgba(255,255,255,.10);}
+.idioma-btn[aria-pressed="true"]{background:var(--gold);color:var(--navy-dark);}
+.idioma-auth{display:flex;justify-content:center;gap:6px;margin-top:18px;}
+.idioma-auth .idioma-btn{color:var(--gray);border-radius:999px;}
+.idioma-auth .idioma-btn[aria-pressed="true"]{background:var(--navy);color:#fff;}
+@media(max-width:600px){.idioma-btn{padding:6px 10px;font-size:12px;}}
+</style>
+<script>
+(function(){
+  'use strict';
+
+  /* ── Diccionario. Clave: el texto tal como esta hoy en el sitio ─────── */
+  var EN = {
+    /* Cabecera y marco */
+    'ILR · Ciberseguridad · Educación':'ILR · Cybersecurity · Education',
+    'Propuesta de Servicios 2026':'2026 Services Proposal',
+    'Descargue nuestro programa':'Download our programme',
+    'Descargue nuestro programa completo con precios':'Download our full programme with pricing',
+    'Acceder':'Sign in',
+    'Salir':'Sign out',
+    'Bienvenido a':'Welcome to',
+    'ILR · Ciberseguridad en Educación':'ILR · Cybersecurity in Education',
+    'Plataforma de Consultoría de Ciberseguridad para establecimientos educacionales.':
+      'Cybersecurity consultancy platform for schools.',
+    'Consultoría de Ciberseguridad en Educación':'Cybersecurity Consultancy in Education',
+    'Ingresar a la Plataforma →':'Enter the platform →',
+
+    /* Menu lateral */
+    'Los siete módulos':'The seven services',
+    'Precios y propuesta':'Pricing and proposal',
+    'Actualidad':'News',
+    'Material de apoyo':'Supporting material',
+    'Presentaciones':'Presentations',
+    'Usuarios y accesos':'Users and access',
+    'Volver':'Back',
+
+    /* Titulos de seccion */
+    'Módulos del Programa':'Programme services',
+    'Material de Apoyo':'Supporting material',
+    'Actualidad en ciberseguridad educativa':'News in educational cybersecurity',
+    'Resumen Consolidado':'Consolidated summary',
+    'Consultoría de Ciberseguridad':'Cybersecurity Consultancy',
+    'en Educación':'in Education',
+
+    /* Botones repetidos */
+    'Ver Módulo Completo →':'View full service →',
+    'Ver precios del servicio':'View service pricing',
+    'Descargar este módulo':'Download this service',
+    'Descargue nuestra propuesta en PDF':'Download our proposal as PDF',
+    'Descargar la propuesta en PDF':'Download the proposal as PDF',
+    'Leer en la fuente →':'Read at the source →',
+    'Por qué importa a tu colegio':'Why it matters to your school',
+    'resumen del medio':'outlet summary',
+    'Sin novedades por ahora':'No news right now',
+
+    /* Etiquetas de servicio */
+    'Servicio 1 · Ley 21.663':'Service 1 · Law 21.663',
+    'Servicio 2 · Capacitación':'Service 2 · Training',
+    'Servicio 3 · Calendario Escolar':'Service 3 · School calendar',
+    'Servicio 4 · Convivencia Educativa':'Service 4 · School climate',
+    'Servicio 5 · Ley 21.719':'Service 5 · Law 21.719',
+    'Servicio 6 · Inclusión y PIE':'Service 6 · Inclusion and PIE',
+    'Servicio 7 · Escuela para Padres':'Service 7 · Parent school',
+
+    /* Titulos de los modulos */
+    'Implementación Ley Marco de Ciberseguridad':'Implementing the Cybersecurity Framework Law',
+    'Cursos de Capacitación en Ciberseguridad Educativa':'Cybersecurity training for school staff',
+    'Acompañamiento en Fechas Conmemorativas 2026':'Support for the 2026 commemorative calendar',
+    'Actualización Documentación de Convivencia Educativa 2026':'Updating school climate documentation 2026',
+    'Implementación Ley de Protección de Datos Personales':'Implementing the Personal Data Protection Law',
+    'Inclusión y Diversificación Educativa':'Inclusion and differentiated teaching',
+    'Escuela para Padres: Prevención en Redes e Internet':'Parent school: prevention on social media and the internet',
+
+    /* Descripciones de los modulos */
+    'Orientar y acompañar a establecimientos educacionales en la comprensión y aplicación de la Ley 21.663, fortaleciendo la gobernanza digital con políticas y protocolos de ciberseguridad alineados al marco legal vigente.':
+      'Guiding schools through the understanding and application of Law 21.663, strengthening digital governance with cybersecurity policies and protocols aligned with the law in force.',
+    'Programa de 4 charlas/talleres diseñados para el contexto educativo, abordando fundamentos, riesgos y prevención, marco legal y herramientas prácticas. Hasta 30 participantes por sesión con modalidad presencial.':
+      'Four talks and workshops designed for schools: fundamentals, risks and prevention, the legal framework and practical tools. Up to 30 participants per in-person session.',
+    'Ponencias y talleres integrados al Calendario Escolar 2026, vinculando ciberseguridad con conmemoraciones nacionales e internacionales. Actividades diferenciadas por nivel para toda la comunidad educativa.':
+      'Talks and workshops built into the 2026 school calendar, tying cybersecurity to national and international commemorative dates. Activities differentiated by year group, for the whole school community.',
+    'Dejar al establecimiento en condiciones de acreditar qué datos de estudiantes y familias trata, con qué autorización, quién accede a ellos y cómo reacciona ante una filtración. Cinco medidas concretas en 90 días, sin frenar la operación del colegio.':
+      'Leaving the school able to show which student and family data it handles, under what authorisation, who has access and how it responds to a breach. Five concrete measures in 90 days, without slowing the school down.',
+    'Fortalecer a los profesionales del Programa de Integración Escolar en la documentación que exige la normativa: evaluación diagnóstica, ingreso, seguimiento y reevaluación, con registros pertinentes, actualizados y coherentes con los apoyos que efectivamente se entregan.':
+      'Strengthening the School Integration Programme team on the paperwork the regulations require: diagnostic assessment, entry, follow-up and reassessment, with records that are relevant, current and consistent with the support actually delivered.',
+    'Cinco encuentros con apoderados y estudiantes, fuera del horario de clases, para que la prevención no se quede en la puerta del colegio. Cada charla se apoya en una fecha del calendario escolar y termina con acuerdos concretos para la casa: qué se configura, qué se conversa y qué se hace en las primeras horas cuando algo ya ocurrió.':
+      'Five sessions with parents and students together, outside school hours, so that prevention does not stop at the school gate. Each talk is anchored to a date in the school calendar and ends with concrete agreements for home: what to set up, what to talk about, and what to do in the first hours when something has already happened.',
+
+    /* Entregables */
+    'Entregables principales':'Main deliverables',
+    'Entregables Principales':'Main deliverables',
+    'Entregables':'Deliverables',
+    'Charlas incluidas':'Talks included',
+    'Conmemoraciones cubiertas':'Dates covered',
+    'Informe de diagnóstico de madurez en ciberseguridad':'Cybersecurity maturity assessment report',
+    'Política de Seguridad de la Información institucional':'Institutional information security policy',
+    'Protocolos de respuesta ante incidentes':'Incident response protocols',
+    'Material de capacitación y certificados':'Training material and certificates',
+    'Charla 1: Fundamentos de Ciberseguridad (3 hrs)':'Talk 1: Cybersecurity fundamentals (3 hrs)',
+    'Charla 2: Riesgos y Prevención (3 hrs)':'Talk 2: Risks and prevention (3 hrs)',
+    'Charla 3: Marco Legal en Chile (3 hrs)':'Talk 3: The legal framework in Chile (3 hrs)',
+    'Charla 4: Herramientas y Protocolos — taller (4 hrs)':'Talk 4: Tools and protocols — workshop (4 hrs)',
+    'Día contra el Ciberacoso (13/16 marzo)':'Anti-cyberbullying Day (13/16 March)',
+    'Día de la Convivencia Escolar (27–30 abril)':'School Climate Day (27–30 April)',
+    'Día del Internet (15/18 mayo)':'Internet Day (15/18 May)',
+    'Semana de Seguridad Escolar (25–29 mayo)':'School Safety Week (25–29 May)',
+    'Día UNESCO contra Violencia Escolar (5 noviembre)':'UNESCO Day against School Violence (5 November)',
+    'Documentos actualizados de 3 planes de gestión y PEI.':'Three management plans and the PEI, brought up to date.',
+    'Compendio de 9 protocolos de actuación validados.':'A set of nine validated action protocols.',
+    'Reglamento Interno (RICE) adecuado a normativa vigente.':'Internal rules (RICE) aligned with current regulations.',
+    'RICE y protocolos conforme a la Ley N° 21.801 (celulares en el aula).':'RICE and protocols under Law 21.801 (mobile phones in class).',
+    'Plan Integral de Seguridad Escolar (PISE) personalizado.':'A school safety plan (PISE) tailored to the school.',
+    'Material didáctico y guías para Escuela para Padres.':'Teaching material and guides for the parent school.',
+    'Inventario de datos personales del establecimiento':'Inventory of the personal data the school holds',
+    'Formularios de autorización por finalidad y por edad':'Consent forms by purpose and by age',
+    'Matriz de accesos y cláusulas para proveedores':'Access matrix and supplier clauses',
+    'Protocolo de actuación ante filtraciones':'Data breach response protocol',
+    'Diez talleres sobre la normativa vigente (DS 170, DE 83, D 67 y leyes)':'Ten workshops on current regulations (DS 170, DE 83, D 67 and related laws)',
+    'Formatos de registro del PIE revisados y al día':'PIE record templates reviewed and up to date',
+    'Informe de auditoría documental con brechas y plazos':'Document audit report with gaps and deadlines',
+    'Cinco charlas presenciales para apoderados y estudiantes (hasta 120 por sesión)':'Five in-person talks for parents and students (up to 120 per session)',
+    'Guía de acuerdos familiares y de configuración de controles parentales':'A family agreement guide and parental control setup',
+    'Ruta de denuncia y resguardo de pruebas, paso a paso':'Step-by-step reporting route and evidence preservation',
+    'Material de difusión para el colegio y certificados de participación':'Promotional material for the school and attendance certificates',
+
+    /* Ficha de cada modulo: solo los encabezados */
+    'Descripción General':'Overview',
+    'Objetivos Generales':'General objectives',
+    'Objetivos Específicos':'Specific objectives',
+    'Acciones y Modalidad':'Activities and format',
+    'Acción':'Activity',
+    'Modalidad':'Format',
+    'Fecha':'Date',
+    'Servicio':'Service',
+    'Descripción':'Description',
+    'Rango CLP':'Range (CLP)',
+    'Descargar Módulo (sin precios)':'Download service (no pricing)',
+
+    /* Panel de acceso */
+    'Acceso':'Sign in',
+    'Material reservado de la consultoría.':'Restricted consultancy material.',
+    'Los precios y las presentaciones solo se ven desde una cuenta autorizada.':
+      'Pricing and presentations are visible only from an authorised account.',
+    'Usuario o correo':'Username or email',
+    'Contraseña':'Password',
+    'Entrar':'Enter',
+    'Comprobando…':'Checking…',
+    'Es mi primer acceso y tengo un código':'This is my first time and I have a code',
+    'Soy nuevo y quiero registrarme':'I am new and want to register',
+    'Inscripción':'Registration',
+    'Colegio':'School',
+    'Nombre y apellidos':'Full name',
+    'Correo institucional':'Institutional email',
+    'Segundo correo':'Second email',
+    'Enviar solicitud':'Send request',
+    'Solicitud enviada':'Request sent',
+    'Cerrar':'Close',
+    'Primer acceso':'First sign-in',
+    'Correo electrónico':'Email address',
+    'Código de activación':'Activation code',
+    'Continuar':'Continue',
+    'Cree su contraseña':'Create your password',
+    'Contraseña nueva':'New password',
+    'Repítala':'Repeat it',
+    'Guardar contraseña':'Save password',
+    'Su cuenta ya está lista':'Your account is ready',
+    'Segundo factor':'Two-factor authentication',
+    'Código de verificación':'Verification code'
+  };
+
+  var NODOS_FUERA = { SCRIPT:1, STYLE:1, TEXTAREA:1, CODE:1, PRE:1 };
+  var ATRIBUTOS = ['title', 'aria-label', 'placeholder', 'alt'];
+  var original = new Map();
+  var idioma = 'es';
+  var observador = null;
+
+  function normal(t){ return (t || '').replace(/\s+/g, ' ').trim(); }
+
+  function traducirNodo(nodo){
+    var limpio = normal(nodo.nodeValue);
+    if (!limpio || !EN[limpio]) return;
+    if (!original.has(nodo)) original.set(nodo, nodo.nodeValue);
+    nodo.nodeValue = nodo.nodeValue.replace(limpio, EN[limpio]);
+  }
+
+  function traducirAtributos(el){
+    for (var i = 0; i < ATRIBUTOS.length; i++){
+      var a = ATRIBUTOS[i];
+      if (!el.hasAttribute(a)) continue;
+      var v = normal(el.getAttribute(a));
+      if (!EN[v]) continue;
+      var clave = el.__ilrAttr || (el.__ilrAttr = {});
+      if (!(a in clave)) clave[a] = el.getAttribute(a);
+      el.setAttribute(a, EN[v]);
+    }
+  }
+
+  function recorrer(raiz){
+    if (raiz.nodeType === 3){ traducirNodo(raiz); return; }
+    if (raiz.nodeType !== 1 || NODOS_FUERA[raiz.tagName]) return;
+    traducirAtributos(raiz);
+    var paso = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+      acceptNode: function(n){
+        if (n.nodeType === 1) return NODOS_FUERA[n.tagName]
+          ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var n;
+    while ((n = paso.nextNode())){
+      if (n.nodeType === 3) traducirNodo(n);
+      else traducirAtributos(n);
+    }
+  }
+
+  function devolverTodo(){
+    original.forEach(function(texto, nodo){
+      try { nodo.nodeValue = texto; } catch (e) {}
+    });
+    original.clear();
+    var todos = document.querySelectorAll('[title],[aria-label],[placeholder],[alt]');
+    for (var i = 0; i < todos.length; i++){
+      var g = todos[i].__ilrAttr;
+      if (!g) continue;
+      for (var a in g) todos[i].setAttribute(a, g[a]);
+      todos[i].__ilrAttr = null;
+    }
+  }
+
+  function pintarBotones(){
+    var b = document.querySelectorAll('.idioma-btn');
+    for (var i = 0; i < b.length; i++){
+      b[i].setAttribute('aria-pressed', b[i].dataset.idioma === idioma ? 'true' : 'false');
+    }
+  }
+
+  function vigilar(){
+    if (observador) return;
+    observador = new MutationObserver(function(cambios){
+      if (idioma !== 'en') return;
+      for (var i = 0; i < cambios.length; i++){
+        var c = cambios[i];
+        for (var j = 0; j < c.addedNodes.length; j++) recorrer(c.addedNodes[j]);
+        if (c.type === 'characterData') traducirNodo(c.target);
+      }
+    });
+    observador.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+
+  function poner(nuevo, recordar){
+    idioma = nuevo === 'en' ? 'en' : 'es';
+    document.documentElement.lang = idioma === 'en' ? 'en' : 'es';
+    if (idioma === 'en'){ recorrer(document.body); vigilar(); }
+    else devolverTodo();
+    pintarBotones();
+    if (recordar !== false){
+      try { localStorage.setItem('ilr_idioma', idioma); } catch (e) {}
+    }
+  }
+
+  function enchufar(){
+    document.addEventListener('click', function(e){
+      var b = e.target.closest ? e.target.closest('.idioma-btn') : null;
+      if (!b) return;
+      e.preventDefault();
+      poner(b.dataset.idioma, true);
+    });
+    var guardado = 'es';
+    try { guardado = localStorage.getItem('ilr_idioma') || 'es'; } catch (e) {}
+    if (guardado === 'en') poner('en', false);
+    else pintarBotones();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enchufar);
+  else enchufar();
+})();
+</script>
 
 </body>
 </html>
