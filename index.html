@@ -7455,5 +7455,136 @@ function descargarManualAcceso(){
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     REFINAMIENTO VISUAL · noviembre 2026
+     Va al final a proposito: solo ajusta como se ve, nunca que hace.
+     Ningun selector nuevo en el marcado, ningun cambio en el guion.
+     Para volver atras, se borra este bloque entero.
+
+     Tres decisiones, y el resto se deriva de ellas:
+       1. El dorado deja de ser relleno y pasa a ser acento. Antes habia
+          siete botones dorados macizos en una pantalla; ahora el dorado
+          marca el numero del modulo, el subrayado del titulo y una sola
+          llamada principal.
+       2. El fondo deja de ser blanco y pasa a papel calido. Menos
+          deslumbre, mas acogedor, y las tarjetas blancas por fin se
+          despegan del fondo.
+       3. Las sombras pesadas se reemplazan por un borde de 1px y una
+          sombra muy baja. Es lo que separa un sitio de plantilla de uno
+          hecho por alguien que mira la pantalla de cerca.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style>
+:root{
+  --papel:#FAF8F4;
+  --papel-hondo:#F2EFE8;
+  --linea:#E7E3DA;
+  --linea-fuerte:#D8D3C8;
+  --oro-tenue:#FDF6E3;
+  --sombra-baja:0 1px 2px rgba(23,32,58,.05), 0 10px 28px -16px rgba(23,32,58,.18);
+  --sombra-media:0 2px 4px rgba(23,32,58,.06), 0 18px 42px -22px rgba(23,32,58,.26);
+  --radio:14px;
+  --paso:.22s cubic-bezier(.22,.61,.36,1);
+  /* El gris anterior (#8A94A8) daba 2,9:1 sobre blanco: no llegaba a AA.
+     Este da 5,4:1 sobre el papel y se lee igual de tranquilo. */
+  --gray:#5F6878;
+  --shadow:rgba(23,32,58,.10);
+}
+
+/* ── El lienzo ───────────────────────────────────────────────────── */
+#dashboardScreen{background:var(--papel);}
+.dash-body{max-width:1180px;padding:52px 26px 72px;}
+.dash-header{box-shadow:0 1px 0 rgba(255,255,255,.08), 0 10px 30px -18px rgba(15,28,58,.55);}
+
+/* ── Titulos de seccion: el dorado como subrayado, no como bloque ── */
+.section-title{font-size:23px;letter-spacing:.9px;margin-bottom:22px;padding-bottom:12px;
+  border-bottom:1px solid var(--linea);position:relative;}
+.section-title::after{content:'';position:absolute;left:0;bottom:-1px;width:54px;height:2px;
+  background:var(--gold);border-radius:2px;}
+
+/* ── El heroe: plano, no degradado ───────────────────────────────── */
+.dash-hero{background:var(--navy);box-shadow:var(--sombra-media);
+  border-radius:18px;padding:44px 48px;margin-bottom:44px;}
+
+/* ── Tarjetas: borde fino en vez de sombra dura ──────────────────── */
+.module-card,.material-card{border:1px solid var(--linea);border-radius:var(--radio);
+  box-shadow:var(--sombra-baja);transition:box-shadow var(--paso), transform var(--paso),
+  border-color var(--paso);}
+.module-card:hover,.material-card:hover{box-shadow:var(--sombra-media);
+  border-color:var(--linea-fuerte);transform:translateY(-2px);}
+.modules-grid,.material-grid{gap:26px;
+  /* El minmax fijo de 520px hacia que el telefono se desplazara de lado:
+     con min() la columna nunca pide mas ancho del que hay. */
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));}
+
+.module-header,.material-header{background:var(--navy);padding:20px 24px;}
+.module-num,.material-icon{box-shadow:none;}
+.module-tag{color:var(--gold-light);letter-spacing:1.7px;}
+.module-title{line-height:1.22;}
+.module-body,.material-body{padding:24px 24px 22px;}
+.module-desc,.material-desc{color:#555E74;line-height:1.7;}
+.module-deliverables{background:var(--papel);border:1px solid var(--linea);
+  border-radius:11px;padding:15px 16px;margin-bottom:20px;}
+.del-title{color:var(--gray);letter-spacing:1.3px;margin-bottom:9px;}
+.del-list{gap:7px;}
+.del-list li{color:#4C5571;line-height:1.55;}
+
+/* ── Botones: una sola llamada dorada por pantalla ───────────────── */
+/*  .btn-detail estaba en dorado macizo y se repetia en cada tarjeta.
+    Pasa a ser un boton tranquilo de contorno; el dorado queda para la
+    descarga de la propuesta, que es la accion que de verdad importa. */
+.btn-detail{background:#fff;color:var(--navy);border:1.5px solid var(--navy);
+  box-shadow:none;letter-spacing:1.1px;transition:background var(--paso),
+  color var(--paso), border-color var(--paso);}
+.btn-detail:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.precios-descarga,.btn-full-download{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);
+  color:var(--navy-dark);border:none;}
+.precios-descarga:hover,.btn-full-download:hover{filter:brightness(1.04);}
+.card-descarga{border:1.5px solid var(--linea-fuerte);background:#fff;color:var(--navy);}
+.card-descarga:hover{border-color:var(--navy);background:var(--papel);}
+
+/* ── Precios: el panel deja de gritar ────────────────────────────── */
+.price-toggle-btn{border:1px solid var(--linea);background:var(--papel);border-radius:11px;}
+.price-row-val{color:var(--navy);}
+
+/* ── Actualidad ──────────────────────────────────────────────────── */
+.noticia-card .module-body{padding:22px 24px 20px;}
+.noticia-importa{background:var(--oro-tenue);border-left-width:3px;}
+
+/* ── Modal y acceso ──────────────────────────────────────────────── */
+.modal{border-radius:18px;box-shadow:0 30px 90px -30px rgba(15,28,58,.5);}
+.acc-caja{border-radius:18px;box-shadow:0 30px 90px -30px rgba(15,28,58,.5);}
+.auth-card{box-shadow:0 30px 90px -28px rgba(0,0,0,.55);border-radius:18px;}
+.modal-table th{letter-spacing:1.1px;}
+.modal-table td{border-color:var(--linea);}
+
+/* ── Menu lateral ────────────────────────────────────────────────── */
+.ilr-nav-item{border-radius:9px;transition:background var(--paso), color var(--paso);}
+
+/* ── Foco visible en todo lo que se puede pulsar ─────────────────── */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dark);
+  outline-offset:2px;border-radius:6px;}
+
+/* ── Respiro en pantallas grandes, compacto en el telefono ───────── */
+@media(min-width:1100px){
+  .dash-body{padding:60px 32px 84px;}
+  .ilr-vista + .ilr-vista{margin-top:64px;}
+}
+@media(max-width:600px){
+  .dash-body{padding:30px 16px 56px;}
+  .dash-hero{padding:30px 22px;}
+  .module-body,.material-body{padding:20px 18px 18px;}
+  .section-title{font-size:20px;}
+}
+
+/* ── Quien pide menos movimiento, recibe menos movimiento ────────── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important;}
+  .module-card:hover,.material-card:hover{transform:none;}
+}
+</style>
+
 </body>
 </html>
