@@ -2385,12 +2385,14 @@ function pdfFooter(doc,W,PL,NAVY,GOLD){
   doc.text(String(pg),W-PL-2,291.5,{align:'center'});
 }
 function pdfSectionTitle(doc,txt,PL,TW,GOLD,LGRAY,NAVY,y){
+  var T=(typeof ILR_T==='function')?ILR_T:function(x){return x;}; txt=T(txt);
   doc.setFillColor(...GOLD); doc.rect(PL,y,4,10,'F');
   doc.setFillColor(...LGRAY); doc.rect(PL+4,y,TW-4,10,'F');
   doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11);
   doc.text(txt.toUpperCase(),PL+8,y+7); return y+14;
 }
 function pdfBulletList(doc,items,PL,TW,y,checkFn){
+  var T=(typeof ILR_T==='function')?ILR_T:function(x){return x;}; items=items.map(T);
   items.forEach(item=>{
     doc.setTextColor(74,85,112); doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
     const lines=doc.splitTextToSize('  •  '+item,TW-6);
@@ -2399,12 +2401,14 @@ function pdfBulletList(doc,items,PL,TW,y,checkFn){
   }); return y+2;
 }
 function pdfParagraph(doc,txt,PL,TW,y,checkFn){
+  var T=(typeof ILR_T==='function')?ILR_T:function(x){return x;}; txt=T(txt);
   doc.setTextColor(74,85,112); doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
   const lines=doc.splitTextToSize(txt,TW);
   y=checkFn(y,lines.length*5+4);
   doc.text(lines,PL,y); return y+lines.length*5+4;
 }
 function pdfTable(doc,headers,rows,PL,TW,NAVY,GOLD,y,checkFn){
+  var T=(typeof ILR_T==='function')?ILR_T:function(x){return x;}; headers=headers.map(T); rows=rows.map(function(r){return r.map(T);});
   const colW=[TW*0.42,TW*0.32,TW*0.26];
   y=checkFn(y,16);
   doc.setFillColor(...NAVY); doc.rect(PL,y,TW,9,'F');
@@ -2427,6 +2431,7 @@ function pdfTable(doc,headers,rows,PL,TW,NAVY,GOLD,y,checkFn){
   return y+6;
 }
 function pdfTableNoCost(doc,headers,rows,PL,TW,NAVY,GOLD,y,checkFn){
+  var T=(typeof ILR_T==='function')?ILR_T:function(x){return x;}; headers=headers.map(T); rows=rows.map(function(r){return r.map(T);});
   // Only first 2 cols (no cost col)
   const colW=[TW*0.52,TW*0.48];
   y=checkFn(y,16);
@@ -2482,9 +2487,9 @@ function _doDownloadModulePDF(id, colegioName){
   doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(16);
   doc.text(String(id),PL+13,y+12,{align:'center'});
   doc.setTextColor(255,255,255); doc.setFontSize(12);
-  doc.text(m.title.toUpperCase(),PL+30,y+11);
+  doc.text((typeof ILR_T==='function'?ILR_T(m.title):m.title).toUpperCase(),PL+30,y+11);
   doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...GOLD);
-  doc.text(m.tag,PL+30,y+16); y+=24;
+  doc.text(typeof ILR_T==='function'?ILR_T(m.tag):m.tag,PL+30,y+16); y+=24;
 
   function checkPage(cy,needed=20){
     if(cy+needed>275){ pdfFooter(doc,W,PL,NAVY,GOLD); doc.addPage(); pdfHeader(doc,LOGO,W,PL,NAVY,GOLD,WHITE); return 54; }
@@ -2562,9 +2567,9 @@ function _doDownloadFullProgram(colegioName){
     doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(14);
     doc.text(String(id),PL+11,y+13,{align:'center'});
     doc.setTextColor(255,255,255); doc.setFontSize(11);
-    doc.text(m.title.toUpperCase(),PL+26,y+10);
+    doc.text((typeof ILR_T==='function'?ILR_T(m.title):m.title).toUpperCase(),PL+26,y+10);
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
-    doc.text(m.tag,PL+26,y+16.5); y+=26;
+    doc.text(typeof ILR_T==='function'?ILR_T(m.tag):m.tag,PL+26,y+16.5); y+=26;
 
     // Description
     y=pdfParagraph(doc,m.intro,PL,TW,y,(cy,n)=>checkPage(cy,n));
@@ -2572,7 +2577,8 @@ function _doDownloadFullProgram(colegioName){
     // Actions table
     y=pdfSectionTitle(doc,'Acciones y Modalidad',PL,TW,GOLD,LGRAY,NAVY,(checkPage(y,18)));
     y=pdfTableNoCost(doc,['ACCIÓN','MODALIDAD / FECHA'],
-      m.actions.map(a=>[a[0],a[1]+' · '+a[2]]),
+      m.actions.map(a=>{var t=(typeof ILR_T==='function')?ILR_T:function(x){return x;};
+        return [a[0], t(a[1])+' · '+t(a[2])];}),
       PL,TW,NAVY,GOLD,y,(cy,n)=>checkPage(cy,n));
 
     // Costs table (se omite en la version publicada)
@@ -7784,7 +7790,242 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dar
     'Guardar contraseña':'Save password',
     'Su cuenta ya está lista':'Your account is ready',
     'Segundo factor':'Two-factor authentication',
-    'Código de verificación':'Verification code'
+    'Código de verificación':'Verification code',
+
+    /* ── Ficha 1 · Ley Marco de Ciberseguridad ─────────────────────── */
+    'La Ley N° 21.663, conocida como Ley Marco de Ciberseguridad, fue promulgada el 8 de abril de 2024 y entró en vigor de manera progresiva durante 2025. Sus principios de seguridad digital, protección de datos y cultura de ciberseguridad son directamente aplicables a los establecimientos educacionales.':
+      'Law 21.663, known as the Cybersecurity Framework Law, was enacted on 8 April 2024 and came into force in stages through 2025. Its principles on digital security, data protection and a culture of cybersecurity apply directly to schools.',
+    'Orientar a los establecimientos en la comprensión y aplicación de los principios de la Ley 21.663.':'Guide schools in understanding and applying the principles of Law 21.663.',
+    'Fortalecer la gobernanza digital mediante políticas y protocolos de ciberseguridad alineados al marco legal.':'Strengthen digital governance through cybersecurity policies and protocols aligned with the legal framework.',
+    'Proteger los datos personales de estudiantes, apoderados y funcionarios frente a amenazas digitales.':'Protect the personal data of students, parents and staff against digital threats.',
+    'Preparar a la comunidad educativa para responder de manera eficaz ante incidentes de ciberseguridad.':'Prepare the school community to respond effectively to cybersecurity incidents.',
+    'Diagnóstico del nivel de madurez en ciberseguridad del establecimiento.':'Assessment of the school\'s cybersecurity maturity.',
+    'Diseño e implementación de Política de Seguridad de la Información adaptada al contexto educativo.':'Design and rollout of an information security policy suited to a school setting.',
+    'Elaboración de protocolos de respuesta ante incidentes (fuga de datos, ransomware, phishing, suplantación).':'Drafting of incident response protocols (data leaks, ransomware, phishing, impersonation).',
+    'Capacitación al equipo directivo y personal TI en deberes derivados de la Ley 21.663.':'Training for the leadership team and IT staff on the duties arising from Law 21.663.',
+    'Identificación y clasificación de activos de información críticos.':'Identification and classification of critical information assets.',
+    'Plan de mejora continua en ciberseguridad con indicadores de seguimiento.':'Continuous improvement plan with indicators to track progress.',
+    'Diagnóstico de madurez en ciberseguridad':'Cybersecurity maturity assessment',
+    'Taller: Comprendiendo la Ley Marco 21.663':'Workshop: understanding Framework Law 21.663',
+    'Diseño de Política de Seguridad de la Información':'Drafting the information security policy',
+    'Elaboración de protocolos de respuesta ante incidentes':'Drafting incident response protocols',
+    'Capacitación al equipo directivo y personal TI':'Training for leadership and IT staff',
+    'Entrega de informe final con plan de mejora':'Final report with improvement plan',
+    'Informe de diagnóstico de madurez en ciberseguridad.':'Cybersecurity maturity assessment report.',
+    'Política de Seguridad de la Información institucional (documento formal).':'Institutional information security policy (formal document).',
+    'Protocolos de respuesta ante incidentes de ciberseguridad.':'Cybersecurity incident response protocols.',
+    'Material de capacitación (presentaciones, guías rápidas).':'Training material (slide decks, quick guides).',
+    'Informe final con plan de mejora continua.':'Final report with a continuous improvement plan.',
+    'Certificado de participación para los asistentes.':'Attendance certificate for participants.',
+
+    /* ── Ficha 2 · Capacitación ────────────────────────────────────── */
+    'Programa de 4 charlas/talleres diseñados para el contexto educativo. Aborda desde los fundamentos de la ciberseguridad hasta herramientas prácticas y marco legal aplicable. Cada sesión contempla hasta 30 participantes. Para grupos mayores se cotizará de forma especial.':
+      'Four talks and workshops designed for schools, from cybersecurity fundamentals to practical tools and the applicable legal framework. Each session takes up to 30 participants; larger groups are quoted separately.',
+    'Desarrollar competencias en ciberseguridad promoviendo una cultura de prevención y autocuidado digital.':'Build cybersecurity skills and a culture of prevention and digital self-care.',
+    'Dotar a los profesionales de la educación de herramientas prácticas para identificar y prevenir amenazas.':'Give education professionals practical tools to spot and prevent threats.',
+    'Fortalecer el conocimiento del marco legal vigente en ciberseguridad aplicable al sector educativo.':'Deepen knowledge of the cybersecurity law as it applies to schools.',
+    'Charla 1: Fundamentos — confidencialidad, integridad, disponibilidad; panorama actual de amenazas.':'Talk 1: Fundamentals — confidentiality, integrity, availability; the current threat landscape.',
+    'Charla 2: Riesgos y Prevención — phishing, malware, grooming, ciberacoso; estrategias preventivas.':'Talk 2: Risks and prevention — phishing, malware, grooming, cyberbullying; preventive strategies.',
+    'Charla 3: Marco Legal — Ley 21.663, Ley 21.801, Ley 19.628 y derechos digitales de menores.':'Talk 3: Legal framework — Laws 21.663, 21.801 and 19.628, and the digital rights of minors.',
+    'Charla 4: Herramientas y Protocolos — filtros, contraseñas, autenticación multifactor.':'Talk 4: Tools and protocols — filtering, passwords, multi-factor authentication.',
+    'Charla 1: Fundamentos de Ciberseguridad':'Talk 1: Cybersecurity fundamentals',
+    'Charla 2: Riesgos y Prevención':'Talk 2: Risks and prevention',
+    'Charla 3: Marco Legal en Chile':'Talk 3: The legal framework in Chile',
+    'Charla 4: Herramientas y Protocolos (Taller práctico)':'Talk 4: Tools and protocols (hands-on workshop)',
+    'Material de cada charla (presentaciones en formato digital, guías de apoyo).':'Material for each talk (digital slide decks, support guides).',
+    'Compendio de normativa legal aplicable al ámbito educativo.':'A compendium of the regulations that apply to schools.',
+    'Certificado de participación/capacitación por cada charla o por el programa completo.':'Attendance certificate for each talk or for the full programme.',
+
+    /* ── Ficha 3 · Calendario escolar ──────────────────────────────── */
+    'El Calendario Escolar 2026 contempla diversas conmemoraciones nacionales e internacionales que cada comunidad educativa puede incorporar en su planificación. Este servicio vincula ciberseguridad con estas fechas, generando instancias de reflexión sobre el uso seguro de la tecnología.':
+      'The 2026 school calendar includes national and international commemorative dates that each school can build into its planning. This service ties cybersecurity to those dates, creating moments to reflect on safe technology use.',
+    'Visibilizar la ciberseguridad como componente esencial de la convivencia escolar.':'Make cybersecurity visible as an essential part of school life.',
+    'Fortalecer la prevención del ciberacoso y la violencia digital mediante ponencias y talleres.':'Strengthen prevention of cyberbullying and online violence through talks and workshops.',
+    'Generar espacios de reflexión sobre el uso seguro de internet y dispositivos tecnológicos.':'Create space to reflect on safe use of the internet and devices.',
+    'Planificar y ejecutar ponencias y talleres específicos para cada fecha conmemorativa.':'Plan and deliver talks and workshops for each commemorative date.',
+    'Sensibilizar a estudiantes, docentes y apoderados sobre consecuencias legales del ciberacoso.':'Raise awareness among students, teachers and parents of the legal consequences of cyberbullying.',
+    'Integrar la dimensión digital en las actividades de convivencia y seguridad escolares.':'Fold the digital dimension into school climate and safety activities.',
+    'Proveer material pedagógico diferenciado por nivel (parvularia, básica, media).':'Provide teaching material differentiated by level (early years, primary, secondary).',
+    'Evaluar el impacto de las actividades y proponer acciones de seguimiento.':'Evaluate the impact of each activity and propose follow-up actions.',
+    'Vincular actividades con el Plan de Gestión de la Convivencia Escolar y el PISE.':'Link activities to the school climate management plan and the PISE.',
+    'Día contra el Ciberacoso: Ponencia + taller':'Anti-cyberbullying Day: talk + workshop',
+    'Día de la Convivencia Escolar: Charla convivencia digital':'School Climate Day: talk on digital coexistence',
+    'Día del Internet: Taller ciudadanía digital responsable':'Internet Day: responsible digital citizenship workshop',
+    'Semana de Seguridad Escolar: Charla + ejercicio práctico':'School Safety Week: talk + practical exercise',
+    'Día UNESCO: Ponencia de cierre anual + evaluación':'UNESCO Day: closing talk of the year + evaluation',
+    'Planificación previa y seguimiento posterior':'Advance planning and follow-up',
+    'Material de cada ponencia/taller (presentaciones, videos, infografías).':'Material for each talk and workshop (slides, video, infographics).',
+    'Guías de actividades diferenciadas por nivel educativo.':'Activity guides differentiated by year group.',
+    'Material gráfico digital para difusión en la comunidad educativa.':'Digital artwork to publicise each activity in the school community.',
+    'Informe de cada actividad con registro.':'A report on each activity, with attendance records.',
+    'Informe anual de acompañamiento con recomendaciones para el año siguiente.':'Annual report with recommendations for the following year.',
+
+    /* ── Ficha 4 · Convivencia educativa ───────────────────────────── */
+    'Este servicio ofrece una revisión técnico-pedagógica y legal de los instrumentos de gestión obligatorios para los establecimientos educacionales. El objetivo es asegurar que la documentación institucional cumpla con la normativa vigente de la Superintendencia de Educación y esté articulada de manera coherente con el proyecto educativo de cada comunidad. Incorpora además la implementación de la Ley N° 21.801, que prohíbe el uso de dispositivos móviles en establecimientos de nivel parvulario, básico y medio y obliga a adaptar el RICE antes del 30 de junio de 2026. La carga horaria estimada es de 31.5 a 63 horas cronológicas de trabajo especializado.':
+      'A technical, educational and legal review of the management documents every school is required to hold. The aim is to leave that documentation compliant with the Superintendence of Education and coherent with the school\'s own educational project. It also covers Law 21.801, which bans mobile phones in early years, primary and secondary schools and required internal rules to be adapted by 30 June 2026. Estimated workload: 31.5 to 63 specialist hours.',
+    'Actualizar y articular los planes de gestión y reglamentos internos para garantizar el cumplimiento normativo y la coherencia institucional.':'Update and align the management plans and internal rules to secure compliance and institutional coherence.',
+    'Fortalecer la gestión de la convivencia escolar mediante protocolos de actuación claros y validados por la comunidad educativa.':'Strengthen school climate management with clear protocols, validated by the school community.',
+    'Promover una cultura de seguridad y prevención integral a través de la actualización del PISE y la formación de padres.':'Build a culture of safety and prevention by updating the PISE and training parents.',
+    'Acompañar la implementación efectiva de la Ley N° 21.801, asegurando el cumplimiento normativo en el uso de dispositivos móviles.':'Support the real implementation of Law 21.801 on the use of mobile devices.',
+    'Revisar y actualizar el Plan de Gestión de Convivencia, el Plan de Sexualidad, Afectividad y Género, y el Plan de Formación Ciudadana.':'Review and update the school climate plan, the sexuality, affection and gender plan, and the citizenship education plan.',
+    'Diseñar o actualizar el Proyecto Educativo Institucional (PEI) y el Plan de Sellos.':'Design or update the institutional educational project (PEI) and its distinguishing features.',
+    'Adecuar el Reglamento Interno de Convivencia Escolar (RICE) y desarrollar 9 protocolos de actuación ante diversas situaciones de riesgo.':'Adapt the internal school conduct rules (RICE) and develop nine protocols for different risk situations.',
+    'Conformar el Comité de Seguridad Escolar y adaptar el Plan Integral de Seguridad Escolar (PISE).':'Set up the school safety committee and adapt the school safety plan (PISE).',
+    'Implementar una Escuela para Padres enfocada en la educación digital y el manejo de dispositivos.':'Run a parent school focused on digital education and device management.',
+    'Diagnosticar el estado del RICE respecto a la regulación de dispositivos móviles y asesorar su modificación conforme a la Ley N° 21.801.':'Assess the internal rules against the mobile device regulations and advise on amending them under Law 21.801.',
+    'Diseñar los protocolos de custodia, excepciones, infracciones y comunicación con apoderados que exige la ley.':'Design the custody, exception, breach and parent-communication protocols the law requires.',
+    'Capacitar a docentes, asistentes y equipo directivo en la aplicación de la normativa, incorporando el concepto de autonomía progresiva en educación media.':'Train teachers, assistants and leadership on applying the rules, including progressive autonomy in secondary school.',
+    'Actualización Plan de Convivencia, Sexualidad y Formación Ciudadana':'Updating the climate, sexuality and citizenship plans',
+    'Construcción/actualización de PEI y Plan de Sellos':'Building or updating the PEI and its distinguishing features',
+    'Actualización del RICE + 9 protocolos de actuación':'Updating the internal rules + nine protocols',
+    'Adaptación del PISE y conformación Comité de Seguridad':'Adapting the PISE and setting up the safety committee',
+    'Escuela para Padres: talleres educación digital':'Parent school: digital education workshops',
+    'Diagnóstico del RICE y brecha respecto a la Ley 21.801':'Gap analysis of the internal rules against Law 21.801',
+    'Diseño de protocolos de celulares (custodia, excepciones, infracciones)':'Designing mobile phone protocols (custody, exceptions, breaches)',
+    'Charla apoderados y capacitación docente: uso responsable del celular':'Parent talk and teacher training: responsible phone use',
+    'Seguimiento de la implementación de la Ley 21.801':'Follow-up on the implementation of Law 21.801',
+    'Documentos actualizados de los 3 planes de gestión y el PEI.':'The three management plans and the PEI, brought up to date.',
+    'Reglamento Interno (RICE) adecuado a la normativa vigente.':'Internal rules (RICE) aligned with current regulations.',
+    'Material didáctico y guías prácticas para la Escuela para Padres.':'Teaching material and practical guides for the parent school.',
+    'Propuesta de modificación del RICE alineada a la Ley N° 21.801, con protocolos de custodia, excepciones e infracciones.':'A proposed amendment to the internal rules under Law 21.801, with custody, exception and breach protocols.',
+    'Material informativo para apoderados y estudiantes sobre el uso responsable del celular.':'Information material for parents and students on responsible phone use.',
+    'Material de capacitación para docentes y asistentes, con certificado de participación.':'Training material for teachers and assistants, with attendance certificates.',
+
+    /* ── Ficha 5 · Protección de datos ─────────────────────────────── */
+    'La Ley N° 21.719 de Protección de Datos Personales fue publicada en el Diario Oficial el 13 de diciembre de 2024 y su vigencia legal es el 1 de diciembre de 2026. Su artículo 16 quáter nombra de modo expreso a los establecimientos educacionales y les fija una obligación especial sobre la información de niños, niñas y adolescentes. El colegio es «responsable de datos» aunque la operación la lleve un tercero: si la plataforma de gestión sufre una filtración, es el colegio quien responde ante las familias y ante la Agencia.':
+      'Law 21.719 on personal data protection was published in the Official Gazette on 13 December 2024 and takes legal effect on 1 December 2026. Its article 16 quáter names schools expressly and places a special duty on them regarding children\'s and adolescents\' information. The school is the data controller even when a third party runs the system: if the management platform is breached, it is the school that answers to families and to the Agency.',
+    'Dejar al establecimiento en condiciones de acreditar que trata los datos de su comunidad conforme a la Ley 21.719.':'Leave the school able to show that it handles its community\'s data in line with Law 21.719.',
+    'Reducir la exposición a las multas del artículo 35, que para datos de estudiantes caen en los tramos grave y gravísimo.':'Reduce exposure to the article 35 fines, which for student data fall in the serious and very serious bands.',
+    'Construir, antes de cualquier incidente, las circunstancias atenuantes que reconoce el artículo 36.':'Build, before any incident, the mitigating circumstances recognised in article 36.',
+    'Instalar la protección de datos como una práctica de gestión del equipo directivo, no como una tarea de informática.':'Make data protection a leadership practice, not an IT task.',
+    'Inventariar los datos que el colegio ya trata: matrícula y familias, salud y PIE, SEP, notas y convivencia, fotografías y videos, plataformas y proveedores.':'Inventory the data the school already handles: enrolment and families, health and PIE, SEP, marks and conduct, photographs and video, platforms and suppliers.',
+    'Designar un responsable de datos en el equipo directivo, con un suplente.':'Appoint a data officer within the leadership team, with a deputy.',
+    'Ordenar las autorizaciones por finalidad y según la edad del estudiante: menores de 14, de 14 a 17, y datos sensibles bajo 16 años.':'Organise consents by purpose and by the student\'s age: under 14, 14 to 17, and sensitive data under 16.',
+    'Revisar los accesos por rol, la baja de exfuncionarios y los contratos con plataformas y proveedores.':'Review access by role, the removal of former staff, and contracts with platforms and suppliers.',
+    'Dejar por escrito el protocolo ante filtraciones: quién decide, a quién se avisa y en qué plazo.':'Put the breach protocol in writing: who decides, who is told, and within what deadline.',
+    'Formar al equipo directivo y al personal administrativo, que trata la mayor parte de los datos.':'Train the leadership and administrative staff, who handle most of the data.',
+    'Diagnóstico e inventario de datos':'Assessment and data inventory',
+    'Designación del responsable de datos y su suplente':'Appointing the data officer and deputy',
+    'Registro de autorizaciones por finalidad':'Consent register by purpose',
+    'Accesos por rol y cláusulas para proveedores':'Access by role and supplier clauses',
+    'Protocolo ante filtraciones y mesa de simulacro':'Breach protocol and tabletop exercise',
+    'Capacitación al equipo directivo y administrativo':'Training for leadership and administrative staff',
+    'Inventario de datos personales del establecimiento (documento formal).':'Inventory of the school\'s personal data (formal document).',
+    'Acta de designación del responsable de datos y su suplente.':'Record of appointment of the data officer and deputy.',
+    'Formularios de autorización por finalidad, con las reglas por edad.':'Consent forms by purpose, with the rules by age.',
+    'Matriz de accesos por rol y cláusulas de seguridad para contratos con proveedores.':'Access matrix by role and security clauses for supplier contracts.',
+    'Protocolo de actuación ante filtraciones, con plazos de aviso a la Agencia y a las familias.':'Breach response protocol, with deadlines for notifying the Agency and families.',
+    'Material de capacitación y certificados de participación.':'Training material and attendance certificates.',
+    'Informe final con la hoja de ruta a 90 días y la evidencia para acreditar diligencia.':'Final report with the 90-day roadmap and the evidence to demonstrate diligence.',
+
+    /* ── Ficha 6 · Inclusión y PIE ─────────────────────────────────── */
+    'Programa dirigido a los profesionales del Programa de Integración Escolar y a los equipos de aula. Aborda la documentación que exige la normativa vigente —Decreto Supremo N° 170/2009, Decreto Exento N° 83/2015, Decreto N° 67/2018, Ley N° 20.422, Ley N° 20.845, Ley N° 21.545 (Ley TEA) y Ley N° 20.370 (LGE)— y la traduce en registros concretos: evaluación diagnóstica, ingreso, seguimiento y reevaluación. Se compone de diez talleres, de hasta 20 participantes cada uno, que pueden contratarse por separado o como programa completo, y de una auditoría opcional de la documentación del PIE.':
+      'A programme for School Integration Programme professionals and classroom teams. It works through the paperwork the regulations require — Supreme Decree 170/2009, Exempt Decree 83/2015, Decree 67/2018, Laws 20.422, 20.845, 21.545 (the autism law) and 20.370 — and turns it into concrete records: diagnostic assessment, entry, follow-up and reassessment. Ten workshops of up to 20 participants each, available separately or as a full programme, plus an optional audit of the PIE documentation.',
+    'Fortalecer las competencias de los profesionales del Programa de Integración Escolar en el conocimiento, elaboración, revisión y gestión de la documentación requerida por la normativa vigente.':'Strengthen the School Integration Programme team in knowing, producing, reviewing and managing the documentation the regulations require.',
+    'Favorecer el correcto desarrollo de los procesos de evaluación, ingreso, seguimiento y reevaluación de los estudiantes.':'Support the proper running of assessment, entry, follow-up and reassessment.',
+    'Asegurar el cumplimiento de los procedimientos y registros ministeriales.':'Secure compliance with ministry procedures and records.',
+    'Mantener una documentación pertinente, actualizada, organizada y coherente con las necesidades educativas y con los apoyos efectivamente proporcionados.':'Keep documentation relevant, current, organised and consistent with the needs identified and the support actually provided.',
+    'Comprender los principios y fundamentos de la educación inclusiva y la diversificación de la enseñanza.':'Understand the principles of inclusive education and differentiated teaching.',
+    'Identificar las barreras para el aprendizaje y la participación presentes en los contextos educativos.':'Identify the barriers to learning and participation present in the school.',
+    'Desarrollar estrategias pedagógicas diversificadas que respondan a las distintas necesidades, características y ritmos de aprendizaje.':'Develop differentiated teaching strategies that respond to different needs, characteristics and learning paces.',
+    'Incorporar herramientas de planificación, evaluación y acompañamiento desde un enfoque inclusivo.':'Bring in planning, assessment and support tools from an inclusive standpoint.',
+    'Promover prácticas educativas que favorezcan la participación, la equidad y el aprendizaje de todos los estudiantes.':'Promote practices that favour participation, equity and learning for every student.',
+    'Taller 1 · Fundamentos de la educación inclusiva':'Workshop 1 · Foundations of inclusive education',
+    'Taller 2 · Barreras para el aprendizaje y la participación':'Workshop 2 · Barriers to learning and participation',
+    'Taller 3 · Evaluación diagnóstica e identificación de NEE':'Workshop 3 · Diagnostic assessment and identifying special needs',
+    'Taller 4 · Ingreso, reevaluación y expediente del estudiante':'Workshop 4 · Entry, reassessment and the student file',
+    'Taller 5 · Diseño Universal para el Aprendizaje (DUA)':'Workshop 5 · Universal Design for Learning',
+    'Taller 6 · Adecuaciones curriculares significativas y no significativas':'Workshop 6 · Significant and non-significant curricular adjustments',
+    'Taller 7 · Evaluación, calificación y promoción diversificadas':'Workshop 7 · Differentiated assessment, marking and progression',
+    'Taller 8 · Estudiantes autistas en el contexto educativo':'Workshop 8 · Autistic students in the school setting',
+    'Taller 9 · Accesibilidad e igualdad de oportunidades':'Workshop 9 · Accessibility and equal opportunity',
+    'Taller 10 · Documentación del PIE: registros, plazos y respaldo':'Workshop 10 · PIE documentation: records, deadlines and evidence',
+    'Auditoría documental del PIE (opcional)':'PIE document audit (optional)',
+    'Revisión de carpetas y formatos, con informe de brechas':'Review of files and templates, with a gap report',
+    'Material de cada taller (presentaciones y guías rápidas) y certificados de participación.':'Material for each workshop (slides and quick guides) and attendance certificates.',
+    'Formatos de registro del PIE revisados: evaluación diagnóstica, ingreso, seguimiento y reevaluación.':'PIE record templates reviewed: diagnostic assessment, entry, follow-up and reassessment.',
+    'Matriz de barreras para el aprendizaje y la participación detectadas en el establecimiento.':'A matrix of the barriers to learning and participation found in the school.',
+    'Orientaciones de diversificación y adecuaciones curriculares conforme al Decreto Exento N° 83/2015.':'Guidance on differentiation and curricular adjustments under Exempt Decree 83/2015.',
+    'Criterios de evaluación diversificada conforme al Decreto N° 67/2018.':'Differentiated assessment criteria under Decree 67/2018.',
+    'Informe de auditoría documental con brechas, responsables y plazos (si se contrata).':'Document audit report with gaps, owners and deadlines (if contracted).',
+    'Hoja de ruta para mantener la documentación al día ante una fiscalización.':'A roadmap for keeping documentation ready for inspection.',
+
+    /* ── Ficha 7 · Escuela para Padres ─────────────────────────────── */
+    'La mayor parte de lo que preocupa al colegio no ocurre en el colegio: ocurre de noche, en el teléfono, en un grupo del que ningún adulto forma parte. Este servicio abre cinco encuentros con apoderados y estudiantes juntos, fuera del horario de clases, para que las medidas de cuidado que el establecimiento ya tiene escritas se sostengan también en la casa. Cada charla se ancla en una fecha del calendario escolar 2026 y termina con acuerdos concretos, no con buenas intenciones: qué se configura esa misma noche, qué se conversa en la mesa y qué se hace en las primeras horas cuando el daño ya está hecho. Complementa el Servicio 3, que trabaja las mismas fechas dentro de la jornada escolar: aquí el destinatario es la familia.':
+      'Most of what worries a school does not happen at school: it happens at night, on a phone, in a group no adult belongs to. This service opens five sessions with parents and students together, outside school hours, so that the safeguards the school has already written down hold at home as well. Each talk is anchored to a date in the 2026 school calendar and ends with concrete agreements rather than good intentions: what gets set up that same night, what gets talked about at the table, and what to do in the first hours once the harm is done. It complements Service 3, which works the same dates during the school day: here the audience is the family.',
+    'Preparar a apoderados y estudiantes para convivir en un ambiente de prevención frente al uso de las redes sociales e internet, de modo que el cuidado acordado en el colegio tenga continuidad en el hogar.':'Prepare parents and students to live in a climate of prevention around social media and the internet, so that the care agreed at school continues at home.',
+    'Instalar en las familias criterios propios para decidir sobre edad, tiempo, privacidad y contenidos, en vez de reglas prestadas que se abandonan a la primera discusión.':'Give families their own criteria for decisions on age, screen time, privacy and content, instead of borrowed rules that collapse at the first argument.',
+    'Reducir el tiempo que transcurre entre que un estudiante sufre un hecho en línea y el momento en que un adulto se entera y actúa.':'Shorten the time between something happening to a student online and an adult finding out and acting.',
+    'Reconocer las señales tempranas del ciberacoso y distinguirlo de un conflicto pasajero entre pares.':'Recognise the early signs of cyberbullying and tell it apart from a passing conflict between peers.',
+    'Configurar en el propio teléfono, durante la sesión, la privacidad de las aplicaciones que los estudiantes usan de verdad.':'Set up privacy, on their own phone and during the session, on the apps students actually use.',
+    'Comprender qué es la huella digital, qué queda publicado para siempre y qué derechos entrega la Ley 21.719 sobre los datos personales de un menor.':'Understand what a digital footprint is, what stays online for good, and what rights Law 21.719 gives over a minor\'s personal data.',
+    'Conocer el conducto regular del establecimiento y el protocolo que debe activarse, para no resolver por cuenta propia lo que corresponde al colegio.':'Know the school\'s reporting route and the protocol that must be triggered, instead of handling alone what belongs to the school.',
+    'Resguardar la evidencia de un hecho en línea antes de borrarlo, y saber dónde se denuncia.':'Preserve the evidence of an online incident before deleting it, and know where to report it.',
+    'Acordar en familia reglas de uso realistas, escritas y revisables, con el estudiante presente y de acuerdo.':'Agree realistic household rules, written down and open to review, with the student present and on board.',
+    'Sostener el acuerdo después de la charla, con el material de seguimiento que queda en manos del apoderado.':'Keep the agreement alive after the talk, with follow-up material left in the parents\' hands.',
+    'Charla 1 · Ciberacoso: señales, conducto regular y primeras 24 horas':'Talk 1 · Cyberbullying: signs, reporting route and the first 24 hours',
+    'Charla 2 · Semana de la Convivencia: autocuidado y lo esencial de ciberseguridad':'Talk 2 · School Climate Week: self-care and the cybersecurity essentials',
+    'Charla 3 · Día del Internet: acuerdos de uso, edad, tiempo y controles parentales':'Talk 3 · Internet Day: use agreements, age, screen time and parental controls',
+    'Charla 4 · Huella digital: lo que queda publicado y la Ley 21.719':'Talk 4 · Digital footprint: what stays online, and Law 21.719',
+    'Charla 5 · Taller General: cierre, dudas abiertas y plan familiar del año':'Talk 5 · General workshop: closing, open questions and the family plan for the year',
+    'Coordinación previa y encuesta de cierre':'Advance coordination and closing survey',
+    'Presencial (02 hrs) · apoderados y estudiantes':'In person (2 hrs) · parents and students',
+    'Presencial (02 hrs) · con los teléfonos en la mano':'In person (2 hrs) · phones in hand',
+    'Presencial (02-03 hrs) · trabajo por grupos':'In person (2–3 hrs) · group work',
+    'Online (01 hr por charla)':'Online (1 hr per talk)',
+    'Antes y después de cada sesión':'Before and after each session',
+    'Cinco charlas presenciales para apoderados y estudiantes, de hasta 120 participantes cada una.':'Five in-person talks for parents and students, up to 120 participants each.',
+    'Guía de acuerdos familiares: una plantilla breve que la familia firma y revisa, no un reglamento de diez páginas.':'A family agreement guide: a short template the family signs and reviews, not a ten-page rulebook.',
+    'Instructivo de configuración de privacidad y controles parentales, con las aplicaciones que los estudiantes usan hoy.':'A setup guide for privacy and parental controls, covering the apps students use today.',
+    'Ruta de denuncia y resguardo de pruebas: qué capturar, cómo guardarlo y a quién avisar, en una hoja.':'Reporting route and evidence preservation: what to capture, how to keep it and who to tell, on one page.',
+    'Material gráfico para que el colegio convoque y difunda cada charla.':'Artwork so the school can invite families and publicise each talk.',
+    'Informe por charla con asistencia, dudas recurrentes y recomendaciones al equipo de convivencia.':'A report per talk with attendance, recurring questions and recommendations for the school climate team.',
+    'Certificado de participación para los apoderados asistentes.':'Attendance certificate for the parents who take part.',
+
+    /* ── Modalidades y fechas que se repiten ───────────────────────── */
+    'Presencial / Online (04 hrs)':'In person / online (4 hrs)',
+    'Presencial (02 hrs)':'In person (2 hrs)',
+    'Presencial (03 hrs)':'In person (3 hrs)',
+    'Presencial (04 hrs)':'In person (4 hrs)',
+    'Presencial (03–04 hrs)':'In person (3–4 hrs)',
+    'Presencial (05 hrs totales)':'In person (5 hrs in total)',
+    'Presencial / Online (03 hrs)':'In person / online (3 hrs)',
+    'Presencial / Online':'In person / online',
+    'Online con entregas parciales':'Online, with staged deliveries',
+    'Online con validación presencial':'Online, validated in person',
+    'Online / Presencial':'Online / in person',
+    'Online (02 hrs por evento)':'Online (2 hrs per event)',
+    'Presencial con talleres roll play de validación':'In person, with role-play validation workshops',
+    'Presencial (sesiones programadas)':'In person (scheduled sessions)',
+    'Trabajo colaborativo con estamentos':'Collaborative work with each group',
+    'Reuniones presenciales con estamentos':'In-person meetings with each group',
+    'Marzo – Abril':'March – April',
+    'Abril – Mayo':'April – May',
+    'Mayo – Junio':'May – June',
+    'Junio – Julio':'June – July',
+    'Marzo – Junio':'March – June',
+    'Abril – Junio':'April – June',
+    'Mayo – Noviembre':'May – November',
+    'Abril – Mayo':'April – May',
+    'Abril':'April',
+    'Mayo':'May',
+    'Junio':'June',
+    'Julio':'July',
+    'Según agenda':'As scheduled',
+    'Según alcance':'Depending on scope',
+    'A convenir':'To be agreed',
+    'Agosto, a convenir':'August, to be agreed',
+    'Noviembre, a convenir':'November, to be agreed',
+    'Días 1 a 30':'Days 1 to 30',
+    'Días 31 a 60':'Days 31 to 60',
+    'Días 61 a 90':'Days 61 to 90',
+    '13 o 16 de marzo':'13 or 16 March',
+    '27–30 de abril':'27–30 April',
+    '27-30 de abril':'27–30 April',
+    '15 o 18 de mayo':'15 or 18 May',
+    '25–29 de mayo':'25–29 May',
+    '5 de noviembre':'5 November',
+    'Online (01 hr por charla)':'Online (1 hr per talk)'
   };
 
   var NODOS_FUERA = { SCRIPT:1, STYLE:1, TEXTAREA:1, CODE:1, PRE:1 };
@@ -7798,8 +8039,12 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dar
   function traducirNodo(nodo){
     var limpio = normal(nodo.nodeValue);
     if (!limpio || !EN[limpio]) return;
+    var nuevo = nodo.nodeValue.replace(limpio, EN[limpio]);
+    /* Si la traduccion es igual al original, no se escribe: escribirla
+       disparaba otra mutacion y el observador se perseguia la cola. */
+    if (nuevo === nodo.nodeValue) return;
     if (!original.has(nodo)) original.set(nodo, nodo.nodeValue);
-    nodo.nodeValue = nodo.nodeValue.replace(limpio, EN[limpio]);
+    nodo.nodeValue = nuevo;
   }
 
   function traducirAtributos(el){
@@ -7876,6 +8121,14 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold-dar
       try { localStorage.setItem('ilr_idioma', idioma); } catch (e) {}
     }
   }
+
+  /* Lo usa el generador de PDF: con el idioma en espanol devuelve el
+     texto tal cual, asi que el PDF de siempre no cambia. */
+  window.ILR_T = function(t){
+    if (idioma !== 'en' || typeof t !== 'string') return t;
+    var l = normal(t);
+    return EN[l] ? t.replace(l, EN[l]) : t;
+  };
 
   function enchufar(){
     document.addEventListener('click', function(e){
